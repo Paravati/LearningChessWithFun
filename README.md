@@ -1,3 +1,5 @@
-</title></b>"# TicTacPython" </b></title>
+# TicTacToe in Python
 
-</body>Hello, this is my first own project on Github. I am still learning...</body>
+
+## Short description
+Hello, this is my first own project on Github. I am still learning...
