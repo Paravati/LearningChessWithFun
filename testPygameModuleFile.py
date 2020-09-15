@@ -33,7 +33,6 @@ def main():
         main_surface.blit(the_text, (0,0))
         # Now the surface is ready, tell pygame to display it!
         pygame.display.flip()
-        i+=1
 
     pygame.quit()     # Once we leave the loop, close the window.
 
