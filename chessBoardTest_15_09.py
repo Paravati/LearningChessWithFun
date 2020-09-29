@@ -60,6 +60,7 @@ def draw_board(the_board):
         pygame.display.flip()  # displaying pygame window
     pygame.quit()
 
+
 def getNameOfField(pos, offset_X, offset_Y):
     # letters = ["a", "b", "c", "d", "e", "f", "g"]
     # listWithFieldNames = [[]]
@@ -73,6 +74,7 @@ def getNameOfField(pos, offset_X, offset_Y):
     else:
         print("different field than a1")
 
+
 def generateText(inp):
     if inp is not None:
         return inp
@@ -80,22 +82,19 @@ def generateText(inp):
 
 
 if __name__ == "__main__":
-    draw_board([6, 4, 2, 0, 5, 7, 1, 3])
+    # draw_board([6, 4, 2, 0, 5, 7, 1, 3])
 
 
     # draw_board([0, 5, 3, 1, 6, 4, 2])    # 7 x 7 to test window size
     # draw_board([9, 6, 0, 3, 10, 7, 2, 4, 12, 8, 11, 5, 1])  # 13 x 13
     # draw_board([11, 4, 8, 12, 2, 7, 3, 15, 0, 14, 10, 6, 13, 1, 5, 9])
 
-    # letters = ["a", "b", "c", "d", "e", "f", "g"]
-    # listWithFieldNames = [[]*8]*8
-    # print(listWithFieldNames)
-    # for rows in range(1, 9):
-    #     for col in range(1, 9):
-    #         if col==1:
-    #             print(rows)
-    #             print(col)
-    #             print()
-    #             listWithFieldNames[rows-1].insert(col-1, (letters[rows-1] + str(col)))
+    letters = ["a", "b", "c", "d", "e", "f", "g"]
+    listWithFieldNames = np.ndarray((8,8), dtype=str)
+    print(listWithFieldNames)
+    # for rows in range(0, 7):
+    #     for col in range(0, 7):
+    #         listWithFieldNames. 'a'#str(letters[rows] + str(col))
     #         # listWithFieldNames.extend(letters[rows] + str(col + 1))
-    # print(listWithFieldNames)
+    listWithFieldNames[0][1] = 'B' + str(1)
+    print(listWithFieldNames)
