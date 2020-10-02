@@ -3,6 +3,7 @@
 import pygame
 import numpy as np
 
+
 def draw_board(the_board):
     """ Draw a chess board with queens, from the_board. """
 
@@ -24,8 +25,8 @@ def draw_board(the_board):
     # Create the surface of (width, height), and its window.
     # surface = pygame.display.set_mode((surface_sz, surface_sz))
     surface = pygame.display.set_mode((800, 650))
-    surface.fill((45, 60, 70))
-    myFont = pygame.font.SysFont("Courier", 50,bold=True)
+    surface.fill((45, 60, 80))
+    myFont = pygame.font.SysFont("Courier", 50, bold=True)
     while True:
 
         # Look for an event from keyboard, mouse, etc.
@@ -41,12 +42,6 @@ def draw_board(the_board):
             textRect = the_text.get_rect()
             textRect.center = (800 // 2,  100)
             surface.blit(the_text, textRect)
-
-            # getNameOfField(board_field_names, pos_of_click, x_offset_of_Board, y_offset_of_Board, sq_sz)
-
-
-        # the_text = myFont.render(generateText(), True, (0, 30, 0))
-        # surface.blit(the_text, (0, 0))
         # Draw a fresh background (a blank chess board)
         for row in range(n):           # Draw each row of the board.
             c_indx = row % 2           # Change starting color on each row
@@ -57,19 +52,17 @@ def draw_board(the_board):
                 # now flip the color index for the next square
                 c_indx = (c_indx + 1) % 2
 
-        # for (col, row) in enumerate(the_board):
-        #     surface.blit(ball, (col * sq_sz + ball_offset, row * sq_sz + ball_offset))
-        # the_board.insert(ball, (2,0))
         pygame.display.flip()  # displaying pygame window
     pygame.quit()
 
 
 def generateFieldNames(boardSize):
     letters = ["a", "b", "c", "d", "e", "f", "g", "h"]
+    numbers = [8, 7, 6, 5, 4, 3, 2, 1]
     listWithFieldNames = np.ndarray(shape=(boardSize, boardSize), dtype='object')
     for rows in range(0, len(listWithFieldNames)):
         for col in range(0, len(listWithFieldNames)):
-            listWithFieldNames[rows][col] = letters[rows] + str(col + 1)
+            listWithFieldNames[rows][col] = letters[rows] + str(numbers[col])
     return listWithFieldNames
 
 
@@ -77,10 +70,9 @@ def getNameOfField(listWithFieldNames, pos, offset_X, offset_Y, lenSquare):
     clickedField = ""
     for i in range(0,len(listWithFieldNames)):
         for j in range(0, len(listWithFieldNames)):
-            if pos[0] > offset_X + lenSquare*i and pos[0] < offset_X+lenSquare*(i+1) and pos[1] >offset_Y+lenSquare*j and pos[1] <offset_Y+lenSquare*(j+1):
+            if offset_X + lenSquare*i < pos[0] < offset_X+lenSquare*(i + 1) and pos[1] >offset_Y+lenSquare*j and pos[1] <offset_Y+lenSquare*(j + 1):
                 clickedField = listWithFieldNames[i][j]
                 print(listWithFieldNames[i][j])
-
     return clickedField
 
 
