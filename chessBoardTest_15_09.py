@@ -16,6 +16,7 @@ def draw_board(the_board):
     # surface_sz = n * sq_sz     # Adjust to exactly fit n squares.
     x_offset_of_Board = 150
     y_offset_of_Board = 150
+    board_field_names = generateFieldNames(n)
 
     ball = pygame.image.load("bishop_white.png")
     ball = pygame.transform.scale(ball, (30, 30))
@@ -33,13 +34,15 @@ def draw_board(the_board):
             break
         if ev.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
-            the_text = myFont.render(generateText("You passed! " + str(pos)), True, (0, 30, 0), (255,255,255))
+            pos_of_click = ev.dict['pos']
+            print(pos_of_click)
+            field_name = getNameOfField(board_field_names, pos_of_click, x_offset_of_Board, y_offset_of_Board, sq_sz)
+            the_text = myFont.render(generateText("You passed! " + field_name), True, (0, 30, 0), (255,255,255))
             textRect = the_text.get_rect()
             textRect.center = (800 // 2,  100)
             surface.blit(the_text, textRect)
-            pos_of_click = ev.dict['pos']
-            print(pos_of_click)
-            getNameOfField(pos_of_click, x_offset_of_Board, y_offset_of_Board, sq_sz)
+
+            # getNameOfField(board_field_names, pos_of_click, x_offset_of_Board, y_offset_of_Board, sq_sz)
 
 
         # the_text = myFont.render(generateText(), True, (0, 30, 0))
@@ -61,19 +64,24 @@ def draw_board(the_board):
     pygame.quit()
 
 
-def getNameOfField(pos, offset_X, offset_Y, lenSquare):
+def generateFieldNames(boardSize):
     letters = ["a", "b", "c", "d", "e", "f", "g", "h"]
-    listWithFieldNames = np.ndarray(shape=(8, 8), dtype='object')
+    listWithFieldNames = np.ndarray(shape=(boardSize, boardSize), dtype='object')
     for rows in range(0, len(listWithFieldNames)):
         for col in range(0, len(listWithFieldNames)):
             listWithFieldNames[rows][col] = letters[rows] + str(col + 1)
+    return listWithFieldNames
 
+
+def getNameOfField(listWithFieldNames, pos, offset_X, offset_Y, lenSquare):
+    clickedField = ""
     for i in range(0,len(listWithFieldNames)):
         for j in range(0, len(listWithFieldNames)):
             if pos[0] > offset_X + lenSquare*i and pos[0] < offset_X+lenSquare*(i+1) and pos[1] >offset_Y+lenSquare*j and pos[1] <offset_Y+lenSquare*(j+1):
+                clickedField = listWithFieldNames[i][j]
                 print(listWithFieldNames[i][j])
-            # elif pos[0] > offset_X+lenSquare and pos[0] < offset_X+lenSquare+lenSquare and pos[1] >offset_Y+lenSquare and pos[1] <offset_Y+lenSquare+lenSquare:
-            #     print(listWithFieldNames[1][1])
+
+    return clickedField
 
 
 def generateText(inp):
