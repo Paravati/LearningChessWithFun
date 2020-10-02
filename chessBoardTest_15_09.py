@@ -39,7 +39,7 @@ def draw_board(the_board):
             surface.blit(the_text, textRect)
             pos_of_click = ev.dict['pos']
             print(pos_of_click)
-            getNameOfField(pos_of_click, x_offset_of_Board, y_offset_of_Board)
+            getNameOfField(pos_of_click, x_offset_of_Board, y_offset_of_Board, sq_sz)
 
 
         # the_text = myFont.render(generateText(), True, (0, 30, 0))
@@ -61,18 +61,19 @@ def draw_board(the_board):
     pygame.quit()
 
 
-def getNameOfField(pos, offset_X, offset_Y):
-    # letters = ["a", "b", "c", "d", "e", "f", "g"]
-    # listWithFieldNames = [[]]
-    # for rows in range (0, len(letters)):
-    #     for col in range(0, len(letters)):
-    #         listWithFieldNames[rows][col] = letters[rows]+str(col+1)
-    # print(listWithFieldNames)
+def getNameOfField(pos, offset_X, offset_Y, lenSquare):
+    letters = ["a", "b", "c", "d", "e", "f", "g", "h"]
+    listWithFieldNames = np.ndarray(shape=(8, 8), dtype='object')
+    for rows in range(0, len(listWithFieldNames)):
+        for col in range(0, len(listWithFieldNames)):
+            listWithFieldNames[rows][col] = letters[rows] + str(col + 1)
 
-    if pos[0] > 150 and pos[0] < 210 and pos[1] >150 and pos[1] <210:
-        print("A1")
-    else:
-        print("different field than a1")
+    for i in range(0,len(listWithFieldNames)):
+        for j in range(0, len(listWithFieldNames)):
+            if pos[0] > offset_X + lenSquare*i and pos[0] < offset_X+lenSquare*(i+1) and pos[1] >offset_Y+lenSquare*j and pos[1] <offset_Y+lenSquare*(j+1):
+                print(listWithFieldNames[i][j])
+            # elif pos[0] > offset_X+lenSquare and pos[0] < offset_X+lenSquare+lenSquare and pos[1] >offset_Y+lenSquare and pos[1] <offset_Y+lenSquare+lenSquare:
+            #     print(listWithFieldNames[1][1])
 
 
 def generateText(inp):
@@ -82,19 +83,10 @@ def generateText(inp):
 
 
 if __name__ == "__main__":
-    # draw_board([6, 4, 2, 0, 5, 7, 1, 3])
+    draw_board([6, 4, 2, 0, 5, 7, 1, 3])
 
 
     # draw_board([0, 5, 3, 1, 6, 4, 2])    # 7 x 7 to test window size
     # draw_board([9, 6, 0, 3, 10, 7, 2, 4, 12, 8, 11, 5, 1])  # 13 x 13
     # draw_board([11, 4, 8, 12, 2, 7, 3, 15, 0, 14, 10, 6, 13, 1, 5, 9])
 
-    letters = ["a", "b", "c", "d", "e", "f", "g"]
-    listWithFieldNames = np.ndarray((8,8), dtype=str)
-    print(listWithFieldNames)
-    # for rows in range(0, 7):
-    #     for col in range(0, 7):
-    #         listWithFieldNames. 'a'#str(letters[rows] + str(col))
-    #         # listWithFieldNames.extend(letters[rows] + str(col + 1))
-    listWithFieldNames[0][1] = 'B' + str(1)
-    print(listWithFieldNames)
