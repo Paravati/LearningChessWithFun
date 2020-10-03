@@ -2,7 +2,8 @@
 # https://openbookproject.net/thinkcs/python/english3e/list_algorithms.html#eightqueensmainprog
 import pygame
 import numpy as np
-
+import sys
+import random
 
 def draw_board(the_board):
     """ Draw a chess board with queens, from the_board. """
@@ -27,9 +28,15 @@ def draw_board(the_board):
     surface = pygame.display.set_mode((800, 650))
     surface.fill((45, 60, 80))
     myFont = pygame.font.SysFont("Courier", 50, bold=True)
-    while True:
 
+    fieldForUser = generateFieldForUser(board_field_names)  # initialization a first quest for user
+    the_text = myFont.render(generateText(fieldForUser), True, (0, 30, 0), (255, 255, 255))
+    textRect1 = the_text.get_rect()
+    surface.blit(the_text, textRect1)
+    while True:
         # Look for an event from keyboard, mouse, etc.
+        newText = myFont.render(generateText(fieldForUser), True, (0, 30, 0), (255, 255, 255))
+        surface.blit(newText, textRect1)
         ev = pygame.event.poll()
         if ev.type == pygame.QUIT:
             break
@@ -38,10 +45,13 @@ def draw_board(the_board):
             pos_of_click = ev.dict['pos']
             print(pos_of_click)
             field_name = getNameOfField(board_field_names, pos_of_click, x_offset_of_Board, y_offset_of_Board, sq_sz)
-            the_text = myFont.render(generateText("You passed! " + field_name), True, (0, 30, 0), (255,255,255))
-            textRect = the_text.get_rect()
-            textRect.center = (800 // 2,  100)
-            surface.blit(the_text, textRect)
+            if field_name == fieldForUser:
+                the_text = myFont.render(generateText("You passed! " + field_name), True, (0, 30, 0), (255,255,255))
+                textRect = the_text.get_rect()
+                textRect.center = (800 // 2,  100)
+                surface.blit(the_text, textRect)
+                fieldForUser = generateFieldForUser(board_field_names)
+
         # Draw a fresh background (a blank chess board)
         for row in range(n):           # Draw each row of the board.
             c_indx = row % 2           # Change starting color on each row
@@ -55,6 +65,9 @@ def draw_board(the_board):
         pygame.display.flip()  # displaying pygame window
     pygame.quit()
 
+def generateFieldForUser(listWithFieldNames):
+    line = random.choice(listWithFieldNames)
+    return random.choice(line)
 
 def generateFieldNames(boardSize):
     letters = ["a", "b", "c", "d", "e", "f", "g", "h"]
