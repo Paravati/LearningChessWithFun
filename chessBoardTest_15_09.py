@@ -20,9 +20,9 @@ def draw_board(the_board):
     y_offset_of_Board = 150
     board_field_names = generateFieldNames(n)
 
-    ball = pygame.image.load("bishop_white.png")
-    ball = pygame.transform.scale(ball, (30, 30))
-    ball_offset = (sq_sz - ball.get_width()) // 2
+    # ball = pygame.image.load("bishop_white.png")
+    # ball = pygame.transform.scale(ball, (30, 30))
+    # ball_offset = (sq_sz - ball.get_width()) // 2
     # Create the surface of (width, height), and its window.
     # surface = pygame.display.set_mode((surface_sz, surface_sz))
     surface = pygame.display.set_mode((800, 650))
@@ -58,7 +58,7 @@ def draw_board(the_board):
             for col in range(n):       # Run through cols drawing squares
                 the_square = (col*sq_sz+x_offset_of_Board, row*sq_sz+y_offset_of_Board, sq_sz, sq_sz)
                 surface.fill(colors[c_indx], the_square)
-                surface.blit(ball, ((col * sq_sz + 150+ball_offset), row * sq_sz + 150+ ball_offset))
+                # surface.blit(ball, ((col * sq_sz + 150+ball_offset), row * sq_sz + 150+ ball_offset))
                 # now flip the color index for the next square
                 c_indx = (c_indx + 1) % 2
 
