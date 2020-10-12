@@ -19,6 +19,7 @@ def draw_board(the_board):
     x_offset_of_Board = 150
     y_offset_of_Board = 150
     board_field_names = generateFieldNames(n)
+    blackFigures, whiteFigures = initFigures()
 
     # ball = pygame.image.load("bishop_white.png")
     # ball = pygame.transform.scale(ball, (30, 30))
@@ -33,6 +34,9 @@ def draw_board(the_board):
     the_text = myFont.render(generateText(fieldForUser), True, (0, 30, 0), (255, 255, 255))
     textRect1 = the_text.get_rect()
     surface.blit(the_text, textRect1)
+    chessBoard = chessboardSquareNotation(n, sq_sz, x_offset_of_Board, y_offset_of_Board, generateFieldNames(n))
+    print(chessBoard)
+    # insertFiguresIntoChessboard(whiteFigures, blackFigures, surface, n, sq_sz, x_offset_of_Board, y_offset_of_Board)
     while True:
         # Look for an event from keyboard, mouse, etc.
         newText = myFont.render(generateText(fieldForUser), True, (0, 30, 0), (255, 255, 255))
@@ -64,6 +68,38 @@ def draw_board(the_board):
 
         pygame.display.flip()  # displaying pygame window
     pygame.quit()
+
+def initFigures():
+    b_bishop = pygame.image.load("figures/b_bishop.png")
+    b_horse = pygame.image.load("figures/b_horse.png")
+    b_king = pygame.image.load("figures/b_king.png")
+    b_queen = pygame.image.load("figures/b_queen.png")
+    b_pawn = pygame.image.load("figures/b_pawn.png")
+    b_rook = pygame.image.load("figures/b_rook.png")
+    w_bishop = pygame.image.load("figures/w_bishop.png")
+    w_horse = pygame.image.load("figures/w_horse.png")
+    w_king = pygame.image.load("figures/w_king.png")
+    w_queen = pygame.image.load("figures/w_queen.png")
+    w_pawn = pygame.image.load("figures/w_pawn.png")
+    w_rook = pygame.image.load("figures/w_rook.png")
+    return [b_pawn, b_horse, b_bishop, b_rook, b_queen, b_king], [w_pawn, w_horse, w_bishop, w_rook, w_queen, w_king]
+    # ball = pygame.transform.scale(ball, (30, 30))
+    # ball_offset = (sq_sz - ball.get_width()) // 2
+
+def insertFiguresIntoChessboard(white_figures, black_figures, surface, n, sq_sz, x_offset_of_Board, y_offset_of_Board):
+
+
+    pass
+
+def chessboardSquareNotation(n, sq_len, x_offset_of_Board, y_offset_of_Board, listWithFieldNames):
+    chessBoard = {}
+    for row in range(n):  # Draw each row of the board.
+        for col in range(n):  # Run through cols drawing squares
+            the_square = (col * sq_len + x_offset_of_Board, row * sq_len + y_offset_of_Board, sq_len, sq_len)
+            dictTmp = {listWithFieldNames[row][col]: the_square}
+            chessBoard.update(dictTmp)
+           
+    return chessBoard
 
 def generateFieldForUser(listWithFieldNames):
     line = random.choice(listWithFieldNames)
