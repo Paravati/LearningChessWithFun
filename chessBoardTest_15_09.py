@@ -36,8 +36,9 @@ def draw_board(the_board):
     surface.blit(the_text, textRect1)
     chessBoard = chessboardSquareNotation(n, sq_sz, x_offset_of_Board, y_offset_of_Board, generateFieldNames(n))
     print(chessBoard)
-    # insertFiguresIntoChessboard(whiteFigures, blackFigures, surface, n, sq_sz, x_offset_of_Board, y_offset_of_Board)
+    print(surface)
     while True:
+        # surface = insertFiguresIntoChessboard(whiteFigures, blackFigures, surface, chessBoard)
         # Look for an event from keyboard, mouse, etc.
         newText = myFont.render(generateText(fieldForUser), True, (0, 30, 0), (255, 255, 255))
         surface.blit(newText, textRect1)
@@ -52,6 +53,7 @@ def draw_board(the_board):
             if field_name == fieldForUser:
                 the_text = myFont.render(generateText("You passed! " + field_name), True, (0, 30, 0), (255,255,255))
                 textRect = the_text.get_rect()
+                print(textRect)
                 textRect.center = (800 // 2,  100)
                 surface.blit(the_text, textRect)
                 fieldForUser = generateFieldForUser(board_field_names)
@@ -62,9 +64,17 @@ def draw_board(the_board):
             for col in range(n):       # Run through cols drawing squares
                 the_square = (col*sq_sz+x_offset_of_Board, row*sq_sz+y_offset_of_Board, sq_sz, sq_sz)
                 surface.fill(colors[c_indx], the_square)
-                # surface.blit(ball, ((col * sq_sz + 150+ball_offset), row * sq_sz + 150+ ball_offset))
-                # now flip the color index for the next square
                 c_indx = (c_indx + 1) % 2
+                
+        w_pawn, w_horse, w_bishop, w_rook, w_queen, w_king = whiteFigures
+        surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessBoard['a2'][1], chessBoard['a2'][0]))
+        surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessBoard['b2'][1], chessBoard['b2'][0]))
+        surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessBoard['c2'][1], chessBoard['c2'][0]))
+        surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessBoard['d2'][1], chessBoard['d2'][0]))
+        surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessBoard['e2'][1], chessBoard['e2'][0]))
+        surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessBoard['f2'][1], chessBoard['f2'][0]))
+        surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessBoard['g2'][1], chessBoard['g2'][0]))
+        surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessBoard['h2'][1], chessBoard['h2'][0]))
 
         pygame.display.flip()  # displaying pygame window
     pygame.quit()
@@ -86,10 +96,11 @@ def initFigures():
     # ball = pygame.transform.scale(ball, (30, 30))
     # ball_offset = (sq_sz - ball.get_width()) // 2
 
-def insertFiguresIntoChessboard(white_figures, black_figures, surface, n, sq_sz, x_offset_of_Board, y_offset_of_Board):
+def insertFiguresIntoChessboard(white_figures, black_figures, surface, chessboard):
+    w_pawn, w_horse, w_bishop, w_rook, w_queen, w_king = white_figures
+    surface.blit(w_pawn, (chessboard['a8'][0], chessboard['a8'][1]))
+    return surface
 
-
-    pass
 
 def chessboardSquareNotation(n, sq_len, x_offset_of_Board, y_offset_of_Board, listWithFieldNames):
     chessBoard = {}
