@@ -9,7 +9,7 @@ def draw_board(the_board):
     """ Draw a chess board with queens, from the_board. """
 
     pygame.init()
-    colors = [(255,255,255), (0,0,0)]    # Set up colors [white, black]
+    colors = [(255,255,255), (0,255,0)]    # Set up colors [white, black]
 
     n = len(the_board)         # This is an NxN chess board.
     surface_sz = 480           # Proposed physical surface size.
@@ -65,7 +65,7 @@ def draw_board(the_board):
                 the_square = (col*sq_sz+x_offset_of_Board, row*sq_sz+y_offset_of_Board, sq_sz, sq_sz)
                 surface.fill(colors[c_indx], the_square)
                 c_indx = (c_indx + 1) % 2
-                
+
         w_pawn, w_horse, w_bishop, w_rook, w_queen, w_king = whiteFigures
         surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessBoard['a2'][1], chessBoard['a2'][0]))
         surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessBoard['b2'][1], chessBoard['b2'][0]))
@@ -75,6 +75,16 @@ def draw_board(the_board):
         surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessBoard['f2'][1], chessBoard['f2'][0]))
         surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessBoard['g2'][1], chessBoard['g2'][0]))
         surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessBoard['h2'][1], chessBoard['h2'][0]))
+
+        b_pawn, b_horse, b_bishop, b_rook, b_queen, b_king = blackFigures
+        surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessBoard['a7'][1], chessBoard['a7'][0]))
+        surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessBoard['b7'][1], chessBoard['b7'][0]))
+        surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessBoard['c7'][1], chessBoard['c7'][0]))
+        surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessBoard['d7'][1], chessBoard['d7'][0]))
+        surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessBoard['e7'][1], chessBoard['e7'][0]))
+        surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessBoard['f7'][1], chessBoard['f7'][0]))
+        surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessBoard['g7'][1], chessBoard['g7'][0]))
+        surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessBoard['h7'][1], chessBoard['h7'][0]))
 
         pygame.display.flip()  # displaying pygame window
     pygame.quit()
