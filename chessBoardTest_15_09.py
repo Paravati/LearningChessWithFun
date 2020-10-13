@@ -5,11 +5,12 @@ import numpy as np
 import sys
 import random
 
+
 def draw_board(the_board):
     """ Draw a chess board with queens, from the_board. """
 
     pygame.init()
-    colors = [(255,255,255), (0,255,0)]    # Set up colors [white, black]
+    colors = [(255,255,255), (0,255,0)]    # Set up colors [white, green]
 
     n = len(the_board)         # This is an NxN chess board.
     surface_sz = 480           # Proposed physical surface size.
@@ -20,12 +21,6 @@ def draw_board(the_board):
     y_offset_of_Board = 150
     board_field_names = generateFieldNames(n)
     blackFigures, whiteFigures = initFigures()
-
-    # ball = pygame.image.load("bishop_white.png")
-    # ball = pygame.transform.scale(ball, (30, 30))
-    # ball_offset = (sq_sz - ball.get_width()) // 2
-    # Create the surface of (width, height), and its window.
-    # surface = pygame.display.set_mode((surface_sz, surface_sz))
     surface = pygame.display.set_mode((800, 650))
     surface.fill((45, 60, 80))
     myFont = pygame.font.SysFont("Courier", 50, bold=True)
@@ -65,29 +60,11 @@ def draw_board(the_board):
                 the_square = (col*sq_sz+x_offset_of_Board, row*sq_sz+y_offset_of_Board, sq_sz, sq_sz)
                 surface.fill(colors[c_indx], the_square)
                 c_indx = (c_indx + 1) % 2
-
-        w_pawn, w_horse, w_bishop, w_rook, w_queen, w_king = whiteFigures
-        surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessBoard['a2'][1], chessBoard['a2'][0]))
-        surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessBoard['b2'][1], chessBoard['b2'][0]))
-        surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessBoard['c2'][1], chessBoard['c2'][0]))
-        surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessBoard['d2'][1], chessBoard['d2'][0]))
-        surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessBoard['e2'][1], chessBoard['e2'][0]))
-        surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessBoard['f2'][1], chessBoard['f2'][0]))
-        surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessBoard['g2'][1], chessBoard['g2'][0]))
-        surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessBoard['h2'][1], chessBoard['h2'][0]))
-
-        b_pawn, b_horse, b_bishop, b_rook, b_queen, b_king = blackFigures
-        surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessBoard['a7'][1], chessBoard['a7'][0]))
-        surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessBoard['b7'][1], chessBoard['b7'][0]))
-        surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessBoard['c7'][1], chessBoard['c7'][0]))
-        surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessBoard['d7'][1], chessBoard['d7'][0]))
-        surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessBoard['e7'][1], chessBoard['e7'][0]))
-        surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessBoard['f7'][1], chessBoard['f7'][0]))
-        surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessBoard['g7'][1], chessBoard['g7'][0]))
-        surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessBoard['h7'][1], chessBoard['h7'][0]))
-
+        
+        insertFiguresIntoChessboard(whiteFigures, blackFigures, surface, chessBoard)
         pygame.display.flip()  # displaying pygame window
     pygame.quit()
+
 
 def initFigures():
     b_bishop = pygame.image.load("figures/b_bishop.png")
@@ -103,13 +80,28 @@ def initFigures():
     w_pawn = pygame.image.load("figures/w_pawn.png")
     w_rook = pygame.image.load("figures/w_rook.png")
     return [b_pawn, b_horse, b_bishop, b_rook, b_queen, b_king], [w_pawn, w_horse, w_bishop, w_rook, w_queen, w_king]
-    # ball = pygame.transform.scale(ball, (30, 30))
-    # ball_offset = (sq_sz - ball.get_width()) // 2
 
-def insertFiguresIntoChessboard(white_figures, black_figures, surface, chessboard):
-    w_pawn, w_horse, w_bishop, w_rook, w_queen, w_king = white_figures
-    surface.blit(w_pawn, (chessboard['a8'][0], chessboard['a8'][1]))
-    return surface
+
+def insertFiguresIntoChessboard(whiteFigures, blackFigures, surface, chessboard):
+    w_pawn, w_horse, w_bishop, w_rook, w_queen, w_king = whiteFigures
+    surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessboard['a2'][1], chessboard['a2'][0]))
+    surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessboard['b2'][1], chessboard['b2'][0]))
+    surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessboard['c2'][1], chessboard['c2'][0]))
+    surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessboard['d2'][1], chessboard['d2'][0]))
+    surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessboard['e2'][1], chessboard['e2'][0]))
+    surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessboard['f2'][1], chessboard['f2'][0]))
+    surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessboard['g2'][1], chessboard['g2'][0]))
+    surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessboard['h2'][1], chessboard['h2'][0]))
+
+    b_pawn, b_horse, b_bishop, b_rook, b_queen, b_king = blackFigures
+    surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessboard['a7'][1], chessboard['a7'][0]))
+    surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessboard['b7'][1], chessboard['b7'][0]))
+    surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessboard['c7'][1], chessboard['c7'][0]))
+    surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessboard['d7'][1], chessboard['d7'][0]))
+    surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessboard['e7'][1], chessboard['e7'][0]))
+    surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessboard['f7'][1], chessboard['f7'][0]))
+    surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessboard['g7'][1], chessboard['g7'][0]))
+    surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessboard['h7'][1], chessboard['h7'][0]))
 
 
 def chessboardSquareNotation(n, sq_len, x_offset_of_Board, y_offset_of_Board, listWithFieldNames):
@@ -122,9 +114,11 @@ def chessboardSquareNotation(n, sq_len, x_offset_of_Board, y_offset_of_Board, li
            
     return chessBoard
 
+
 def generateFieldForUser(listWithFieldNames):
     line = random.choice(listWithFieldNames)
     return random.choice(line)
+
 
 def generateFieldNames(boardSize):
     letters = ["a", "b", "c", "d", "e", "f", "g", "h"]
