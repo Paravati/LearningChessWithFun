@@ -24,6 +24,7 @@ def draw_board(the_board):
     surface = pygame.display.set_mode((800, 650))
     surface.fill((45, 60, 80))
     myFont = pygame.font.SysFont("Courier", 50, bold=True)
+    mySmallFont = pygame.font.SysFont("Courier", 20, bold=True)
 
     fieldForUser = generateFieldForUser(board_field_names)  # initialization a first quest for user
     the_text = myFont.render(generateText(fieldForUser), True, (0, 30, 0), (255, 255, 255))
@@ -31,13 +32,24 @@ def draw_board(the_board):
     surface.blit(the_text, textRect1)
     chessBoard = chessboardSquareNotation(n, sq_sz, x_offset_of_Board, y_offset_of_Board, generateFieldNames(n))
     print(chessBoard)
-
+    userPoints = 0
     while True:
-        # surface = insertFiguresIntoChessboard(whiteFigures, blackFigures, surface, chessBoard)
+        # Draw a fresh background (a blank chess board)
+        for row in range(n):  # Draw each row of the board.
+            c_indx = row % 2  # Change starting color on each row
+            for col in range(n):  # Run through cols drawing squares
+                the_square = (col * sq_sz + x_offset_of_Board, row * sq_sz + y_offset_of_Board, sq_sz, sq_sz)
+                surface.fill(colors[c_indx], the_square)
+                c_indx = (c_indx + 1) % 2
+
+        insertFiguresIntoChessboard(whiteFigures, blackFigures, surface, chessBoard)
+
         # Look for an event from keyboard, mouse, etc.
-        newText = myFont.render(generateText(fieldForUser), True, (0, 30, 0), (255, 255, 255))
+        newText = myFont.render("Where is: " + generateText(fieldForUser), True, (0, 30, 0), (255, 255, 255))
         surface.blit(newText, textRect1)
+
         ev = pygame.event.poll()
+
         if ev.type == pygame.QUIT:
             break
         if ev.type == pygame.MOUSEBUTTONDOWN:
@@ -46,22 +58,13 @@ def draw_board(the_board):
             print(pos_of_click)
             field_name = getNameOfField(board_field_names, pos_of_click, x_offset_of_Board, y_offset_of_Board, sq_sz)
             if field_name == fieldForUser:
-                the_text = myFont.render(generateText("You passed! " + field_name), True, (0, 30, 0), (255,255,255))
-                textRect = the_text.get_rect()
-                print(textRect)
-                textRect.center = (800 // 2,  100)
-                surface.blit(the_text, textRect)
+                the_text = myFont.render(generateText("You passed! " + field_name), True, (0, 0, 0), (255,255,255))
+                userPoints += 1
+                textWithPoints = mySmallFont.render("Points: " + str(userPoints), True, (0, 0, 0), (255,255,255))
+                surface.blit(textWithPoints, (650,500))
+                surface.blit(the_text, (200,80))
                 fieldForUser = generateFieldForUser(board_field_names)
 
-        # Draw a fresh background (a blank chess board)
-        for row in range(n):           # Draw each row of the board.
-            c_indx = row % 2           # Change starting color on each row
-            for col in range(n):       # Run through cols drawing squares
-                the_square = (col*sq_sz+x_offset_of_Board, row*sq_sz+y_offset_of_Board, sq_sz, sq_sz)
-                surface.fill(colors[c_indx], the_square)
-                c_indx = (c_indx + 1) % 2
-        
-        insertFiguresIntoChessboard(whiteFigures, blackFigures, surface, chessBoard)
         pygame.display.flip()  # displaying pygame window
     pygame.quit()
 
