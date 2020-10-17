@@ -22,7 +22,7 @@ def draw_board(the_board):
     board_field_names = generateFieldNames(n)
     blackFigures, whiteFigures = initFigures()
     surface = pygame.display.set_mode((800, 650))
-    surface.fill((45, 60, 80))
+    surface.fill((140, 100, 80))
     myFont = pygame.font.SysFont("Courier", 50, bold=True)
     mySmallFont = pygame.font.SysFont("Courier", 20, bold=True)
 
@@ -87,42 +87,18 @@ def initFigures():
 
 def insertFiguresIntoChessboard(whiteFigures, blackFigures, surface, chessboard):
     w_pawn, w_horse, w_bishop, w_rook, w_queen, w_king = whiteFigures
-    surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessboard['a2'][1], chessboard['a2'][0]))
-    surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessboard['b2'][1], chessboard['b2'][0]))
-    surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessboard['c2'][1], chessboard['c2'][0]))
-    surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessboard['d2'][1], chessboard['d2'][0]))
-    surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessboard['e2'][1], chessboard['e2'][0]))
-    surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessboard['f2'][1], chessboard['f2'][0]))
-    surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessboard['g2'][1], chessboard['g2'][0]))
-    surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessboard['h2'][1], chessboard['h2'][0]))
-
-    surface.blit(pygame.transform.scale(w_horse, (40, 40)), (chessboard['b1'][1], chessboard['b1'][0]))
-    surface.blit(pygame.transform.scale(w_horse, (40, 40)), (chessboard['g1'][1], chessboard['g1'][0]))
-    surface.blit(pygame.transform.scale(w_bishop, (40, 40)), (chessboard['c1'][1], chessboard['c1'][0]))
-    surface.blit(pygame.transform.scale(w_bishop, (40, 40)), (chessboard['f1'][1], chessboard['f1'][0]))
-    surface.blit(pygame.transform.scale(w_rook, (40, 40)), (chessboard['a1'][1], chessboard['a1'][0]))
-    surface.blit(pygame.transform.scale(w_rook, (40, 40)), (chessboard['h1'][1], chessboard['h1'][0]))
-    surface.blit(pygame.transform.scale(w_queen, (40, 40)), (chessboard['d1'][1], chessboard['d1'][0]))
-    surface.blit(pygame.transform.scale(w_king, (40, 40)), (chessboard['e1'][1], chessboard['e1'][0]))
+    for field in ['a2', 'b2', 'c2', 'd2', 'e2', 'f2', 'g2', 'h2']:
+        surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessboard[field][1], chessboard[field][0]))
+    figures = [w_rook, w_horse, w_bishop, w_queen, w_king, w_bishop, w_horse, w_rook]
+    for i, fields in enumerate(['a1', 'b1', 'c1', 'd1', 'e1', 'f1', 'g1', 'h1']):
+        surface.blit(pygame.transform.scale(figures[i], (40, 40)), (chessboard[fields][1], chessboard[fields][0]))
 
     b_pawn, b_horse, b_bishop, b_rook, b_queen, b_king = blackFigures
-    surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessboard['a7'][1], chessboard['a7'][0]))
-    surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessboard['b7'][1], chessboard['b7'][0]))
-    surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessboard['c7'][1], chessboard['c7'][0]))
-    surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessboard['d7'][1], chessboard['d7'][0]))
-    surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessboard['e7'][1], chessboard['e7'][0]))
-    surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessboard['f7'][1], chessboard['f7'][0]))
-    surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessboard['g7'][1], chessboard['g7'][0]))
-    surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessboard['h7'][1], chessboard['h7'][0]))
-
-    surface.blit(pygame.transform.scale(b_horse, (40, 40)), (chessboard['b8'][1], chessboard['b8'][0]))
-    surface.blit(pygame.transform.scale(b_horse, (40, 40)), (chessboard['g8'][1], chessboard['g8'][0]))
-    surface.blit(pygame.transform.scale(b_bishop, (40, 40)), (chessboard['c8'][1], chessboard['c8'][0]))
-    surface.blit(pygame.transform.scale(b_bishop, (40, 40)), (chessboard['f8'][1], chessboard['f8'][0]))
-    surface.blit(pygame.transform.scale(b_rook, (40, 40)), (chessboard['a8'][1], chessboard['a8'][0]))
-    surface.blit(pygame.transform.scale(b_rook, (40, 40)), (chessboard['h8'][1], chessboard['h8'][0]))
-    surface.blit(pygame.transform.scale(b_queen, (40, 40)), (chessboard['d8'][1], chessboard['d8'][0]))
-    surface.blit(pygame.transform.scale(b_king, (40, 40)), (chessboard['e8'][1], chessboard['e8'][0]))
+    for field in ['a7', 'b7', 'c7', 'd7', 'e7', 'f7', 'g7', 'h7']:
+        surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessboard[field][1], chessboard[field][0]))
+    figures = [b_rook, b_horse, b_bishop, b_queen, b_king, b_bishop, b_horse, b_rook]
+    for i, fields in enumerate(['a8', 'b8', 'c8', 'd8', 'e8', 'f8', 'g8', 'h8']):
+        surface.blit(pygame.transform.scale(figures[i], (40, 40)), (chessboard[fields][1], chessboard[fields][0]))
 
 
 def chessboardSquareNotation(n, sq_len, x_offset_of_Board, y_offset_of_Board, listWithFieldNames):
