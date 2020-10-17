@@ -2,34 +2,32 @@
 # https://openbookproject.net/thinkcs/python/english3e/list_algorithms.html#eightqueensmainprog
 import pygame
 import numpy as np
-import sys
 import random
 
 
 def draw_board(the_board):
-    """ Draw a chess board with queens, from the_board. """
-
     pygame.init()
-    colors = [(255,255,255), (0,255,0)]    # Set up colors [white, green]
+    colors = [(255, 255, 255), (0, 255, 0)]  # Set up colors [white, green]
 
-    n = len(the_board)         # This is an NxN chess board.
-    surface_sz = 480           # Proposed physical surface size.
-    sq_sz = surface_sz // n    # sq_sz is length of a square.
+    n = len(the_board)  # This is an NxN chess board.
+    surface_sz = 480  # Proposed physical surface size.
+    sq_sz = surface_sz // n  # sq_sz is length of a square.
     print(sq_sz)
-    # surface_sz = n * sq_sz     # Adjust to exactly fit n squares.
+    # surface_sz = n * sq_sz     # Adjust window to exactly fit n squares.
     x_offset_of_Board = 150
     y_offset_of_Board = 150
     board_field_names = generateFieldNames(n)
     blackFigures, whiteFigures = initFigures()
     surface = pygame.display.set_mode((800, 650))
-    surface.fill((140, 100, 80))
+    colorOfTheSurface = (200, 100, 220)
+    surface.fill(colorOfTheSurface)
     myFont = pygame.font.SysFont("Courier", 50, bold=True)
     mySmallFont = pygame.font.SysFont("Courier", 20, bold=True)
+    myHugeFont = pygame.font.SysFont("Courier", 100, bold=True)
 
     fieldForUser = generateFieldForUser(board_field_names)  # initialization a first quest for user
     the_text = myFont.render(generateText(fieldForUser), True, (0, 30, 0), (255, 255, 255))
-    textRect1 = the_text.get_rect()
-    surface.blit(the_text, textRect1)
+    surface.blit(the_text, (200, 80))
     chessBoard = chessboardSquareNotation(n, sq_sz, x_offset_of_Board, y_offset_of_Board, generateFieldNames(n))
     print(chessBoard)
     userPoints = 0
@@ -45,8 +43,8 @@ def draw_board(the_board):
         insertFiguresIntoChessboard(whiteFigures, blackFigures, surface, chessBoard, sq_size=n)
 
         # Look for an event from keyboard, mouse, etc.
-        newText = myFont.render("Where is: " + generateText(fieldForUser), True, (0, 30, 0), (255, 255, 255))
-        surface.blit(newText, textRect1)
+        newText = myFont.render("Where is: " + generateText(fieldForUser), True, (0, 30, 0), colorOfTheSurface)
+        surface.blit(newText, (200, 80))
 
         ev = pygame.event.poll()
 
@@ -58,12 +56,16 @@ def draw_board(the_board):
             print(pos_of_click)
             field_name = getNameOfField(board_field_names, pos_of_click, x_offset_of_Board, y_offset_of_Board, sq_sz)
             if field_name == fieldForUser:
-                the_text = myFont.render(generateText("You passed! " + field_name), True, (0, 0, 0), (255,255,255))
+                the_text = mySmallFont.render(generateText("Passed: " + field_name), True, (0, 0, 0), colorOfTheSurface)
                 userPoints += 1
-                textWithPoints = mySmallFont.render("Points: " + str(userPoints), True, (0, 0, 0), (255,255,255))
-                surface.blit(textWithPoints, (650,500))
-                surface.blit(the_text, (200,80))
+                textWithPoints = mySmallFont.render("Points: " + str(userPoints), True, (0, 0, 0), colorOfTheSurface)
+                surface.blit(textWithPoints, (645, 500))
+                surface.blit(the_text, (645, 550))
+                # surface.blit(the_text)
                 fieldForUser = generateFieldForUser(board_field_names)
+            else:
+                the_text = mySmallFont.render(generateText("This is:" + field_name), True, (0, 0, 0), colorOfTheSurface)
+                surface.blit(the_text, (645, 550))
 
         pygame.display.flip()  # displaying pygame window
     pygame.quit()
@@ -88,17 +90,21 @@ def initFigures():
 def insertFiguresIntoChessboard(whiteFigures, blackFigures, surface, chessboard, sq_size):
     w_pawn, w_horse, w_bishop, w_rook, w_queen, w_king = whiteFigures
     for field in ['a2', 'b2', 'c2', 'd2', 'e2', 'f2', 'g2', 'h2']:
-        surface.blit(pygame.transform.scale(w_pawn, (40, 40)), (chessboard[field][1]+(sq_size/2), chessboard[field][0]+(sq_size/2)))
+        surface.blit(pygame.transform.scale(w_pawn, (40, 40)),
+                     (chessboard[field][1] + (sq_size / 2), chessboard[field][0] + (sq_size / 2)))
     figures = [w_rook, w_horse, w_bishop, w_queen, w_king, w_bishop, w_horse, w_rook]
     for i, fields in enumerate(['a1', 'b1', 'c1', 'd1', 'e1', 'f1', 'g1', 'h1']):
-        surface.blit(pygame.transform.scale(figures[i], (40, 40)), (chessboard[fields][1]+(sq_size/2), chessboard[fields][0]+(sq_size/2)))
+        surface.blit(pygame.transform.scale(figures[i], (40, 40)),
+                     (chessboard[fields][1] + (sq_size / 2), chessboard[fields][0] + (sq_size / 2)))
 
     b_pawn, b_horse, b_bishop, b_rook, b_queen, b_king = blackFigures
     for field in ['a7', 'b7', 'c7', 'd7', 'e7', 'f7', 'g7', 'h7']:
-        surface.blit(pygame.transform.scale(b_pawn, (40, 40)), (chessboard[field][1]+(sq_size/2), chessboard[field][0]+(sq_size/2)))
+        surface.blit(pygame.transform.scale(b_pawn, (40, 40)),
+                     (chessboard[field][1] + (sq_size / 2), chessboard[field][0] + (sq_size / 2)))
     figures = [b_rook, b_horse, b_bishop, b_queen, b_king, b_bishop, b_horse, b_rook]
     for i, fields in enumerate(['a8', 'b8', 'c8', 'd8', 'e8', 'f8', 'g8', 'h8']):
-        surface.blit(pygame.transform.scale(figures[i], (40, 40)), (chessboard[fields][1]+(sq_size/2), chessboard[fields][0]+(sq_size/2)))
+        surface.blit(pygame.transform.scale(figures[i], (40, 40)),
+                     (chessboard[fields][1] + (sq_size / 2), chessboard[fields][0] + (sq_size / 2)))
 
 
 def chessboardSquareNotation(n, sq_len, x_offset_of_Board, y_offset_of_Board, listWithFieldNames):
@@ -108,7 +114,7 @@ def chessboardSquareNotation(n, sq_len, x_offset_of_Board, y_offset_of_Board, li
             the_square = (col * sq_len + x_offset_of_Board, row * sq_len + y_offset_of_Board, sq_len, sq_len)
             dictTmp = {listWithFieldNames[row][col]: the_square}
             chessBoard.update(dictTmp)
-           
+
     return chessBoard
 
 
@@ -129,9 +135,10 @@ def generateFieldNames(boardSize):
 
 def getNameOfField(listWithFieldNames, pos, offset_X, offset_Y, lenSquare):
     clickedField = ""
-    for i in range(0,len(listWithFieldNames)):
+    for i in range(0, len(listWithFieldNames)):
         for j in range(0, len(listWithFieldNames)):
-            if offset_X + lenSquare*i < pos[0] < offset_X+lenSquare*(i + 1) and pos[1] >offset_Y+lenSquare*j and pos[1] <offset_Y+lenSquare*(j + 1):
+            if offset_X + lenSquare * i < pos[0] < offset_X + lenSquare * (i + 1) and pos[
+                1] > offset_Y + lenSquare * j and pos[1] < offset_Y + lenSquare * (j + 1):
                 clickedField = listWithFieldNames[i][j]
                 print(listWithFieldNames[i][j])
     return clickedField
@@ -146,8 +153,6 @@ def generateText(inp):
 if __name__ == "__main__":
     draw_board([6, 4, 2, 0, 5, 7, 1, 3])
 
-
     # draw_board([0, 5, 3, 1, 6, 4, 2])    # 7 x 7 to test window size
     # draw_board([9, 6, 0, 3, 10, 7, 2, 4, 12, 8, 11, 5, 1])  # 13 x 13
     # draw_board([11, 4, 8, 12, 2, 7, 3, 15, 0, 14, 10, 6, 13, 1, 5, 9])
-
