@@ -5,6 +5,36 @@ import numpy as np
 import random
 
 
+def startGame():
+    pygame.init()
+    surface = pygame.display.set_mode((800, 650))
+    colorOfTheSurface = (200, 100, 220)
+    surface.fill(colorOfTheSurface)
+    isNewGame = True
+    myFont = pygame.font.SysFont("Courier", 30, bold=True)
+    while True:
+        surface.fill(colorOfTheSurface)
+        ev = pygame.event.poll()
+
+        if ev.type == pygame.QUIT:
+            break
+        if ev.type == pygame.MOUSEBUTTONDOWN:
+            isNewGame = False
+            draw_board([6, 4, 2, 0, 5, 7, 1, 3])
+
+        if isNewGame is False:
+            text = myFont.render("You lost! Click to try again", True, (30, 30, 30), colorOfTheSurface)
+            surface.blit(text, (0, 0))
+
+        pygame.display.flip()  # displaying pygame window
+    pygame.quit()
+    # inp = input("Hello! This is chess learning module.\n Do you wanna play (click 1 if yes)? ")
+    # if inp is '1':
+    #     draw_board([6, 4, 2, 0, 5, 7, 1, 3])
+    # else:
+    #     print("OK, next time :) ")
+
+
 def draw_board(the_board):
     pygame.init()
     colors = [(255, 255, 255), (0, 255, 0)]  # Set up colors [white, green]
@@ -23,7 +53,6 @@ def draw_board(the_board):
     surface.fill(colorOfTheSurface)
     myFont = pygame.font.SysFont("Courier", 50, bold=True)
     mySmallFont = pygame.font.SysFont("Courier", 20, bold=True)
-    myHugeFont = pygame.font.SysFont("Courier", 100, bold=True)
 
     fieldForUser = generateFieldForUser(board_field_names)  # initialization a first quest for user
     the_text = myFont.render(generateText(fieldForUser), True, (0, 30, 0), (255, 255, 255))
@@ -66,6 +95,7 @@ def draw_board(the_board):
             else:
                 the_text = mySmallFont.render(generateText("This is:" + field_name), True, (0, 0, 0), colorOfTheSurface)
                 surface.blit(the_text, (645, 550))
+                return 0
 
         pygame.display.flip()  # displaying pygame window
     pygame.quit()
@@ -137,8 +167,7 @@ def getNameOfField(listWithFieldNames, pos, offset_X, offset_Y, lenSquare):
     clickedField = ""
     for i in range(0, len(listWithFieldNames)):
         for j in range(0, len(listWithFieldNames)):
-            if offset_X + lenSquare * i < pos[0] < offset_X + lenSquare * (i + 1) and pos[
-                1] > offset_Y + lenSquare * j and pos[1] < offset_Y + lenSquare * (j + 1):
+            if offset_X + lenSquare * i < pos[0] < offset_X + lenSquare * (i + 1) and pos[1] > offset_Y + lenSquare * j and pos[1] < offset_Y + lenSquare * (j + 1):
                 clickedField = listWithFieldNames[i][j]
                 print(listWithFieldNames[i][j])
     return clickedField
@@ -151,7 +180,8 @@ def generateText(inp):
 
 
 if __name__ == "__main__":
-    draw_board([6, 4, 2, 0, 5, 7, 1, 3])
+    startGame()
+    # draw_board([6, 4, 2, 0, 5, 7, 1, 3])
 
     # draw_board([0, 5, 3, 1, 6, 4, 2])    # 7 x 7 to test window size
     # draw_board([9, 6, 0, 3, 10, 7, 2, 4, 12, 8, 11, 5, 1])  # 13 x 13
