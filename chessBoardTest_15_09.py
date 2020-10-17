@@ -12,6 +12,7 @@ def startGame():
     surface.fill(colorOfTheSurface)
     isNewGame = True
     myFont = pygame.font.SysFont("Courier", 30, bold=True)
+    userPoints = None
     while True:
         surface.fill(colorOfTheSurface)
         ev = pygame.event.poll()
@@ -20,19 +21,16 @@ def startGame():
             break
         if ev.type == pygame.MOUSEBUTTONDOWN:
             isNewGame = False
-            draw_board([6, 4, 2, 0, 5, 7, 1, 3])
+            userPoints = draw_board([6, 4, 2, 0, 5, 7, 1, 3])
 
         if isNewGame is False:
             text = myFont.render("You lost! Click to try again", True, (30, 30, 30), colorOfTheSurface)
-            surface.blit(text, (0, 0))
+            surface.blit(text, (100, 100))
+            text1 = myFont.render("Your score: " + str(userPoints), True, (30, 30, 30), colorOfTheSurface)
+            surface.blit(text1, (100, 200))
 
         pygame.display.flip()  # displaying pygame window
     pygame.quit()
-    # inp = input("Hello! This is chess learning module.\n Do you wanna play (click 1 if yes)? ")
-    # if inp is '1':
-    #     draw_board([6, 4, 2, 0, 5, 7, 1, 3])
-    # else:
-    #     print("OK, next time :) ")
 
 
 def draw_board(the_board):
@@ -90,15 +88,14 @@ def draw_board(the_board):
                 textWithPoints = mySmallFont.render("Points: " + str(userPoints), True, (0, 0, 0), colorOfTheSurface)
                 surface.blit(textWithPoints, (645, 500))
                 surface.blit(the_text, (645, 550))
-                # surface.blit(the_text)
                 fieldForUser = generateFieldForUser(board_field_names)
             else:
                 the_text = mySmallFont.render(generateText("This is:" + field_name), True, (0, 0, 0), colorOfTheSurface)
                 surface.blit(the_text, (645, 550))
-                return 0
+                return userPoints
 
         pygame.display.flip()  # displaying pygame window
-    pygame.quit()
+    # pygame.display.quit()
 
 
 def initFigures():
