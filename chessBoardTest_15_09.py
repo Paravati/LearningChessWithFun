@@ -8,7 +8,7 @@ import random
 def startGame():
     pygame.init()
     surface = pygame.display.set_mode((800, 650))
-    colorOfTheSurface = (200, 100, 220)
+    colorOfTheSurface = (0, 100, 220)
     surface.fill(colorOfTheSurface)
     isNewGame = True
     myFont = pygame.font.SysFont("Courier", 30, bold=True)
@@ -23,6 +23,9 @@ def startGame():
             isNewGame = False
             userPoints = draw_board([6, 4, 2, 0, 5, 7, 1, 3])
 
+        if isNewGame is True:
+            text = myFont.render("Click to start", True, (30, 30, 30), colorOfTheSurface)
+            surface.blit(text, (100, 100))
         if isNewGame is False:
             text = myFont.render("You lost! Click to try again", True, (30, 30, 30), colorOfTheSurface)
             surface.blit(text, (100, 100))
