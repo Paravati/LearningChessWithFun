@@ -4,6 +4,25 @@ import pygame
 import numpy as np
 import random
 
+def mainMenu():
+    pygame.init()
+    surface = pygame.display.set_mode((800, 650))
+    colorOfTheSurface = (0, 200, 120)
+    surface.fill(colorOfTheSurface)
+    isNewGame = True
+    myFont = pygame.font.SysFont("Courier", 30, bold=True)
+    while True:
+        surface.fill(colorOfTheSurface)
+        ev = pygame.event.poll()
+
+        if ev.type == pygame.QUIT:
+            break
+        if ev.type == pygame.MOUSEBUTTONDOWN:
+            startGame()
+        pygame.display.flip()  # displaying pygame window
+
+    pygame.quit()
+
 
 def startGame():
     pygame.init()
@@ -12,7 +31,7 @@ def startGame():
     surface.fill(colorOfTheSurface)
     isNewGame = True
     myFont = pygame.font.SysFont("Courier", 30, bold=True)
-    userPoints = None
+    userPoints = 0
     while True:
         surface.fill(colorOfTheSurface)
         ev = pygame.event.poll()
@@ -33,7 +52,7 @@ def startGame():
             surface.blit(text1, (100, 200))
 
         pygame.display.flip()  # displaying pygame window
-    pygame.quit()
+    # pygame.quit()
 
 
 def draw_board(the_board):
@@ -180,7 +199,7 @@ def generateText(inp):
 
 
 if __name__ == "__main__":
-    startGame()
+    mainMenu()    # startGame()
     # draw_board([6, 4, 2, 0, 5, 7, 1, 3])
 
     # draw_board([0, 5, 3, 1, 6, 4, 2])    # 7 x 7 to test window size
