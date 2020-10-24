@@ -3,6 +3,8 @@
 import pygame
 import numpy as np
 import random
+import pygame_widgets as pw
+
 
 def mainMenu():
     pygame.init()
@@ -11,14 +13,27 @@ def mainMenu():
     surface.fill(colorOfTheSurface)
     isNewGame = True
     myFont = pygame.font.SysFont("Courier", 30, bold=True)
+    start_button = pw.Button(
+        surface, 200,300, 250, 100, text='Start game',
+        fontSize=50, margin=20,
+        inactiveColour=(100, 100, 100),
+        pressedColour=(255, 0, 0),
+        onClick=lambda: print('Click')
+    )
+    print(start_button.width)
     while True:
+        pygame.display.set_caption("menu")
         surface.fill(colorOfTheSurface)
         ev = pygame.event.poll()
+        start_button.draw()
 
         if ev.type == pygame.QUIT:
             break
         if ev.type == pygame.MOUSEBUTTONDOWN:
-            startGame()
+            pos_of_click = ev.dict['pos']
+            if start_button.width+50 < pos_of_click[0] > start_button.width and start_button.height+50 < pos_of_click[1] > start_button.height:
+                startGame()
+
         pygame.display.flip()  # displaying pygame window
 
     pygame.quit()
@@ -33,6 +48,7 @@ def startGame():
     myFont = pygame.font.SysFont("Courier", 30, bold=True)
     userPoints = 0
     while True:
+        pygame.display.set_caption("Choose option")
         surface.fill(colorOfTheSurface)
         ev = pygame.event.poll()
 
@@ -57,6 +73,7 @@ def startGame():
 
 def draw_board(the_board):
     pygame.init()
+    pygame.display.set_caption("Play the chess game")
     colors = [(255, 255, 255), (0, 255, 0)]  # Set up colors [white, green]
 
     n = len(the_board)  # This is an NxN chess board.
