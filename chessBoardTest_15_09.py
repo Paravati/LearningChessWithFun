@@ -20,9 +20,6 @@ def mainMenu():
         pressedColour=(255, 0, 0), radius=14,
         onClick=lambda: print('Click')
     )
-    print(start_button.width)
-    print(start_button.width+50)
-    print(start_button.height)
     while True:
         pygame.display.set_caption("menu")
         surface.fill(colorOfTheSurface)
@@ -33,9 +30,8 @@ def mainMenu():
             break
         if ev.type == pygame.MOUSEBUTTONDOWN:
             pos_of_click = ev.dict['pos']
-            if pos_of_click[0] > 200 and pos_of_click[0] < 200+ start_button.width and pos_of_click[1]< 300+start_button.height and pos_of_click[1] > 300:
+            if 200 < pos_of_click[0] < 200 + start_button.width and 300 + start_button.height > pos_of_click[1] > 300:
                 startGame()
-
         pygame.display.flip()  # displaying pygame window
 
     pygame.quit()
@@ -49,6 +45,13 @@ def startGame():
     isNewGame = True
     myFont = pygame.font.SysFont("Courier", 30, bold=True)
     userPoints = 0
+    return_to_menu = pw.Button(
+        surface, 325, 550, 150, 75, text='Back to Menu',
+        fontSize=20, margin=20,
+        inactiveColour=(100, 100, 100),
+        pressedColour=(255, 0, 0), radius=14,
+        onClick=lambda: print('Click')
+    )
     while True:
         pygame.display.set_caption("Choose option")
         surface.fill(colorOfTheSurface)
@@ -57,17 +60,22 @@ def startGame():
         if ev.type == pygame.QUIT:
             break
         if ev.type == pygame.MOUSEBUTTONDOWN:
+            pos_of_click = ev.dict['pos']
+            if 325 < pos_of_click[0] < 325 + return_to_menu.width and 550 + return_to_menu.height > pos_of_click[1] > 550:
+                break
             isNewGame = False
             userPoints = draw_board([6, 4, 2, 0, 5, 7, 1, 3])
 
         if isNewGame is True:
             text = myFont.render("Click to start", True, (30, 30, 30), colorOfTheSurface)
             surface.blit(text, (100, 100))
+            return_to_menu.draw()
         if isNewGame is False:
             text = myFont.render("You lost! Click to try again", True, (30, 30, 30), colorOfTheSurface)
             surface.blit(text, (100, 100))
             text1 = myFont.render("Your score: " + str(userPoints), True, (30, 30, 30), colorOfTheSurface)
             surface.blit(text1, (100, 200))
+            return_to_menu.draw()
 
         pygame.display.flip()  # displaying pygame window
     # pygame.quit()
