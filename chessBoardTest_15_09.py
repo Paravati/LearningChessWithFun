@@ -14,13 +14,15 @@ def mainMenu():
     isNewGame = True
     myFont = pygame.font.SysFont("Courier", 30, bold=True)
     start_button = pw.Button(
-        surface, 200,300, 250, 100, text='Start game',
+        surface, 200,300, 250, 100, text='Train fields',
         fontSize=50, margin=20,
         inactiveColour=(100, 100, 100),
-        pressedColour=(255, 0, 0),
+        pressedColour=(255, 0, 0), radius=14,
         onClick=lambda: print('Click')
     )
     print(start_button.width)
+    print(start_button.width+50)
+    print(start_button.height)
     while True:
         pygame.display.set_caption("menu")
         surface.fill(colorOfTheSurface)
@@ -31,7 +33,7 @@ def mainMenu():
             break
         if ev.type == pygame.MOUSEBUTTONDOWN:
             pos_of_click = ev.dict['pos']
-            if start_button.width+50 < pos_of_click[0] > start_button.width and start_button.height+50 < pos_of_click[1] > start_button.height:
+            if pos_of_click[0] > 200 and pos_of_click[0] < 200+ start_button.width and pos_of_click[1]< 300+start_button.height and pos_of_click[1] > 300:
                 startGame()
 
         pygame.display.flip()  # displaying pygame window
