@@ -1,5 +1,11 @@
 # https://openbookproject.net/thinkcs/python/english3e/pygame.html
 # https://openbookproject.net/thinkcs/python/english3e/list_algorithms.html#eightqueensmainprog
+""" MOUSEBUTTONs events click
+           1 - left button of the mouse
+           2 - middle button of the mouse
+           3 - right button of the mouse
+           4 - scroll up
+           5 - scroll down """
 import pygame
 import numpy as np
 import random
@@ -11,10 +17,12 @@ def mainMenu():
     surface = pygame.display.set_mode((800, 650))
     colorOfTheSurface = (0, 200, 120)
     surface.fill(colorOfTheSurface)
+    titleIMG = pygame.image.load("images/mainTheme1.png")
+    b_pawn = pygame.image.load("images/black_killer_pawn.png")
     isNewGame = True
     myFont = pygame.font.SysFont("Courier", 30, bold=True)
     start_button = pw.Button(
-        surface, 200,300, 250, 100, text='Train fields',
+        surface, 250, 300, 250, 100, text='Train fields',
         fontSize=50, margin=20,
         inactiveColour=(100, 100, 100),
         pressedColour=(255, 0, 0), radius=14,
@@ -25,12 +33,14 @@ def mainMenu():
         surface.fill(colorOfTheSurface)
         ev = pygame.event.poll()
         start_button.draw()
-
+        surface.blit(pygame.transform.scale(titleIMG, (600,200)),(surface.get_height()/6, 50))
+        surface.blit(pygame.transform.scale(b_pawn, (350,400)), (550,surface.get_width()/3))
+        surface.blit(pygame.transform.scale(b_pawn, (350,400)), (0,surface.get_height()-110))
         if ev.type == pygame.QUIT:
             break
         if ev.type == pygame.MOUSEBUTTONDOWN:
             pos_of_click = ev.dict['pos']
-            if 200 < pos_of_click[0] < 200 + start_button.width and 300 + start_button.height > pos_of_click[1] > 300:
+            if start_button.getX() < pos_of_click[0] < start_button.getX() + start_button.width and start_button.getY() + start_button.height > pos_of_click[1] > start_button.getY():
                 startGame()
         pygame.display.flip()  # displaying pygame window
 
@@ -41,6 +51,7 @@ def startGame():
     pygame.init()
     surface = pygame.display.set_mode((800, 650))
     colorOfTheSurface = (0, 100, 220)
+    backgroundIMG = pygame.image.load("images/background.jpeg")
     surface.fill(colorOfTheSurface)
     isNewGame = True
     myFont = pygame.font.SysFont("Courier", 30, bold=True)
@@ -56,15 +67,14 @@ def startGame():
         pygame.display.set_caption("Choose option")
         surface.fill(colorOfTheSurface)
         ev = pygame.event.poll()
-
-        if ev.type == pygame.QUIT:
-            break
+        surface.blit(backgroundIMG, (0, 0))
         if ev.type == pygame.MOUSEBUTTONDOWN:
-            pos_of_click = ev.dict['pos']
-            if 325 < pos_of_click[0] < 325 + return_to_menu.width and 550 + return_to_menu.height > pos_of_click[1] > 550:
-                break
-            isNewGame = False
-            userPoints = draw_board([6, 4, 2, 0, 5, 7, 1, 3])
+            if ev.button is 1:  # left button of the mouse
+                pos_of_click = ev.dict['pos']
+                if return_to_menu.getX() < pos_of_click[0] < return_to_menu.getX() + return_to_menu.width and return_to_menu.getY() + return_to_menu.height > pos_of_click[1] > return_to_menu.getY():
+                    break
+                isNewGame = False
+                userPoints = draw_board([6, 4, 2, 0, 5, 7, 1, 3])
 
         if isNewGame is True:
             text = myFont.render("Click to start", True, (30, 30, 30), colorOfTheSurface)
@@ -83,6 +93,7 @@ def startGame():
 
 def draw_board(the_board):
     pygame.init()
+    backgroundIMG = pygame.image.load("images/background.jpeg")
     pygame.display.set_caption("Play the chess game")
     colors = [(255, 255, 255), (0, 255, 0)]  # Set up colors [white, green]
 
@@ -100,14 +111,22 @@ def draw_board(the_board):
     surface.fill(colorOfTheSurface)
     myFont = pygame.font.SysFont("Courier", 50, bold=True)
     mySmallFont = pygame.font.SysFont("Courier", 20, bold=True)
+    return_to_menu = pw.Button(
+        surface, 10, 550, 130, 65, text='Back',
+        fontSize=20, margin=20,
+        inactiveColour=(100, 100, 100),
+        pressedColour=(255, 0, 0), radius=14,
+        onClick=lambda: print('Click')
+    )
 
     fieldForUser = generateFieldForUser(board_field_names)  # initialization a first quest for user
-    the_text = myFont.render(generateText(fieldForUser), True, (0, 30, 0), (255, 255, 255))
-    surface.blit(the_text, (200, 80))
     chessBoard = chessboardSquareNotation(n, sq_sz, x_offset_of_Board, y_offset_of_Board, generateFieldNames(n))
-    print(chessBoard)
+    the_text = mySmallFont.render(generateText(""), True, (255, 255, 0), colorOfTheSurface)
+    textWithPoints = mySmallFont.render(generateText(""), True, (0, 0, 0), colorOfTheSurface)
     userPoints = 0
     while True:
+        surface.blit(backgroundIMG, (0,0))
+        return_to_menu.draw()
         # Draw a fresh background (a blank chess board)
         for row in range(n):  # Draw each row of the board.
             c_indx = row % 2  # Change starting color on each row
@@ -118,35 +137,33 @@ def draw_board(the_board):
 
         insertFiguresIntoChessboard(whiteFigures, blackFigures, surface, chessBoard, sq_size=n)
 
-        # Look for an event from keyboard, mouse, etc.
         newText = myFont.render("Where is: " + generateText(fieldForUser), True, (0, 30, 0), colorOfTheSurface)
         surface.blit(newText, (200, 80))
 
         ev = pygame.event.poll()
         if ev.type == pygame.MOUSEBUTTONDOWN:
-            """ MOUSEBUTTONs
-            1 - left button of the mouse
-            2 - middle button of the mouse
-            3 - right button of the mouse
-            4 - scroll up
-            5 - scroll down """
+
             if ev.button is 1:  # 1- left button of the mouse
                 pos = pygame.mouse.get_pos()
                 pos_of_click = ev.dict['pos']
-                print(pos_of_click)
-                field_name = getNameOfField(board_field_names, pos_of_click, x_offset_of_Board, y_offset_of_Board, sq_sz)
-                if field_name == fieldForUser:
-                    the_text = mySmallFont.render(generateText("Passed: " + field_name), True, (0, 0, 0), colorOfTheSurface)
-                    userPoints += 1
-                    textWithPoints = mySmallFont.render("Points: " + str(userPoints), True, (0, 0, 0), colorOfTheSurface)
-                    surface.blit(textWithPoints, (645, 500))
-                    surface.blit(the_text, (645, 550))
-                    fieldForUser = generateFieldForUser(board_field_names)
-                else:
-                    the_text = mySmallFont.render(generateText("This is:" + field_name), True, (0, 0, 0), colorOfTheSurface)
-                    surface.blit(the_text, (645, 550))
+                if pos_of_click[0] >=return_to_menu.getX() and pos_of_click[0] < return_to_menu.getX()+return_to_menu.width and pos_of_click[1] >=return_to_menu.getY() and pos_of_click[1] < return_to_menu.getY()+return_to_menu.height:
                     return userPoints
-
+                if pos_of_click[0] >= x_offset_of_Board and pos_of_click[0]<x_offset_of_Board+ surface_sz and pos_of_click[1] >= y_offset_of_Board and pos_of_click[1] < y_offset_of_Board + surface_sz:
+                    print(pos_of_click)
+                    field_name = getNameOfField(board_field_names, pos_of_click, x_offset_of_Board, y_offset_of_Board, sq_sz)
+                    if field_name == fieldForUser:
+                        the_text = mySmallFont.render(generateText("Passed: " + field_name), True, (255, 255, 0), colorOfTheSurface)
+                        userPoints += 1
+                        textWithPoints = mySmallFont.render(generateText("Points: " + str(userPoints)), True, (0, 0, 0), colorOfTheSurface)
+                        # surface.blit(textWithPoints, (645, 500))
+                        # surface.blit(the_text, (645, 550))
+                        fieldForUser = generateFieldForUser(board_field_names)
+                    else:
+                        the_text = mySmallFont.render(generateText("This is:" + field_name), True, (0, 0, 0), colorOfTheSurface)
+                        surface.blit(the_text, (645, 550))
+                        return userPoints
+        surface.blit(textWithPoints, (645, 500))
+        surface.blit(the_text, (645, 550))
         pygame.display.flip()  # displaying pygame window
 
 
