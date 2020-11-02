@@ -123,28 +123,31 @@ def draw_board(the_board):
         surface.blit(newText, (200, 80))
 
         ev = pygame.event.poll()
-
-        if ev.type == pygame.QUIT:
-            break
         if ev.type == pygame.MOUSEBUTTONDOWN:
-            pos = pygame.mouse.get_pos()
-            pos_of_click = ev.dict['pos']
-            print(pos_of_click)
-            field_name = getNameOfField(board_field_names, pos_of_click, x_offset_of_Board, y_offset_of_Board, sq_sz)
-            if field_name == fieldForUser:
-                the_text = mySmallFont.render(generateText("Passed: " + field_name), True, (0, 0, 0), colorOfTheSurface)
-                userPoints += 1
-                textWithPoints = mySmallFont.render("Points: " + str(userPoints), True, (0, 0, 0), colorOfTheSurface)
-                surface.blit(textWithPoints, (645, 500))
-                surface.blit(the_text, (645, 550))
-                fieldForUser = generateFieldForUser(board_field_names)
-            else:
-                the_text = mySmallFont.render(generateText("This is:" + field_name), True, (0, 0, 0), colorOfTheSurface)
-                surface.blit(the_text, (645, 550))
-                return userPoints
+            """ MOUSEBUTTONs
+            1 - left button of the mouse
+            2 - middle button of the mouse
+            3 - right button of the mouse
+            4 - scroll up
+            5 - scroll down """
+            if ev.button is 1:  # 1- left button of the mouse
+                pos = pygame.mouse.get_pos()
+                pos_of_click = ev.dict['pos']
+                print(pos_of_click)
+                field_name = getNameOfField(board_field_names, pos_of_click, x_offset_of_Board, y_offset_of_Board, sq_sz)
+                if field_name == fieldForUser:
+                    the_text = mySmallFont.render(generateText("Passed: " + field_name), True, (0, 0, 0), colorOfTheSurface)
+                    userPoints += 1
+                    textWithPoints = mySmallFont.render("Points: " + str(userPoints), True, (0, 0, 0), colorOfTheSurface)
+                    surface.blit(textWithPoints, (645, 500))
+                    surface.blit(the_text, (645, 550))
+                    fieldForUser = generateFieldForUser(board_field_names)
+                else:
+                    the_text = mySmallFont.render(generateText("This is:" + field_name), True, (0, 0, 0), colorOfTheSurface)
+                    surface.blit(the_text, (645, 550))
+                    return userPoints
 
         pygame.display.flip()  # displaying pygame window
-    # pygame.display.quit()
 
 
 def initFigures():
@@ -166,20 +169,20 @@ def initFigures():
 def insertFiguresIntoChessboard(whiteFigures, blackFigures, surface, chessboard, sq_size):
     w_pawn, w_horse, w_bishop, w_rook, w_queen, w_king = whiteFigures
     for field in ['a2', 'b2', 'c2', 'd2', 'e2', 'f2', 'g2', 'h2']:
-        surface.blit(pygame.transform.scale(w_pawn, (40, 40)),
+        surface.blit(pygame.transform.scale(w_pawn, (50, 50)),
                      (chessboard[field][1] + (sq_size / 2), chessboard[field][0] + (sq_size / 2)))
     figures = [w_rook, w_horse, w_bishop, w_queen, w_king, w_bishop, w_horse, w_rook]
     for i, fields in enumerate(['a1', 'b1', 'c1', 'd1', 'e1', 'f1', 'g1', 'h1']):
-        surface.blit(pygame.transform.scale(figures[i], (40, 40)),
+        surface.blit(pygame.transform.scale(figures[i], (50, 50)),
                      (chessboard[fields][1] + (sq_size / 2), chessboard[fields][0] + (sq_size / 2)))
 
     b_pawn, b_horse, b_bishop, b_rook, b_queen, b_king = blackFigures
     for field in ['a7', 'b7', 'c7', 'd7', 'e7', 'f7', 'g7', 'h7']:
-        surface.blit(pygame.transform.scale(b_pawn, (40, 40)),
+        surface.blit(pygame.transform.scale(b_pawn, (50, 50)),
                      (chessboard[field][1] + (sq_size / 2), chessboard[field][0] + (sq_size / 2)))
     figures = [b_rook, b_horse, b_bishop, b_queen, b_king, b_bishop, b_horse, b_rook]
     for i, fields in enumerate(['a8', 'b8', 'c8', 'd8', 'e8', 'f8', 'g8', 'h8']):
-        surface.blit(pygame.transform.scale(figures[i], (40, 40)),
+        surface.blit(pygame.transform.scale(figures[i], (50, 50)),
                      (chessboard[fields][1] + (sq_size / 2), chessboard[fields][0] + (sq_size / 2)))
 
 
