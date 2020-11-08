@@ -6,6 +6,14 @@
            3 - right button of the mouse
            4 - scroll up
            5 - scroll down """
+
+# TODO:
+# changing position of the figures
+# changing main menu screen
+# add play button in the main menu
+# add playing mode
+# reformating code into several files
+
 import pygame
 import numpy as np
 import random
@@ -77,13 +85,13 @@ def startGame():
                 userPoints = draw_board([6, 4, 2, 0, 5, 7, 1, 3])
 
         if isNewGame is True:
-            text = myFont.render("Click to start", True, (30, 30, 30), colorOfTheSurface)
+            text = myFont.render("Click to start", True, (255, 255, 255), (0, 0, 0))
             surface.blit(text, (100, 100))
             return_to_menu.draw()
         if isNewGame is False:
-            text = myFont.render("You lost! Click to try again", True, (30, 30, 30), colorOfTheSurface)
+            text = myFont.render("You lost! Click to try again", True, (255, 255, 255), (0, 0, 0))
             surface.blit(text, (100, 100))
-            text1 = myFont.render("Your score: " + str(userPoints), True, (30, 30, 30), colorOfTheSurface)
+            text1 = myFont.render("Your score: " + str(userPoints), True, (255, 255, 255), (0, 0, 0))
             surface.blit(text1, (100, 200))
             return_to_menu.draw()
 
@@ -93,7 +101,7 @@ def startGame():
 
 def draw_board(the_board):
     pygame.init()
-    backgroundIMG = pygame.image.load("images/background.jpeg")
+    # backgroundIMG = pygame.image.load("images/background.jpeg")
     pygame.display.set_caption("Play the chess game")
     colors = [(255, 255, 255), (0, 255, 0)]  # Set up colors [white, green]
 
@@ -107,7 +115,7 @@ def draw_board(the_board):
     board_field_names = generateFieldNames(n)
     blackFigures, whiteFigures = initFigures()
     surface = pygame.display.set_mode((800, 650))
-    colorOfTheSurface = (200, 100, 220)
+    colorOfTheSurface = (0, 0, 0)
     surface.fill(colorOfTheSurface)
     myFont = pygame.font.SysFont("Courier", 50, bold=True)
     mySmallFont = pygame.font.SysFont("Courier", 20, bold=True)
@@ -121,11 +129,11 @@ def draw_board(the_board):
 
     fieldForUser = generateFieldForUser(board_field_names)  # initialization a first quest for user
     chessBoard = chessboardSquareNotation(n, sq_sz, x_offset_of_Board, y_offset_of_Board, generateFieldNames(n))
-    the_text = mySmallFont.render(generateText(""), True, (255, 255, 0), colorOfTheSurface)
-    textWithPoints = mySmallFont.render(generateText(""), True, (0, 0, 0), colorOfTheSurface)
+    the_text = mySmallFont.render(generateText(""), True, (255, 255, 255), colorOfTheSurface)
+    textWithPoints = mySmallFont.render(generateText(""), True, (255, 255, 255), colorOfTheSurface)
     userPoints = 0
     while True:
-        surface.blit(backgroundIMG, (0,0))
+        # surface.blit(backgroundIMG, (0,0))
         return_to_menu.draw()
         # Draw a fresh background (a blank chess board)
         for row in range(n):  # Draw each row of the board.
@@ -137,7 +145,7 @@ def draw_board(the_board):
 
         insertFiguresIntoChessboard(whiteFigures, blackFigures, surface, chessBoard, sq_size=n)
 
-        newText = myFont.render("Where is: " + generateText(fieldForUser), True, (0, 30, 0), colorOfTheSurface)
+        newText = myFont.render("Where is: " + generateText(fieldForUser), True, (255, 255, 255), colorOfTheSurface)
         surface.blit(newText, (200, 80))
 
         ev = pygame.event.poll()
@@ -148,18 +156,18 @@ def draw_board(the_board):
                 pos_of_click = ev.dict['pos']
                 if pos_of_click[0] >=return_to_menu.getX() and pos_of_click[0] < return_to_menu.getX()+return_to_menu.width and pos_of_click[1] >=return_to_menu.getY() and pos_of_click[1] < return_to_menu.getY()+return_to_menu.height:
                     return userPoints
-                if pos_of_click[0] >= x_offset_of_Board and pos_of_click[0]<x_offset_of_Board+ surface_sz and pos_of_click[1] >= y_offset_of_Board and pos_of_click[1] < y_offset_of_Board + surface_sz:
+                if pos_of_click[0] >= x_offset_of_Board and pos_of_click[0]< x_offset_of_Board+ surface_sz and pos_of_click[1] >= y_offset_of_Board and pos_of_click[1] < y_offset_of_Board + surface_sz:
                     print(pos_of_click)
                     field_name = getNameOfField(board_field_names, pos_of_click, x_offset_of_Board, y_offset_of_Board, sq_sz)
                     if field_name == fieldForUser:
-                        the_text = mySmallFont.render(generateText("Passed: " + field_name), True, (255, 255, 0), colorOfTheSurface)
+                        the_text = mySmallFont.render(generateText("Passed: " + field_name), True, (255, 255, 255), colorOfTheSurface)
                         userPoints += 1
-                        textWithPoints = mySmallFont.render(generateText("Points: " + str(userPoints)), True, (0, 0, 0), colorOfTheSurface)
+                        textWithPoints = mySmallFont.render(generateText("Points: " + str(userPoints)), True, (255, 255, 255), colorOfTheSurface)
                         # surface.blit(textWithPoints, (645, 500))
                         # surface.blit(the_text, (645, 550))
                         fieldForUser = generateFieldForUser(board_field_names)
                     else:
-                        the_text = mySmallFont.render(generateText("This is:" + field_name), True, (0, 0, 0), colorOfTheSurface)
+                        the_text = mySmallFont.render(generateText("This is:" + field_name), True, (255, 255, 255), colorOfTheSurface)
                         surface.blit(the_text, (645, 550))
                         return userPoints
         surface.blit(textWithPoints, (645, 500))
