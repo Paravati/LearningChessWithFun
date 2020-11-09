@@ -18,6 +18,7 @@ import pygame
 import numpy as np
 import random
 import pygame_widgets as pw
+import random
 
 
 def mainMenu():
@@ -64,12 +65,35 @@ def startGame():
     isNewGame = True
     myFont = pygame.font.SysFont("Courier", 30, bold=True)
     userPoints = 0
+    swapSide = False
+    randomSide = False
     return_to_menu = pw.Button(
         surface, 325, 550, 150, 75, text='Back to Menu',
         fontSize=20, margin=20,
         inactiveColour=(100, 100, 100),
         pressedColour=(255, 0, 0), radius=14,
         onClick=lambda: print('Click')
+    )
+    from_white = pw.Button(
+        surface, 325, 200, 150, 55, text='White side',
+        fontSize=20, margin=20,
+        inactiveColour=(100, 100, 100),
+        pressedColour=(255, 0, 0), radius=14,
+        onClick=lambda: print('White mode')
+    )
+    from_black = pw.Button(
+        surface, 325, 260, 150, 55, text='Black side',
+        fontSize=20, margin=20,
+        inactiveColour=(100, 100, 100),
+        pressedColour=(255, 0, 0), radius=14,
+        onClick=lambda: print('Black mode')
+    )
+    random_side = pw.Button(
+        surface, 325, 320, 150, 55, text='Random side',
+        fontSize=20, margin=20,
+        inactiveColour=(100, 100, 100),
+        pressedColour=(255, 0, 0), radius=14,
+        onClick=lambda: print('Random side mode')
     )
     while True:
         pygame.display.set_caption("Choose option")
@@ -81,25 +105,43 @@ def startGame():
                 pos_of_click = ev.dict['pos']
                 if return_to_menu.getX() < pos_of_click[0] < return_to_menu.getX() + return_to_menu.width and return_to_menu.getY() + return_to_menu.height > pos_of_click[1] > return_to_menu.getY():
                     break
-                isNewGame = False
-                userPoints = draw_board([6, 4, 2, 0, 5, 7, 1, 3])
+                if isNewGame is True:
+                    if from_white.getX() < pos_of_click[0] < from_white.getX() + from_white.width and from_white.getY()+from_white.height>pos_of_click[1]>from_white.getY():
+                        from_white.onClick()
+                        userPoints = draw_board([6, 4, 2, 0, 5, 7, 1, 3], swapSide=False, randomSwap=False)
+                    elif from_black.getX() < pos_of_click[0] < from_black.getX() + from_black.width and from_black.getY()+from_black.height>pos_of_click[1]>from_black.getY():
+                        from_black.onClick()
+                        swapSide=True
+                        userPoints = draw_board([6, 4, 2, 0, 5, 7, 1, 3], swapSide=True, randomSwap=False)
+                    elif random_side.getX() < pos_of_click[0] < random_side.getX() + random_side.width and random_side.getY()+random_side.height>pos_of_click[1]>random_side.getY():
+                        random_side.onClick()
+                        randomSide=True
+                        userPoints = draw_board([6, 4, 2, 0, 5, 7, 1, 3], swapSide=False, randomSwap=True)
+                    # userPoints = draw_board([6, 4, 2, 0, 5, 7, 1, 3], swapSide=swapSide, randomSwap=randomSide)
+                    isNewGame = False
+                else:
+                    userPoints = draw_board([6, 4, 2, 0, 5, 7, 1, 3], swapSide=swapSide, randomSwap=randomSide)
+
 
         if isNewGame is True:
-            text = myFont.render("Click to start", True, (255, 255, 255), (0, 0, 0))
+            text = myFont.render("Choose option and click anywhere to start", True, (255, 255, 255))
             surface.blit(text, (100, 100))
+            from_white.draw()
+            from_black.draw()
+            random_side.draw()
             return_to_menu.draw()
         if isNewGame is False:
-            text = myFont.render("You lost! Click to try again", True, (255, 255, 255), (0, 0, 0))
-            surface.blit(text, (100, 100))
-            text1 = myFont.render("Your score: " + str(userPoints), True, (255, 255, 255), (0, 0, 0))
-            surface.blit(text1, (100, 200))
+            text = myFont.render("You lost! Click to try again", True, (255, 255, 255))
+            surface.blit(text, (150, 100))
+            text1 = myFont.render("Your score: " + str(userPoints), True, (255, 255, 255))
+            surface.blit(text1, (250, 150))
             return_to_menu.draw()
 
         pygame.display.flip()  # displaying pygame window
     # pygame.quit()
 
 
-def draw_board(the_board):
+def draw_board(the_board, swapSide, randomSwap):
     pygame.init()
     # backgroundIMG = pygame.image.load("images/background.jpeg")
     pygame.display.set_caption("Play the chess game")
@@ -132,6 +174,7 @@ def draw_board(the_board):
     the_text = mySmallFont.render(generateText(""), True, (255, 255, 255), colorOfTheSurface)
     textWithPoints = mySmallFont.render(generateText(""), True, (255, 255, 255), colorOfTheSurface)
     userPoints = 0
+    insertFiguresIntoChessboard(whiteFigures, blackFigures, surface, chessBoard, sq_size=n)
     while True:
         # surface.blit(backgroundIMG, (0,0))
         return_to_menu.draw()
@@ -163,13 +206,21 @@ def draw_board(the_board):
                         the_text = mySmallFont.render(generateText("Passed: " + field_name), True, (255, 255, 255), colorOfTheSurface)
                         userPoints += 1
                         textWithPoints = mySmallFont.render(generateText("Points: " + str(userPoints)), True, (255, 255, 255), colorOfTheSurface)
-                        # surface.blit(textWithPoints, (645, 500))
-                        # surface.blit(the_text, (645, 550))
-                        fieldForUser = generateFieldForUser(board_field_names)
+                        if randomSwap is False:
+                            print(swapSide)
+                            board_field_names = generateFieldNames(n, swapSide)
+                            chessBoard = chessboardSquareNotation(n, sq_sz, x_offset_of_Board, y_offset_of_Board, board_field_names)
+                            fieldForUser = generateFieldForUser(board_field_names)
+                        else:
+                            board_field_names = generateFieldNames(n, bool(random.randint(0,1)))
+                            chessBoard = chessboardSquareNotation(n, sq_sz, x_offset_of_Board, y_offset_of_Board, board_field_names)
+                            fieldForUser = generateFieldForUser(board_field_names)
                     else:
                         the_text = mySmallFont.render(generateText("This is:" + field_name), True, (255, 255, 255), colorOfTheSurface)
                         surface.blit(the_text, (645, 550))
                         return userPoints
+
+        insertFiguresIntoChessboard(whiteFigures, blackFigures, surface, chessBoard, sq_size=n)
         surface.blit(textWithPoints, (645, 500))
         surface.blit(the_text, (645, 550))
         pygame.display.flip()  # displaying pygame window
@@ -211,13 +262,20 @@ def insertFiguresIntoChessboard(whiteFigures, blackFigures, surface, chessboard,
                      (chessboard[fields][1] + (sq_size / 2), chessboard[fields][0] + (sq_size / 2)))
 
 
-def chessboardSquareNotation(n, sq_len, x_offset_of_Board, y_offset_of_Board, listWithFieldNames):
+def chessboardSquareNotation(n, sq_len, x_offset_of_Board, y_offset_of_Board, listWithFieldNames, swap=False):
     chessBoard = {}
-    for row in range(n):  # Draw each row of the board.
-        for col in range(n):  # Run through cols drawing squares
-            the_square = (col * sq_len + x_offset_of_Board, row * sq_len + y_offset_of_Board, sq_len, sq_len)
-            dictTmp = {listWithFieldNames[row][col]: the_square}
-            chessBoard.update(dictTmp)
+    if swap is True:
+        for row in range(n):  # Draw each row of the board.
+            for col in range(n):  # Run through cols drawing squares
+                the_square = (col * sq_len + x_offset_of_Board, row * sq_len + y_offset_of_Board, sq_len, sq_len)
+                dictTmp = {listWithFieldNames[n-row-1][n-col-1]: the_square}
+                chessBoard.update(dictTmp)
+    else:
+        for row in range(n):  # Draw each row of the board.
+            for col in range(n):  # Run through cols drawing squares
+                the_square = (col * sq_len + x_offset_of_Board, row * sq_len + y_offset_of_Board, sq_len, sq_len)
+                dictTmp = {listWithFieldNames[row][col]: the_square}
+                chessBoard.update(dictTmp)
 
     return chessBoard
 
@@ -227,9 +285,12 @@ def generateFieldForUser(listWithFieldNames):
     return random.choice(line)
 
 
-def generateFieldNames(boardSize):
+def generateFieldNames(boardSize, swap=False):
     letters = ["a", "b", "c", "d", "e", "f", "g", "h"]
     numbers = [8, 7, 6, 5, 4, 3, 2, 1]
+    if swap is True:
+        numbers = [1, 2, 3, 4, 5, 6, 7, 8]
+
     listWithFieldNames = np.ndarray(shape=(boardSize, boardSize), dtype='object')
     for rows in range(0, len(listWithFieldNames)):
         for col in range(0, len(listWithFieldNames)):
@@ -237,13 +298,20 @@ def generateFieldNames(boardSize):
     return listWithFieldNames
 
 
-def getNameOfField(listWithFieldNames, pos, offset_X, offset_Y, lenSquare):
+def getNameOfField(listWithFieldNames, pos, offset_X, offset_Y, lenSquare, swap=False):
     clickedField = ""
-    for i in range(0, len(listWithFieldNames)):
-        for j in range(0, len(listWithFieldNames)):
-            if offset_X + lenSquare * i < pos[0] < offset_X + lenSquare * (i + 1) and pos[1] > offset_Y + lenSquare * j and pos[1] < offset_Y + lenSquare * (j + 1):
-                clickedField = listWithFieldNames[i][j]
-                print(listWithFieldNames[i][j])
+    if swap is True:
+        for i in range(0, len(listWithFieldNames)):
+            for j in range(0, len(listWithFieldNames)):
+                if offset_X + lenSquare * i < pos[0] < offset_X + lenSquare * (i + 1) and pos[1] > offset_Y + lenSquare * j and pos[1] < offset_Y + lenSquare * (j + 1):
+                    clickedField = listWithFieldNames[i][j]
+                    print(listWithFieldNames[i][j])
+    else:
+        for i in range(0, len(listWithFieldNames)):
+            for j in range(0, len(listWithFieldNames)):
+                if offset_X + lenSquare * i < pos[0] < offset_X + lenSquare * (i + 1) and pos[1] > offset_Y + lenSquare * j and pos[1] < offset_Y + lenSquare * (j + 1):
+                    clickedField = listWithFieldNames[i][j]
+                    print(listWithFieldNames[i][j])
     return clickedField
 
 
