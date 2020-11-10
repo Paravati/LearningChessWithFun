@@ -143,7 +143,6 @@ def startGame():
 
 def draw_board(the_board, swapSide, randomSwap):
     pygame.init()
-    # backgroundIMG = pygame.image.load("images/background.jpeg")
     pygame.display.set_caption("Play the chess game")
     colors = [(255, 255, 255), (0, 255, 0)]  # Set up colors [white, green]
 
@@ -154,7 +153,7 @@ def draw_board(the_board, swapSide, randomSwap):
     # surface_sz = n * sq_sz     # Adjust window to exactly fit n squares.
     x_offset_of_Board = 150
     y_offset_of_Board = 150
-    board_field_names = generateFieldNames(n)
+    board_field_names = generateFieldNames(n, swapSide)
     blackFigures, whiteFigures = initFigures()
     surface = pygame.display.set_mode((800, 650))
     colorOfTheSurface = (0, 0, 0)
@@ -170,7 +169,7 @@ def draw_board(the_board, swapSide, randomSwap):
     )
 
     fieldForUser = generateFieldForUser(board_field_names)  # initialization a first quest for user
-    chessBoard = chessboardSquareNotation(n, sq_sz, x_offset_of_Board, y_offset_of_Board, generateFieldNames(n))
+    chessBoard = chessboardSquareNotation(n, sq_sz, x_offset_of_Board, y_offset_of_Board, generateFieldNames(n,swapSide))
     the_text = mySmallFont.render(generateText(""), True, (255, 255, 255), colorOfTheSurface)
     textWithPoints = mySmallFont.render(generateText(""), True, (255, 255, 255), colorOfTheSurface)
     userPoints = 0
