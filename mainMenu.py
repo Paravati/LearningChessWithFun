@@ -8,25 +8,40 @@ def mainMenu():
     surface = pygame.display.set_mode((800, 650))
     colorOfTheSurface = (0, 200, 120)
     surface.fill(colorOfTheSurface)
-    titleIMG = pygame.image.load("images/mainTheme1.png")
-    b_pawn = pygame.image.load("images/black_killer_pawn.png")
+    # titleIMG = pygame.image.load("images/mainTheme1.png")
+    backgroundIMG = pygame.image.load("images/chessMainMenu.jpg")
     isNewGame = True
     myFont = pygame.font.SysFont("Courier", 30, bold=True)
     start_button = pw.Button(
-        surface, 250, 300, 250, 100, text='Train fields',
-        fontSize=50, margin=20,
-        inactiveColour=(100, 100, 100),
+        surface, 230, 150, 350, 100, text='TRAIN FIELDS',
+        fontSize=40, margin=20,
+        inactiveColour=(110, 110, 110),
+        pressedColour=(255, 0, 0), radius=14,
+        onClick=lambda: print('Click')
+    )
+    gameplay_button = pw.Button(
+        surface, 230, 270, 350, 100, text='PLAY THE GAME',
+        fontSize=40, margin=20,
+        inactiveColour=(110, 110, 110),
+        pressedColour=(255, 0, 0), radius=14,
+        onClick=lambda: print('Click')
+    )
+    learn_tactics = pw.Button(
+        surface, 230, 390, 350, 100, text='LEARN TACTICS',
+        fontSize=40, margin=20,
+        inactiveColour=(110, 110, 110),
         pressedColour=(255, 0, 0), radius=14,
         onClick=lambda: print('Click')
     )
     while True:
         pygame.display.set_caption("menu")
         surface.fill(colorOfTheSurface)
+        surface.blit(pygame.transform.scale(backgroundIMG, (800,650)), (0,0))
         ev = pygame.event.poll()
         start_button.draw()
-        surface.blit(pygame.transform.scale(titleIMG, (600,200)),(surface.get_height()/6, 50))
-        surface.blit(pygame.transform.scale(b_pawn, (350,400)), (550,surface.get_width()/3))
-        surface.blit(pygame.transform.scale(b_pawn, (350,400)), (0,surface.get_height()-110))
+        gameplay_button.draw()
+        learn_tactics.draw()
+        # surface.blit(pygame.transform.scale(titleIMG, (600,200)),(surface.get_height()/6, 50))
         if ev.type == pygame.QUIT:
             break
         if ev.type == pygame.MOUSEBUTTONDOWN:
