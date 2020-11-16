@@ -30,7 +30,7 @@ def mainMenu():
     learn_tactics = pw.Button(
         surface, 230, 390, 350, 100, text='LEARN TACTICS',
         fontSize=40, margin=20,
-        inactiveColour=(110, 110, 110),
+        inactiveColour=(150, 110, 110),
         pressedColour=(255, 0, 0), radius=14,
         onClick=lambda: print('Click')
     )

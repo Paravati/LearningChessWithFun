@@ -36,8 +36,8 @@ def draw_board(the_board):
 
     chessBoard = chessboardSquareNotation(n, sq_sz, x_offset_of_Board, y_offset_of_Board, generateFieldNames(n))
     insertFiguresIntoChessboard(whiteFigures, blackFigures, surface, chessBoard, sq_size=n)
+    move = 0
     while True:
-        # surface.blit(backgroundIMG, (0,0))
         return_to_menu.draw()
         # Draw a fresh background (a blank chess board)
         for row in range(n):  # Draw each row of the board.
@@ -47,7 +47,7 @@ def draw_board(the_board):
                 surface.fill(colors[c_indx], the_square)
                 c_indx = (c_indx + 1) % 2
 
-        insertFiguresIntoChessboard(whiteFigures, blackFigures, surface, chessBoard, sq_size=n)
+        # insertFiguresIntoChessboard(whiteFigures, blackFigures, surface, chessBoard, sq_size=n)
 
         ev = pygame.event.poll()
         if ev.type == pygame.MOUSEBUTTONDOWN:
@@ -57,6 +57,32 @@ def draw_board(the_board):
                 pos_of_click = ev.dict['pos']
                 if pos_of_click[0] >=return_to_menu.getX() and pos_of_click[0] < return_to_menu.getX()+return_to_menu.width and pos_of_click[1] >=return_to_menu.getY() and pos_of_click[1] < return_to_menu.getY()+return_to_menu.height:
                     break
-
-        insertFiguresIntoChessboard(whiteFigures, blackFigures, surface, chessBoard, sq_size=n)
+        if move == 0:
+            insertFiguresIntoChessboard(whiteFigures, blackFigures, surface, chessBoard, sq_size=n)
+        else:
+            newChessboardLayout(whiteFigures, blackFigures, surface, chessBoard, sq_size=n)
         pygame.display.flip()  # displaying pygame window
+
+
+def pawnMoves(chessBoardField):
+    pass
+
+
+def newChessboardLayout(whiteFigures, blackFigures, surface, chessboard, sq_size):
+    w_pawn, w_horse, w_bishop, w_rook, w_queen, w_king = whiteFigures
+    for field in ['a2', 'b2', 'c2', 'd2', 'e2', 'f2', 'g2', 'h2']:
+        surface.blit(pygame.transform.scale(w_pawn, (50, 50)),
+                     (chessboard[field][1] + (sq_size / 2), chessboard[field][0] + (sq_size / 2)))
+    figures = [w_rook, w_horse, w_bishop, w_queen, w_king, w_bishop, w_horse, w_rook]
+    for i, fields in enumerate(['a1', 'b1', 'c1', 'd1', 'e1', 'f1', 'g1', 'h1']):
+        surface.blit(pygame.transform.scale(figures[i], (50, 50)),
+                     (chessboard[fields][1] + (sq_size / 2), chessboard[fields][0] + (sq_size / 2)))
+
+    b_pawn, b_horse, b_bishop, b_rook, b_queen, b_king = blackFigures
+    for field in ['a7', 'b7', 'c7', 'd7', 'e7', 'f7', 'g7', 'h7']:
+        surface.blit(pygame.transform.scale(b_pawn, (50, 50)),
+                     (chessboard[field][1] + (sq_size / 2), chessboard[field][0] + (sq_size / 2)))
+    figures = [b_rook, b_horse, b_bishop, b_queen, b_king, b_bishop, b_horse, b_rook]
+    for i, fields in enumerate(['a8', 'b8', 'c8', 'd8', 'e8', 'f8', 'g8', 'h8']):
+        surface.blit(pygame.transform.scale(figures[i], (50, 50)),
+                     (chessboard[fields][1] + (sq_size / 2), chessboard[fields][0] + (sq_size / 2)))

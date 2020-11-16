@@ -22,22 +22,22 @@ def startGame():
         onClick=lambda: print('Click')
     )
     from_white = pw.Button(
-        surface, 325, 200, 150, 55, text='White side',
-        fontSize=20, margin=20,
+        surface, 280, 200, 250, 100, text='White side',
+        fontSize=30, margin=20,
         inactiveColour=(100, 100, 100),
         pressedColour=(255, 0, 0), radius=14,
         onClick=lambda: print('White mode')
     )
     from_black = pw.Button(
-        surface, 325, 260, 150, 55, text='Black side',
-        fontSize=20, margin=20,
+        surface, 280, 310, 250, 100, text='Black side',
+        fontSize=30, margin=20,
         inactiveColour=(100, 100, 100),
         pressedColour=(255, 0, 0), radius=14,
         onClick=lambda: print('Black mode')
     )
     random_side = pw.Button(
-        surface, 325, 320, 150, 55, text='Random side',
-        fontSize=20, margin=20,
+        surface, 280, 420, 250, 100, text='Random side',
+        fontSize=30, margin=20,
         inactiveColour=(100, 100, 100),
         pressedColour=(255, 0, 0), radius=14,
         onClick=lambda: print('Random side mode')
@@ -71,7 +71,7 @@ def startGame():
 
         if isNewGame is True:
             text = myFont.render("Choose option and click anywhere to start", True, (255, 255, 255))
-            surface.blit(text, (100, 100))
+            surface.blit(text, (40, 100))
             from_white.draw()
             from_black.draw()
             random_side.draw()
