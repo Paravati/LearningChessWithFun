@@ -1,6 +1,7 @@
 import pygame
 import pygame_widgets as pw
 from trainMode import startGame
+from PlayMode import play
 
 
 def mainMenu():
@@ -48,6 +49,8 @@ def mainMenu():
             pos_of_click = ev.dict['pos']
             if start_button.getX() < pos_of_click[0] < start_button.getX() + start_button.width and start_button.getY() + start_button.height > pos_of_click[1] > start_button.getY():
                 startGame()
+            elif gameplay_button.getX() < pos_of_click[0] < gameplay_button.getX() + gameplay_button.width and gameplay_button.getY() + gameplay_button.height > pos_of_click[1] > gameplay_button.getY():
+                play()
         pygame.display.flip()  # displaying pygame window
 
     pygame.quit()
