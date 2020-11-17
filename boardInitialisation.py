@@ -105,23 +105,45 @@ def initFigures():
 
 
 def insertFiguresIntoChessboard(whiteFigures, blackFigures, surface, chessboard, sq_size):
+    whiteFigurePosition = {}
+    blackFigurePosition = {}
+    figurePosition = {}
     w_pawn, w_horse, w_bishop, w_rook, w_queen, w_king = whiteFigures
     for field in ['a2', 'b2', 'c2', 'd2', 'e2', 'f2', 'g2', 'h2']:
         surface.blit(pygame.transform.scale(w_pawn, (50, 50)),
                      (chessboard[field][1] + (sq_size / 2), chessboard[field][0] + (sq_size / 2)))
+        dictTmp = {field: 'w_pawn'}
+        whiteFigurePosition.update(dictTmp)
+
+
     figures = [w_rook, w_horse, w_bishop, w_queen, w_king, w_bishop, w_horse, w_rook]
+    w_figureNames = ["w_rook", "w_horse", "w_bishop", "w_queen", "w_king", "w_bishop", "w_horse", "w_rook"]
     for i, fields in enumerate(['a1', 'b1', 'c1', 'd1', 'e1', 'f1', 'g1', 'h1']):
         surface.blit(pygame.transform.scale(figures[i], (50, 50)),
                      (chessboard[fields][1] + (sq_size / 2), chessboard[fields][0] + (sq_size / 2)))
+        dictTmp = {fields: w_figureNames[i]}
+        whiteFigurePosition.update(dictTmp)
+
+    figurePosition.update(whiteFigurePosition)
 
     b_pawn, b_horse, b_bishop, b_rook, b_queen, b_king = blackFigures
+    b_figureNames = ["b_rook", "b_horse", "b_bishop", "b_queen", "b_king", "b_bishop", "b_horse", "b_rook"]
     for field in ['a7', 'b7', 'c7', 'd7', 'e7', 'f7', 'g7', 'h7']:
         surface.blit(pygame.transform.scale(b_pawn, (50, 50)),
                      (chessboard[field][1] + (sq_size / 2), chessboard[field][0] + (sq_size / 2)))
+        dictTmp = {field: 'b_pawn'}
+        blackFigurePosition.update(dictTmp)
+
     figures = [b_rook, b_horse, b_bishop, b_queen, b_king, b_bishop, b_horse, b_rook]
     for i, fields in enumerate(['a8', 'b8', 'c8', 'd8', 'e8', 'f8', 'g8', 'h8']):
         surface.blit(pygame.transform.scale(figures[i], (50, 50)),
                      (chessboard[fields][1] + (sq_size / 2), chessboard[fields][0] + (sq_size / 2)))
+        dictTmp = {fields: b_figureNames[i]}
+        blackFigurePosition.update(dictTmp)
+
+    figurePosition.update(blackFigurePosition)
+
+    return whiteFigurePosition, blackFigurePosition, figurePosition
 
 
 def chessboardSquareNotation(n, sq_len, x_offset_of_Board, y_offset_of_Board, listWithFieldNames, swap=False):

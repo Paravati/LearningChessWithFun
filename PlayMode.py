@@ -1,7 +1,7 @@
 import pygame
 import pygame_widgets as pw
 from boardInitialisation import generateFieldNames, initFigures, insertFiguresIntoChessboard,\
-    chessboardSquareNotation
+    chessboardSquareNotation, getNameOfField
 
 
 def play():
@@ -35,7 +35,9 @@ def draw_board(the_board):
     )
 
     chessBoard = chessboardSquareNotation(n, sq_sz, x_offset_of_Board, y_offset_of_Board, generateFieldNames(n))
-    insertFiguresIntoChessboard(whiteFigures, blackFigures, surface, chessBoard, sq_size=n)
+    white_position, black_position, figurePos = insertFiguresIntoChessboard(whiteFigures, blackFigures, surface, chessBoard, sq_size=n)
+    print(white_position)
+    print(black_position)
     move = 0
     while True:
         return_to_menu.draw()
@@ -57,6 +59,11 @@ def draw_board(the_board):
                 pos_of_click = ev.dict['pos']
                 if pos_of_click[0] >=return_to_menu.getX() and pos_of_click[0] < return_to_menu.getX()+return_to_menu.width and pos_of_click[1] >=return_to_menu.getY() and pos_of_click[1] < return_to_menu.getY()+return_to_menu.height:
                     break
+                elif pos_of_click[0] >= x_offset_of_Board and pos_of_click[0]< x_offset_of_Board+ surface_sz and pos_of_click[1] >= y_offset_of_Board and pos_of_click[1] < y_offset_of_Board + surface_sz:
+                    print(pos_of_click)
+                    field_name = getNameOfField(board_field_names, pos_of_click, x_offset_of_Board, y_offset_of_Board, sq_sz)
+                    clickInFieldToMoveFigure(pos_of_click[0], pos_of_click[1], field_name, figurePos)
+
         if move == 0:
             insertFiguresIntoChessboard(whiteFigures, blackFigures, surface, chessBoard, sq_size=n)
         else:
@@ -64,8 +71,25 @@ def draw_board(the_board):
         pygame.display.flip()  # displaying pygame window
 
 
-def pawnMoves(chessBoardField):
+def clickInFieldToMoveFigure(x_pos, y_pos, boardFieldName, figuresPosition):
+    print("Selected: " + boardFieldName)
+    checkIfIsThereFigure(boardFieldName, figuresPosition)
+    # sprawdzić czy w danym miejscu rzeczywiście jest figura
     pass
+
+
+def checkIfIsThereFigure(boardFieldName, figuresPosition):
+    try:
+        print(figuresPosition[boardFieldName])
+    except:
+        print("None figure")
+
+
+def moveFigure(typeOfFigure, newField, surface, chessboard, sq_size):
+    # usunac figure ze starego pola, dodac figure na nowym polu
+    # zanim wywołamy tą funkcje to trzeba sprawdzić czy nic tej figury nie przysłania i czy może dany ruch wykonać
+    surface.blit(pygame.transform.scale(typeOfFigure, (50, 50)),
+                 (chessboard[newField][1] + (sq_size / 2), chessboard[newField][0] + (sq_size / 2)))
 
 
 def newChessboardLayout(whiteFigures, blackFigures, surface, chessboard, sq_size):
