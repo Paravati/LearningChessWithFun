@@ -38,6 +38,7 @@ def draw_board(the_board):
     white_position, black_position, figurePos = insertFiguresIntoChessboard(whiteFigures, blackFigures, surface, chessBoard, sq_size=n)
     print(white_position)
     print(black_position)
+    print(figurePos)
     move = 0
     while True:
         return_to_menu.draw()
@@ -60,8 +61,8 @@ def draw_board(the_board):
                 if pos_of_click[0] >=return_to_menu.getX() and pos_of_click[0] < return_to_menu.getX()+return_to_menu.width and pos_of_click[1] >=return_to_menu.getY() and pos_of_click[1] < return_to_menu.getY()+return_to_menu.height:
                     break
                 elif pos_of_click[0] >= x_offset_of_Board and pos_of_click[0]< x_offset_of_Board+ surface_sz and pos_of_click[1] >= y_offset_of_Board and pos_of_click[1] < y_offset_of_Board + surface_sz:
-                    print(pos_of_click)
                     field_name = getNameOfField(board_field_names, pos_of_click, x_offset_of_Board, y_offset_of_Board, sq_sz)
+                    print(field_name)
                     clickInFieldToMoveFigure(pos_of_click[0], pos_of_click[1], field_name, figurePos)
 
         if move == 0:
@@ -73,23 +74,32 @@ def draw_board(the_board):
 
 def clickInFieldToMoveFigure(x_pos, y_pos, boardFieldName, figuresPosition):
     print("Selected: " + boardFieldName)
-    checkIfIsThereFigure(boardFieldName, figuresPosition)
+    isThereAfigure = checkIfIsThereFigure(boardFieldName, figuresPosition)
+    print(isThereAfigure)
     # sprawdzić czy w danym miejscu rzeczywiście jest figura
     pass
 
 
 def checkIfIsThereFigure(boardFieldName, figuresPosition):
+    # if figuresPosition[boardFieldName] is not None:
+    #     return True
+    # else:
+    #     return False
     try:
         print(figuresPosition[boardFieldName])
     except:
         print("None figure")
 
 
-def moveFigure(typeOfFigure, newField, surface, chessboard, sq_size):
+def moveFigure(typeOfFigure, oldField, newField, surface, chessboard, sq_size, figurePos):
     # usunac figure ze starego pola, dodac figure na nowym polu
     # zanim wywołamy tą funkcje to trzeba sprawdzić czy nic tej figury nie przysłania i czy może dany ruch wykonać
     surface.blit(pygame.transform.scale(typeOfFigure, (50, 50)),
                  (chessboard[newField][1] + (sq_size / 2), chessboard[newField][0] + (sq_size / 2)))
+    figurePos[newField] = typeOfFigure
+    figurePos[oldField] = 'None'
+
+    return figurePos
 
 
 def newChessboardLayout(whiteFigures, blackFigures, surface, chessboard, sq_size):
@@ -101,7 +111,6 @@ def newChessboardLayout(whiteFigures, blackFigures, surface, chessboard, sq_size
     for i, fields in enumerate(['a1', 'b1', 'c1', 'd1', 'e1', 'f1', 'g1', 'h1']):
         surface.blit(pygame.transform.scale(figures[i], (50, 50)),
                      (chessboard[fields][1] + (sq_size / 2), chessboard[fields][0] + (sq_size / 2)))
-
     b_pawn, b_horse, b_bishop, b_rook, b_queen, b_king = blackFigures
     for field in ['a7', 'b7', 'c7', 'd7', 'e7', 'f7', 'g7', 'h7']:
         surface.blit(pygame.transform.scale(b_pawn, (50, 50)),
