@@ -2,7 +2,7 @@ import pygame
 
 
 class Chessboard:
-    def __init__(self, fields, whiteFigures, blackFigures, surface, x_offset, y_offset):
+    def __init__(self, whiteFigures, blackFigures, surface, x_offset, y_offset):
         self.fields = fields
         self.whiteFigures = whiteFigures
         self.blackFigures = blackFigures
@@ -67,3 +67,26 @@ class Chessboard:
                     chessBoard.update(dictTmp)
 
         return chessBoard
+
+    def initFigures(self):
+        b_bishop = pygame.image.load("figures/b_bishop.png")
+        b_horse = pygame.image.load("figures/b_horse.png")
+        b_king = pygame.image.load("figures/b_king.png")
+        b_queen = pygame.image.load("figures/b_queen.png")
+        b_pawn = pygame.image.load("figures/b_pawn.png")
+        b_rook = pygame.image.load("figures/b_rook.png")
+        w_bishop = pygame.image.load("figures/w_bishop.png")
+        w_horse = pygame.image.load("figures/w_horse.png")
+        w_king = pygame.image.load("figures/w_king.png")
+        w_queen = pygame.image.load("figures/w_queen.png")
+        w_pawn = pygame.image.load("figures/w_pawn.png")
+        w_rook = pygame.image.load("figures/w_rook.png")
+        return [b_pawn, b_horse, b_bishop, b_rook, b_queen, b_king], [w_pawn, w_horse, w_bishop, w_rook, w_queen,
+                                                       w_king]
+
+
+class ChessPiece:
+    def __init__(self, name, color, position):
+        self.name = name
+        self.color = color
+        self.position = position
