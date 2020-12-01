@@ -45,6 +45,11 @@ class Chessboard:
 
         self.figurePos.update(whiteFigurePosition)
 
+        for i in range(2, 6):
+            for j in range(0, 8):
+                dictTmp = {self.fields[i][j]: None}
+                self.figurePos.update(dictTmp)
+
         b_pawn, b_horse, b_bishop, b_rook, b_queen, b_king = self.blackFigures
         b_figureNames = ["b_rook", "b_horse", "b_bishop", "b_queen", "b_king", "b_bishop", "b_horse", "b_rook"]
         for field in ['a7', 'b7', 'c7', 'd7', 'e7', 'f7', 'g7', 'h7']:
@@ -79,18 +84,12 @@ class Chessboard:
 
         return chessBoard
 
-    def getNameOfField(self, pos, swap=False):
+    def getNameOfField(self, pos):
         clickedField = ""
-        if swap is True:
-            for i in range(0, len(self.fields)):
-                for j in range(0, len(self.fields)):
-                    if self.x_offset + self.square_length  * i < pos[0] < self.x_offset + self.square_length  * (i + 1) and pos[1] > self.y_offset + self.square_length  * j and pos[1] < self.y_offset + self.square_length  * (j + 1):
-                        clickedField = self.fields[i][j]
-        else:
-            for i in range(0, len(self.fields)):
-                for j in range(0, len(self.fields)):
-                    if self.x_offset + self.square_length  * i < pos[0] < self.x_offset + self.square_length  * (i + 1) and pos[1] > self.y_offset + self.square_length  * j and pos[1] < self.y_offset + self.square_length  * (j + 1):
-                        clickedField = self.fields[i][j]
+        for i in range(0, len(self.fields)):
+            for j in range(0, len(self.fields)):
+                if self.x_offset + self.square_length  * i < pos[0] < self.x_offset + self.square_length  * (i + 1) and pos[1] > self.y_offset + self.square_length  * j and pos[1] < self.y_offset + self.square_length  * (j + 1):
+                    clickedField = self.fields[i][j]
 
         return clickedField
 

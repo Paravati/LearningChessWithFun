@@ -6,11 +6,9 @@ def draw_board(board_size, swapSide=False):
     pygame.init()
     pygame.display.set_caption("Play the chess game")
     colors = [(255, 255, 255), (0, 255, 0)]  # Set up colors [white, green]
-
     n = board_size  # This is an NxN chess board.
     surface_sz = 480  # Proposed physical surface size.
     sq_len = surface_sz // n  # sq_sz is length of a square.
-    print(sq_len)
     # surface_sz = n * sq_sz     # Adjust window to exactly fit n squares.
     x_offset_of_Board = 150
     y_offset_of_Board = 150
@@ -35,6 +33,7 @@ def draw_board(board_size, swapSide=False):
             pos_of_click = ev.dict['pos']
             field = chessboard.getNameOfField((pos_of_click[0], pos_of_click[1]))
             print(field)
+            print(chessboard.figurePos[field])
 
         chessboard.insertFiguresIntoChessboard(chessboard.chessboardFields, n)
         pygame.display.flip()  # displaying pygame window
