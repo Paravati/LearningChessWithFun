@@ -19,12 +19,6 @@ def draw_board(board_size, swapSide=False):
     surface.fill(colorOfTheSurface)
     chessboard = Chessboard(surface, x_offset_of_Board, y_offset_of_Board, sq_len)
     chessboard.insertFiguresIntoChessboard(chessboard.chessboardFields, n)
-    # chessBoard = chessboardSquareNotation(n, sq_sz, x_offset_of_Board, y_offset_of_Board,
-    #                                       generateFieldNames(n, swapSide))
-    # the_text = mySmallFont.render(generateText(""), True, (255, 255, 255), colorOfTheSurface)
-    # textWithPoints = mySmallFont.render(generateText(""), True, (255, 255, 255), colorOfTheSurface)
-    # userPoints = 0
-    # insertFiguresIntoChessboard(whiteFigures, blackFigures, surface, chessBoard, sq_size=n)
     while True:
         for row in range(n):  # Draw each row of the board.
             c_indx = row % 2  # Change starting color on each row
@@ -34,17 +28,16 @@ def draw_board(board_size, swapSide=False):
                 c_indx = (c_indx + 1) % 2
 
         pygame.display.set_caption("game")
-        # surface.fill(colorOfTheSurface)
         ev = pygame.event.poll()
-        # surface.blit(pygame.transform.scale(titleIMG, (600,200)),(surface.get_height()/6, 50))
         if ev.type == pygame.QUIT:
             break
         if ev.type == pygame.MOUSEBUTTONDOWN:
             pos_of_click = ev.dict['pos']
-            print(pos_of_click)
+            field = chessboard.getNameOfField((pos_of_click[0], pos_of_click[1]))
+            print(field)
+
         chessboard.insertFiguresIntoChessboard(chessboard.chessboardFields, n)
         pygame.display.flip()  # displaying pygame window
-
 
     pygame.quit()
 

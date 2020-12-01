@@ -79,6 +79,22 @@ class Chessboard:
 
         return chessBoard
 
+    def getNameOfField(self, pos, swap=False):
+        clickedField = ""
+        if swap is True:
+            for i in range(0, len(self.fields)):
+                for j in range(0, len(self.fields)):
+                    if self.x_offset + self.square_length  * i < pos[0] < self.x_offset + self.square_length  * (i + 1) and pos[1] > self.y_offset + self.square_length  * j and pos[1] < self.y_offset + self.square_length  * (j + 1):
+                        clickedField = self.fields[i][j]
+        else:
+            for i in range(0, len(self.fields)):
+                for j in range(0, len(self.fields)):
+                    if self.x_offset + self.square_length  * i < pos[0] < self.x_offset + self.square_length  * (i + 1) and pos[1] > self.y_offset + self.square_length  * j and pos[1] < self.y_offset + self.square_length  * (j + 1):
+                        clickedField = self.fields[i][j]
+
+        return clickedField
+
+
     def initFigures(self):
         path = 'C:/Users/Admin/PycharmProjects/TicTacToePython/'
         b_bishop = pygame.image.load(path+"figures/b_bishop.png")
