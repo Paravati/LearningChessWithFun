@@ -69,9 +69,12 @@ class Chessboard:
 
     def moveFigure(self, oldPos, newPos, figureName):
         path = 'C:/Users/Admin/PycharmProjects/TicTacToePython/figures/'
-        self.figurePos[oldPos] = ''
-        self.figurePos[newPos] = figureName
-        self.surface.blit(pygame.transform.scale(pygame.image.load(path+figureName+".png"), (50, 50)), (self.chessboardFields[newPos][1] + (self.square_length / 2), self.chessboardFields[newPos][0] + (self.square_length / 2)))
+        if self.figurePos[oldPos] is not None:
+            self.figurePos[oldPos] = ''
+            self.figurePos[newPos] = figureName
+            self.surface.blit(pygame.transform.scale(pygame.image.load(path+figureName+".png"), (50, 50)), (self.chessboardFields[newPos][1] + (self.square_length / 2), self.chessboardFields[newPos][0] + (self.square_length / 2)))
+        else:
+            print("no figure here: " + oldPos)
 
     def chessboardSquareNotation(self, n, sq_len, listWithFieldNames, swap=False):
         chessBoard = {}

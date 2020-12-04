@@ -7,6 +7,13 @@ def updatePosOfTheFigure(self, surface):   # for drag and drop event in the futu
         self.rect.center = pygame.mouse.get_pos()
     surface.blit(self.image, self.rect)
 
+def coloringChessboard(surface, n, sq_len, x_offset, y_offset, colors):
+    for row in range(n):  # Draw each row of the board.
+        c_indx = row % 2  # Change starting color on each row
+        for col in range(n):  # Run through cols drawing squares
+            the_square = (col * sq_len + x_offset, row * sq_len + y_offset, sq_len, sq_len)
+            surface.fill(colors[c_indx], the_square)
+            c_indx = (c_indx + 1) % 2
 
 def draw_board(board_size, swapSide=False):
     pygame.init()
@@ -26,12 +33,7 @@ def draw_board(board_size, swapSide=False):
     checkedField1st = None
     checkedField2nd = None
     while True:
-        for row in range(n):  # Draw each row of the board.
-            c_indx = row % 2  # Change starting color on each row
-            for col in range(n):  # Run through cols drawing squares
-                the_square = (col * sq_len + x_offset_of_Board, row * sq_len + y_offset_of_Board, sq_len, sq_len)
-                surface.fill(colors[c_indx], the_square)
-                c_indx = (c_indx + 1) % 2
+        coloringChessboard(surface, n, sq_len, x_offset_of_Board, y_offset_of_Board, colors)
 
         pygame.display.set_caption("game")
         ev = pygame.event.poll()
