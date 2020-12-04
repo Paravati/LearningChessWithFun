@@ -1,7 +1,7 @@
 import pygame
 import numpy as np
 from figures import *
-
+# todo: coloring field which user clicked,
 
 class Chessboard:
     def __init__(self, surface, x_offset, y_offset, square_length):
@@ -45,9 +45,9 @@ class Chessboard:
 
         self.figurePos.update(whiteFigurePosition)
 
-        for i in range(2, 6):
+        for i in range(3, 6):
             for j in range(0, 8):
-                dictTmp = {self.fields[i][j]: None}
+                dictTmp = {self.fields[j][i]: None}
                 self.figurePos.update(dictTmp)
 
         b_pawn, b_horse, b_bishop, b_rook, b_queen, b_king = self.blackFigures
@@ -66,6 +66,12 @@ class Chessboard:
         self.figurePos.update(blackFigurePosition)
 
         return whiteFigurePosition, blackFigurePosition
+
+    def moveFigure(self, oldPos, newPos, figureName):
+        path = 'C:/Users/Admin/PycharmProjects/TicTacToePython/figures/'
+        self.figurePos[oldPos] = ''
+        self.figurePos[newPos] = figureName
+        self.surface.blit(pygame.transform.scale(pygame.image.load(path+figureName+".png"), (50, 50)), (self.chessboardFields[newPos][1] + (self.square_length / 2), self.chessboardFields[newPos][0] + (self.square_length / 2)))
 
     def chessboardSquareNotation(self, n, sq_len, listWithFieldNames, swap=False):
         chessBoard = {}

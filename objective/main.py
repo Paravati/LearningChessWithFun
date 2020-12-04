@@ -2,6 +2,12 @@ import pygame
 from objective.chessboardLayout import Chessboard
 
 
+def updatePosOfTheFigure(self, surface):   # for drag and drop event in the future :D
+    if self.click:
+        self.rect.center = pygame.mouse.get_pos()
+    surface.blit(self.image, self.rect)
+
+
 def draw_board(board_size, swapSide=False):
     pygame.init()
     pygame.display.set_caption("Play the chess game")
@@ -17,6 +23,8 @@ def draw_board(board_size, swapSide=False):
     surface.fill(colorOfTheSurface)
     chessboard = Chessboard(surface, x_offset_of_Board, y_offset_of_Board, sq_len)
     chessboard.insertFiguresIntoChessboard(chessboard.chessboardFields, n)
+    checkedField1st = None
+    checkedField2nd = None
     while True:
         for row in range(n):  # Draw each row of the board.
             c_indx = row % 2  # Change starting color on each row
@@ -29,11 +37,22 @@ def draw_board(board_size, swapSide=False):
         ev = pygame.event.poll()
         if ev.type == pygame.QUIT:
             break
-        if ev.type == pygame.MOUSEBUTTONDOWN:
+        if ev.type == pygame.MOUSEBUTTONDOWN and checkedField2nd is None:
             pos_of_click = ev.dict['pos']
-            field = chessboard.getNameOfField((pos_of_click[0], pos_of_click[1]))
-            print(field)
-            print(chessboard.figurePos[field])
+            checkedField1st = chessboard.getNameOfField((pos_of_click[0], pos_of_click[1]))
+            print(checkedField1st)
+            print(chessboard.figurePos[checkedField1st])
+        if ev.type == pygame.MOUSEBUTTONDOWN and checkedField1st is not None:
+            pos_of_click = ev.dict['pos']
+            checkedField2nd = chessboard.getNameOfField((pos_of_click[0], pos_of_click[1]))
+            if checkedField2nd != checkedField1st:  # move figure
+                print(checkedField2nd)
+                print(chessboard.figurePos[checkedField2nd])
+                chessboard.moveFigure(checkedField1st, checkedField2nd, chessboard.figurePos[checkedField1st])
+                checkedField1st = None
+                checkedField2nd = None
+
+
 
         chessboard.insertFiguresIntoChessboard(chessboard.chessboardFields, n)
         pygame.display.flip()  # displaying pygame window
