@@ -32,6 +32,7 @@ def draw_board(board_size, swapSide=False):
     chessboard.insertFiguresIntoChessboard(chessboard.chessboardFields, n)
     checkedField1st = None
     checkedField2nd = None
+    move = 0
     while True:
         coloringChessboard(surface, n, sq_len, x_offset_of_Board, y_offset_of_Board, colors)
 
@@ -50,13 +51,19 @@ def draw_board(board_size, swapSide=False):
             if checkedField2nd != checkedField1st:  # move figure
                 print(checkedField2nd)
                 print(chessboard.figurePos[checkedField2nd])
+                print(chessboard.figurePos)
                 chessboard.moveFigure(checkedField1st, checkedField2nd, chessboard.figurePos[checkedField1st])
+                print(chessboard.figurePos)
+                chessboard.insertFiguresIntoChessboardAfter1stMove(n)
                 checkedField1st = None
                 checkedField2nd = None
+                move+=1
 
-
-
-        chessboard.insertFiguresIntoChessboard(chessboard.chessboardFields, n)
+        # chessboard.insertFiguresIntoChessboard(chessboard.chessboardFields, n)
+        if move == 0:
+            chessboard.insertFiguresIntoChessboard(chessboard.chessboardFields, n)
+        else:
+            chessboard.insertFiguresIntoChessboardAfter1stMove(n)
         pygame.display.flip()  # displaying pygame window
 
     pygame.quit()

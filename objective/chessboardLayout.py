@@ -45,9 +45,10 @@ class Chessboard:
 
         self.figurePos.update(whiteFigurePosition)
 
-        for i in range(3, 6):
+        for i in range(2, 6):
             for j in range(0, 8):
-                dictTmp = {self.fields[j][i]: None}
+                # print(self.fields[i-1][j] + " "+str(i) +" "+ str(j))
+                dictTmp = {self.fields[i][j]: None}
                 self.figurePos.update(dictTmp)
 
         b_pawn, b_horse, b_bishop, b_rook, b_queen, b_king = self.blackFigures
@@ -64,15 +65,20 @@ class Chessboard:
             blackFigurePosition.update(dictTmp)
 
         self.figurePos.update(blackFigurePosition)
+        sorted(self.figurePos)
 
         return whiteFigurePosition, blackFigurePosition
 
-    def moveFigure(self, oldPos, newPos, figureName):
+    def insertFiguresIntoChessboardAfter1stMove(self, sq_size):
         path = 'C:/Users/Admin/PycharmProjects/TicTacToePython/figures/'
+        for field in list(self.figurePos.keys()):
+            if self.figurePos[field] is not None:
+                self.surface.blit(pygame.transform.scale(pygame.image.load(path+self.figurePos[field]+".png"), (50, 50)), (self.chessboardFields[field][1] + (sq_size / 2), self.chessboardFields[field][0] + (sq_size / 2)))
+
+    def moveFigure(self, oldPos, newPos, figureName):
         if self.figurePos[oldPos] is not None:
-            self.figurePos[oldPos] = ''
             self.figurePos[newPos] = figureName
-            self.surface.blit(pygame.transform.scale(pygame.image.load(path+figureName+".png"), (50, 50)), (self.chessboardFields[newPos][1] + (self.square_length / 2), self.chessboardFields[newPos][0] + (self.square_length / 2)))
+            self.figurePos[oldPos] = None
         else:
             print("no figure here: " + oldPos)
 
