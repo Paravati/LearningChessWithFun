@@ -7,13 +7,21 @@ class Chessboard:
     def __init__(self, surface, x_offset, y_offset, square_length):
         self.blackFigures, self.whiteFigures = self.initFigures()
         self.surface = surface
-        self.figurePos = {}
         self.n = 8  # board 8x8
         self.x_offset = x_offset  # x_offset_of_Board
         self.y_offset = y_offset  # y_offset_of_Board
         self.square_length = square_length
         self.fields = self.generateFieldNames()
+        self.figurePos = self.startingDictionaryPosition()
         self.chessboardFields = self.chessboardSquareNotation(self.n,self.square_length, self.fields)
+
+    def startingDictionaryPosition(self):
+        figureDictPos = {}
+        for i in range(0, 8):
+            for j in range(0, 8):
+                dictTmp = {self.fields[i][j]: None}
+                figureDictPos.update(dictTmp)
+        return figureDictPos
 
     def generateFieldNames(self, swap=False):
         letters = ["a", "b", "c", "d", "e", "f", "g", "h"]
@@ -31,25 +39,20 @@ class Chessboard:
         whiteFigurePosition = {}
         blackFigurePosition = {}
         w_pawn, w_horse, w_bishop, w_rook, w_queen, w_king = self.whiteFigures
+        figures = [w_rook, w_horse, w_bishop, w_queen, w_king, w_bishop, w_horse, w_rook]
+        w_figureNames = ["w_rook", "w_horse", "w_bishop", "w_queen", "w_king", "w_bishop", "w_horse", "w_rook"]
+        for i, fields in enumerate(['a1', 'b1', 'c1', 'd1', 'e1', 'f1', 'g1', 'h1']):
+            self.surface.blit(pygame.transform.scale(figures[i], (50, 50)),
+                              (chessboard[fields][1] + (sq_size / 2), chessboard[fields][0] + (sq_size / 2)))
+            dictTmp = {fields: w_figureNames[i]}
+            whiteFigurePosition.update(dictTmp)
+
         for field in ['a2', 'b2', 'c2', 'd2', 'e2', 'f2', 'g2', 'h2']:
             self.surface.blit(pygame.transform.scale(w_pawn, (50, 50)), (chessboard[field][1] + (sq_size / 2), chessboard[field][0] + (sq_size / 2)))
             dictTmp = {field: 'w_pawn'}
             whiteFigurePosition.update(dictTmp)
 
-        figures = [w_rook, w_horse, w_bishop, w_queen, w_king, w_bishop, w_horse, w_rook]
-        w_figureNames = ["w_rook", "w_horse", "w_bishop", "w_queen", "w_king", "w_bishop", "w_horse", "w_rook"]
-        for i, fields in enumerate(['a1', 'b1', 'c1', 'd1', 'e1', 'f1', 'g1', 'h1']):
-            self.surface.blit(pygame.transform.scale(figures[i], (50, 50)), (chessboard[fields][1] + (sq_size / 2), chessboard[fields][0] + (sq_size / 2)))
-            dictTmp = {fields: w_figureNames[i]}
-            whiteFigurePosition.update(dictTmp)
-
         self.figurePos.update(whiteFigurePosition)
-
-        for i in range(2, 6):
-            for j in range(0, 8):
-                # print(self.fields[i-1][j] + " "+str(i) +" "+ str(j))
-                dictTmp = {self.fields[i][j]: None}
-                self.figurePos.update(dictTmp)
 
         b_pawn, b_horse, b_bishop, b_rook, b_queen, b_king = self.blackFigures
         b_figureNames = ["b_rook", "b_horse", "b_bishop", "b_queen", "b_king", "b_bishop", "b_horse", "b_rook"]
