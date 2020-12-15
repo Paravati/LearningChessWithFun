@@ -2,7 +2,7 @@ import pygame
 import pygame_widgets as pw
 from trainMode import startGame
 from PlayMode import play
-
+from objective.main import draw_board
 
 def mainMenu():
     pygame.init()
@@ -50,7 +50,8 @@ def mainMenu():
             if start_button.getX() < pos_of_click[0] < start_button.getX() + start_button.width and start_button.getY() + start_button.height > pos_of_click[1] > start_button.getY():
                 startGame()
             elif gameplay_button.getX() < pos_of_click[0] < gameplay_button.getX() + gameplay_button.width and gameplay_button.getY() + gameplay_button.height > pos_of_click[1] > gameplay_button.getY():
-                play()
+                # play()  # first option from PlayMode.py
+                draw_board(8)  # option from objective/main.py
         pygame.display.flip()  # displaying pygame window
 
     pygame.quit()
