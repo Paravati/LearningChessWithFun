@@ -79,11 +79,40 @@ class Chessboard:
                 self.surface.blit(pygame.transform.scale(pygame.image.load(path+self.figurePos[field]+".png"), (50, 50)), (self.chessboardFields[field][1] + (sq_size / 2), self.chessboardFields[field][0] + (sq_size / 2)))
 
     def moveFigure(self, oldPos, newPos, figureName):
-        if self.figurePos[oldPos] is not None:
+        canFigureMoveHere = self.checkPositionToMove(oldPos, newPos, figureName.split("_")[-1])
+        if canFigureMoveHere and self.figurePos[oldPos] is not None:
+            # tutaj trzeba sprawdzic czy w nowej pozycji nie ma przypadkiem figury tego samego koloru
+            # jesli jest figura innego koloru to wtedy nastepuje zbicie i naliczenie punktow
             self.figurePos[newPos] = figureName
             self.figurePos[oldPos] = None
-        else:
-            print("no figure here: " + oldPos)
+
+    def checkPositionToMove(self, oldPos, newPos, figureName):
+        """checking if pointed figure can move to pointed position
+            returning: boolean value - True if figure can move to newPos and False if not;
+            list with possible moves done by pointed figure"""
+        if figureName == "pawn":
+            ifFirstMove = self.checkIfIsItFirstMove(oldPos)
+            if ifFirstMove:
+                print("Move 1 or 2 field")
+            else:
+                print("move only for one point")
+        elif figureName == 'bishop':
+            print("Need to find diagonal for this bishop and then possible moves can be pointed")
+        elif figureName == 'rook':
+            print("Need to find horizontal and vertical lines for this rook and then possible moves can be pointed")
+        elif figureName == 'queen':
+            print("Need to find horizontal and verical lines and diagonals")
+        elif figureName == 'king':
+            print("Need to find horizontal and verical lines and diagonals - king can only move for one field!!")
+        else:  # figureName is knight
+            print("The hardest part here to point possible moves")
+        return True
+
+    def checkIfIsItFirstMove(self, pos):
+        listWithFirstMove = ['a2', 'b2', 'c2', 'd2', 'e2', 'f2', 'g2', 'h2', 'a7', 'b7', 'c7', 'd7', 'e7', 'f7', 'g7', 'h7']
+        if pos in listWithFirstMove:
+            return True
+        return False
 
     def chessboardSquareNotation(self, n, sq_len, listWithFieldNames, swap=False):
         chessBoard = {}
