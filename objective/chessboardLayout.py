@@ -1,6 +1,7 @@
 import pygame
 import numpy as np
 from figures import *
+from objective.chessPieces import pawnMoves
 # todo: coloring field which user clicked,
 
 class Chessboard:
@@ -79,33 +80,23 @@ class Chessboard:
                 self.surface.blit(pygame.transform.scale(pygame.image.load(path+self.figurePos[field]+".png"), (50, 50)), (self.chessboardFields[field][1] + (sq_size / 2), self.chessboardFields[field][0] + (sq_size / 2)))
 
     def moveFigure(self, oldPos, newPos, figureName):
-        canFigureMoveHere = self.checkPositionToMove(oldPos, newPos, figureName.split("_")[-1])
+        canFigureMoveHere = self.checkPositionToMove(oldPos, newPos, figureName)
         if canFigureMoveHere and self.figurePos[oldPos] is not None:
             # tutaj trzeba sprawdzic czy w nowej pozycji nie ma przypadkiem figury tego samego koloru
             # jesli jest figura innego koloru to wtedy nastepuje zbicie i naliczenie punktow
             self.figurePos[newPos] = figureName
             self.figurePos[oldPos] = None
 
-    def checkPositionToMove(self, oldPos, newPos, figureName):
+    def checkPositionToMove(self, oldPos, newPos, figure):
         """checking if pointed figure can move to pointed position
             returning: boolean value - True if figure can move to newPos and False if not;
             list with possible moves done by pointed figure"""
         possiblePos = []
+        figureColor = figure.split("_")[0]
+        figureName = figure.split("_")[1]
         if figureName == "pawn":
             ifFirstMove = self.checkIfIsItFirstMove(oldPos)
-            move1 = int(oldPos[-1])+1
-            if ifFirstMove:
-                possiblePos.append(oldPos[0]+str(move1))
-                move2 = int(oldPos[-1])+2
-                possiblePos.append(oldPos[0]+str(move2))
-                print("Move 1 or 2 field" + str(possiblePos))
-                if newPos in possiblePos:
-                    return True
-                else:
-                    return False
-            else:
-                print("move only for one point")
-                possiblePos.append(oldPos[0]+str(move1))
+            possiblePos = pawnMoves(ifFirstMove, oldPos, figureColor)
 
             if newPos in possiblePos:
                 return True

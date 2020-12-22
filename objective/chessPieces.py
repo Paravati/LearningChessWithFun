@@ -1,3 +1,17 @@
+def pawnMoves(IsfirstMove, oldPos, color):
+    possiblePos = []
+    coef = 1 if color == "w" else -1
+    move1 = int(oldPos[-1]) + coef * 1
+    if IsfirstMove:  # Move 1 or 2 field
+        possiblePos.append(oldPos[0] + str(move1))
+        move2 = int(oldPos[-1]) + coef * 2
+        possiblePos.append(oldPos[0] + str(move2))
+    else:  # move only for one point
+        possiblePos.append(oldPos[0] + str(move1))
+
+    return possiblePos
+
+
 class Pawn():
     def __init__(self, color):
         self.firstMove = 2
