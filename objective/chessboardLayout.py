@@ -90,12 +90,27 @@ class Chessboard:
         """checking if pointed figure can move to pointed position
             returning: boolean value - True if figure can move to newPos and False if not;
             list with possible moves done by pointed figure"""
+        possiblePos = []
         if figureName == "pawn":
             ifFirstMove = self.checkIfIsItFirstMove(oldPos)
+            move1 = int(oldPos[-1])+1
             if ifFirstMove:
-                print("Move 1 or 2 field")
+                possiblePos.append(oldPos[0]+str(move1))
+                move2 = int(oldPos[-1])+2
+                possiblePos.append(oldPos[0]+str(move2))
+                print("Move 1 or 2 field" + str(possiblePos))
+                if newPos in possiblePos:
+                    return True
+                else:
+                    return False
             else:
                 print("move only for one point")
+                possiblePos.append(oldPos[0]+str(move1))
+
+            if newPos in possiblePos:
+                return True
+            else:
+                return False
         elif figureName == 'bishop':
             print("Need to find diagonal for this bishop and then possible moves can be pointed")
         elif figureName == 'rook':
