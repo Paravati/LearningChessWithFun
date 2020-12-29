@@ -12,6 +12,27 @@ def pawnMoves(IsfirstMove, oldPos, color):
     return possiblePos
 
 
+def bishopMoves(oldPos, color, chessboard_fields):
+    for i in range(len(chessboard_fields)):
+        for j in range(len(chessboard_fields[i])):
+            if chessboard_fields[i][j] == oldPos:
+                # trzeba wczesniej okreslic diagonale calej szachownicy zeby szybciej odniesc sie do tego
+                pass
+
+    pass
+
+def kingMoves():
+    pass
+
+def queenMoves():
+    pass
+
+def rookMoves():
+    pass
+
+def knightMoves():
+    pass
+
 class Pawn():
     def __init__(self, color):
         self.firstMove = 2

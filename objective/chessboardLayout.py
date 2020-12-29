@@ -1,7 +1,7 @@
 import pygame
 import numpy as np
 from figures import *
-from objective.chessPieces import pawnMoves
+from objective.chessPieces import pawnMoves, queenMoves, kingMoves, knightMoves, rookMoves, bishopMoves
 # todo: coloring field which user clicked,
 
 class Chessboard:
@@ -80,39 +80,43 @@ class Chessboard:
                 self.surface.blit(pygame.transform.scale(pygame.image.load(path+self.figurePos[field]+".png"), (50, 50)), (self.chessboardFields[field][1] + (sq_size / 2), self.chessboardFields[field][0] + (sq_size / 2)))
 
     def moveFigure(self, oldPos, newPos, figureName):
-        canFigureMoveHere = self.checkPositionToMove(oldPos, newPos, figureName)
-        if canFigureMoveHere and self.figurePos[oldPos] is not None:
-            # tutaj trzeba sprawdzic czy w nowej pozycji nie ma przypadkiem figury tego samego koloru
-            # jesli jest figura innego koloru to wtedy nastepuje zbicie i naliczenie punktow
-            self.figurePos[newPos] = figureName
-            self.figurePos[oldPos] = None
+        if self.figurePos[oldPos] is not None:
+            canFigureMoveHere = self.checkPositionToMove(oldPos, newPos, figureName)
+            if canFigureMoveHere:
+                # tutaj trzeba sprawdzic czy w nowej pozycji nie ma przypadkiem figury tego samego koloru
+                # jesli jest figura innego koloru to wtedy nastepuje zbicie i naliczenie punktow
+                self.figurePos[newPos] = figureName
+                self.figurePos[oldPos] = None
 
     def checkPositionToMove(self, oldPos, newPos, figure):
         """checking if pointed figure can move to pointed position
             returning: boolean value - True if figure can move to newPos and False if not;
             list with possible moves done by pointed figure"""
-        possiblePos = []
         figureColor = figure.split("_")[0]
         figureName = figure.split("_")[1]
-        if figureName == "pawn":
-            ifFirstMove = self.checkIfIsItFirstMove(oldPos)
+        if figureName == "pawn":  # todo: dodać bicie na ukos wrogiej figury, ogranicznik poruszania jesli a drodze stoi wroga figura
+            ifFirstMove = self.checkIfIsItFirstMove(oldPos)  # checking if it is first move of the pointed pawn
             possiblePos = pawnMoves(ifFirstMove, oldPos, figureColor)
-
-            if newPos in possiblePos:
-                return True
-            else:
-                return False
         elif figureName == 'bishop':
+            possiblePos = bishopMoves(oldPos, figureColor, self.fields)
             print("Need to find diagonal for this bishop and then possible moves can be pointed")
         elif figureName == 'rook':
+            possiblePos = rookMoves()
             print("Need to find horizontal and vertical lines for this rook and then possible moves can be pointed")
         elif figureName == 'queen':
+            possiblePos = queenMoves()
             print("Need to find horizontal and verical lines and diagonals")
         elif figureName == 'king':
+            possiblePos = kingMoves()
             print("Need to find horizontal and verical lines and diagonals - king can only move for one field!!")
         else:  # figureName is knight
+            possiblePos = knightMoves()
             print("The hardest part here to point possible moves")
-        return True
+
+        if newPos in possiblePos:
+            return True
+        else:
+            return False
 
     def checkIfIsItFirstMove(self, pos):
         listWithFirstMove = ['a2', 'b2', 'c2', 'd2', 'e2', 'f2', 'g2', 'h2', 'a7', 'b7', 'c7', 'd7', 'e7', 'f7', 'g7', 'h7']
