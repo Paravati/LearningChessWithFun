@@ -81,12 +81,15 @@ class Chessboard:
 
     def moveFigure(self, oldPos, newPos, figureName):
         if self.figurePos[oldPos] is not None:
-            canFigureMoveHere = self.checkPositionToMove(oldPos, newPos, figureName)
+            canFigureMoveHere = self.checkPositionToMove(oldPos, newPos, figureName)  # moves which can be done by pointed figure
             if canFigureMoveHere:
-                # tutaj trzeba sprawdzic czy w nowej pozycji nie ma przypadkiem figury tego samego koloru
-                # jesli jest figura innego koloru to wtedy nastepuje zbicie i naliczenie punktow
-                self.figurePos[newPos] = figureName
-                self.figurePos[oldPos] = None
+                if self.figurePos[newPos] is None:  # if there is no figure at pointed new position
+                    self.figurePos[newPos] = figureName
+                    self.figurePos[oldPos] = None
+                else:  # if there is figure in the new pointed position beating figure happening
+                    print("beating figure")
+                    self.figurePos[newPos] = figureName
+                    self.figurePos[oldPos] = None
 
     def checkPositionToMove(self, oldPos, newPos, figure):
         """checking if pointed figure can move to pointed position
@@ -96,7 +99,7 @@ class Chessboard:
         figureName = figure.split("_")[1]
         if figureName == "pawn":  # todo: dodać bicie na ukos wrogiej figury, ogranicznik poruszania jesli a drodze stoi wroga figura
             ifFirstMove = self.checkIfIsItFirstMove(oldPos)  # checking if it is first move of the pointed pawn
-            possiblePos = pawnMoves(ifFirstMove, oldPos, figureColor)
+            possiblePos = pawnMoves(ifFirstMove, oldPos, figureColor, self.figurePos)
         elif figureName == 'bishop':
             possiblePos = bishopMoves(oldPos, figureColor, self.fields)
             print("Need to find diagonal for this bishop and then possible moves can be pointed")
