@@ -4,6 +4,7 @@ from figures import *
 from objective.chessPieces import pawnMoves, queenMoves, kingMoves, knightMoves, rookMoves, bishopMoves
 # todo: coloring field which user clicked,
 
+
 class Chessboard:
     def __init__(self, surface, x_offset, y_offset, square_length):
         self.blackFigures, self.whiteFigures = self.initFigures()
@@ -12,7 +13,7 @@ class Chessboard:
         self.x_offset = x_offset  # x_offset_of_Board
         self.y_offset = y_offset  # y_offset_of_Board
         self.square_length = square_length
-        self.fields = self.generateFieldNames()
+        self.fields = self.generateFieldNames()  # 2d list with all chessboard fields
         self.figurePos = self.startingDictionaryPosition()
         self.chessboardFields = self.chessboardSquareNotation(self.n,self.square_length, self.fields)
 
@@ -97,14 +98,14 @@ class Chessboard:
             list with possible moves done by pointed figure"""
         figureColor = figure.split("_")[0]
         figureName = figure.split("_")[1]
-        if figureName == "pawn":  # todo: dodać bicie na ukos wrogiej figury, ogranicznik poruszania jesli a drodze stoi wroga figura
+        if figureName == "pawn":  # todo: dodać bicie na ukos wrogiej figury
             ifFirstMove = self.checkIfIsItFirstMove(oldPos)  # checking if it is first move of the pointed pawn
             possiblePos = pawnMoves(ifFirstMove, oldPos, figureColor, self.figurePos)
         elif figureName == 'bishop':
             possiblePos = bishopMoves(oldPos, figureColor, self.fields)
             print("Need to find diagonal for this bishop and then possible moves can be pointed")
         elif figureName == 'rook':
-            possiblePos = rookMoves()
+            possiblePos = rookMoves(oldPos, self.figurePos, self.fields)
             print("Need to find horizontal and vertical lines for this rook and then possible moves can be pointed")
         elif figureName == 'queen':
             possiblePos = queenMoves()
