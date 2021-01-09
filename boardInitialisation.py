@@ -203,3 +203,9 @@ def generateText(inp):
     if inp is not None:
         return inp
     return "Hello world!!"
+
+if __name__=="__main__":
+    fieldNames = generateFieldNames(8, False)
+    print(fieldNames)
+    fieldNames = generateFieldNames(8, True)
+    print(fieldNames)
