@@ -29,12 +29,13 @@ class Chessboard:
         letters = ["a", "b", "c", "d", "e", "f", "g", "h"]
         numbers = [8, 7, 6, 5, 4, 3, 2, 1]
         if swap is True:
+            letters = ["h", "g", "f", "e", "d", "c", "b", "a"]
             numbers = [1, 2, 3, 4, 5, 6, 7, 8]
 
         listWithFieldNames = np.ndarray(shape=(8, 8), dtype='object')
         for rows in range(0, len(listWithFieldNames)):
             for col in range(0, len(listWithFieldNames)):
-                listWithFieldNames[rows][col] = letters[rows] + str(numbers[col])
+                listWithFieldNames[rows][col] = letters[col] + str(numbers[rows])
         return listWithFieldNames
 
     def insertFiguresIntoChessboard(self, chessboard, sq_size):
@@ -128,20 +129,14 @@ class Chessboard:
             return True
         return False
 
-    def chessboardSquareNotation(self, n, sq_len, listWithFieldNames, swap=False):
+    def chessboardSquareNotation(self, n, sq_len, listWithFieldNames):
         chessBoard = {}
-        if swap is True:
-            for row in range(self.n):  # Draw each row of the board.
-                for col in range(self.n):  # Run through cols drawing squares
-                    the_square = (col * sq_len + self.x_offset, row * sq_len + self.y_offset, sq_len, sq_len)
-                    dictTmp = {listWithFieldNames[n - row - 1][n - col - 1]: the_square}
-                    chessBoard.update(dictTmp)
-        else:
-            for row in range(self.n):  # Draw each row of the board.
-                for col in range(self.n):  # Run through cols drawing squares
-                    the_square = (col * sq_len + self.x_offset, row * sq_len + self.y_offset, sq_len, sq_len)
-                    dictTmp = {listWithFieldNames[row][col]: the_square}
-                    chessBoard.update(dictTmp)
+
+        for col in range(self.n):  # Draw each row of the board.
+            for row in range(self.n):  # Run through cols drawing squares
+                the_square = (row * sq_len + self.x_offset, col * sq_len + self.y_offset, sq_len, sq_len)
+                dictTmp = {listWithFieldNames[row][col]: the_square}
+                chessBoard.update(dictTmp)
 
         return chessBoard
 
@@ -149,7 +144,7 @@ class Chessboard:
         clickedField = ""
         for i in range(0, len(self.fields)):
             for j in range(0, len(self.fields)):
-                if self.x_offset + self.square_length  * i < pos[0] < self.x_offset + self.square_length  * (i + 1) and pos[1] > self.y_offset + self.square_length  * j and pos[1] < self.y_offset + self.square_length  * (j + 1):
+                if self.x_offset + self.square_length  * j < pos[0] < self.x_offset + self.square_length  * (j + 1) and pos[1] > self.y_offset + self.square_length  * i and pos[1] < self.y_offset + self.square_length  * (i + 1):
                     clickedField = self.fields[i][j]
 
         return clickedField

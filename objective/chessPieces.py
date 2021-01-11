@@ -69,21 +69,20 @@ def queenMoves():
 def rookMoves(oldPos, allFigurePos, chessboard_fields):
     # todo: ograniczanie pozycji wiezy, bicie, poprawki wyznaczania pozycji dla koloru czarnego
     # todo: bo dla bialego dziala
+    iterator = len(chessboard_fields[0])
+    print(chessboard_fields)
     possiblePos = []
     oldPosNumber = int(oldPos[-1])  # pointed i in lower loop
     oldPosCharacter = oldPos[0]
     print(oldPosCharacter)
     oldPosCharNumber = FieldNumerical(oldPosCharacter, None)  # pointed j in lower loop
-    for i in range(len(chessboard_fields)):
+
+    for i in range(iterator):
         if i == oldPosNumber-1:  # minus 1 because array starts from index 0
-            for j in range(len(chessboard_fields)):
-                # if allFigurePos[chessboard_fields[i][j+1]] is not None:
-                #     break  # rook cannot moves through another figures
-                possiblePos.append(chessboard_fields[i][j])  # vertical possible positions
+            for j in range(iterator):
+                possiblePos.append(chessboard_fields[iterator - i-1][j])  # vertical possible positions
         if i == oldPosCharNumber:
-            for j in range(len(chessboard_fields)):
-                # if allFigurePos[chessboard_fields[j+1][i]] is not None:
-                #     break  # rook cannot moves through another figures
+            for j in range(iterator):
                 possiblePos.append(chessboard_fields[j][i])  # horizontal possible positions
 
     print(possiblePos)
