@@ -32,7 +32,7 @@ def draw_board(the_board, swapSide, randomSwap):
     )
 
     fieldForUser = generateFieldForUser(board_field_names)  # initialization a first quest for user
-    chessBoard = chessboardSquareNotation(n, sq_sz, x_offset_of_Board, y_offset_of_Board, generateFieldNames(n,swapSide))
+    chessBoard = chessboardSquareNotation(n, sq_sz, x_offset_of_Board, y_offset_of_Board, generateFieldNames(n,swapSide), swapSide)
     the_text = mySmallFont.render(generateText(""), True, (255, 255, 255), colorOfTheSurface)
     textWithPoints = mySmallFont.render(generateText(""), True, (255, 255, 255), colorOfTheSurface)
     userPoints = 0
@@ -71,11 +71,11 @@ def draw_board(the_board, swapSide, randomSwap):
                         if randomSwap is False:
                             print(swapSide)
                             board_field_names = generateFieldNames(n, swapSide)
-                            chessBoard = chessboardSquareNotation(n, sq_sz, x_offset_of_Board, y_offset_of_Board, board_field_names)
+                            chessBoard = chessboardSquareNotation(n, sq_sz, x_offset_of_Board, y_offset_of_Board, board_field_names, swapSide)
                             fieldForUser = generateFieldForUser(board_field_names)
                         else:
                             board_field_names = generateFieldNames(n, bool(random.randint(0,1)))
-                            chessBoard = chessboardSquareNotation(n, sq_sz, x_offset_of_Board, y_offset_of_Board, board_field_names)
+                            chessBoard = chessboardSquareNotation(n, sq_sz, x_offset_of_Board, y_offset_of_Board, board_field_names, swapSide)
                             fieldForUser = generateFieldForUser(board_field_names)
                     else:
                         the_text = mySmallFont.render(generateText("This is:" + field_name), True, (255, 255, 255), colorOfTheSurface)
@@ -148,18 +148,12 @@ def insertFiguresIntoChessboard(whiteFigures, blackFigures, surface, chessboard,
 
 def chessboardSquareNotation(n, sq_len, x_offset_of_Board, y_offset_of_Board, listWithFieldNames, swap=False):
     chessBoard = {}
-    if swap is True:
-        for row in range(n):  # Draw each row of the board.
-            for col in range(n):  # Run through cols drawing squares
-                the_square = (col * sq_len + x_offset_of_Board, row * sq_len + y_offset_of_Board, sq_len, sq_len)
-                dictTmp = {listWithFieldNames[n-row-1][n-col-1]: the_square}
-                chessBoard.update(dictTmp)
-    else:
-        for row in range(n):  # Draw each row of the board.
-            for col in range(n):  # Run through cols drawing squares
-                the_square = (col * sq_len + x_offset_of_Board, row * sq_len + y_offset_of_Board, sq_len, sq_len)
-                dictTmp = {listWithFieldNames[row][col]: the_square}
-                chessBoard.update(dictTmp)
+    for col in range(n):  # Draw each row of the board.
+        for row in range(n):  # Run through cols drawing squares
+            the_square = (row * sq_len + y_offset_of_Board, col * sq_len + x_offset_of_Board,  sq_len, sq_len)
+            dictTmp = {listWithFieldNames[row][col]: the_square}
+            print(dictTmp)
+            chessBoard.update(dictTmp)
 
     return chessBoard
 
@@ -173,29 +167,24 @@ def generateFieldNames(boardSize, swap=False):
     letters = ["a", "b", "c", "d", "e", "f", "g", "h"]
     numbers = [8, 7, 6, 5, 4, 3, 2, 1]
     if swap is True:
+        letters = ["h", "g", "f", "e", "d", "c", "b", "a"]
         numbers = [1, 2, 3, 4, 5, 6, 7, 8]
 
     listWithFieldNames = np.ndarray(shape=(boardSize, boardSize), dtype='object')
     for rows in range(0, len(listWithFieldNames)):
         for col in range(0, len(listWithFieldNames)):
-            listWithFieldNames[rows][col] = letters[rows] + str(numbers[col])
+            listWithFieldNames[rows][col] = letters[col] + str(numbers[rows])
     return listWithFieldNames
 
 
 def getNameOfField(listWithFieldNames, pos, offset_X, offset_Y, lenSquare, swap=False):
     clickedField = ""
-    if swap is True:
-        for i in range(0, len(listWithFieldNames)):
-            for j in range(0, len(listWithFieldNames)):
-                if offset_X + lenSquare * i < pos[0] < offset_X + lenSquare * (i + 1) and pos[1] > offset_Y + lenSquare * j and pos[1] < offset_Y + lenSquare * (j + 1):
-                    clickedField = listWithFieldNames[i][j]
-                    print(listWithFieldNames[i][j])
-    else:
-        for i in range(0, len(listWithFieldNames)):
-            for j in range(0, len(listWithFieldNames)):
-                if offset_X + lenSquare * i < pos[0] < offset_X + lenSquare * (i + 1) and pos[1] > offset_Y + lenSquare * j and pos[1] < offset_Y + lenSquare * (j + 1):
-                    clickedField = listWithFieldNames[i][j]
-                    print(listWithFieldNames[i][j])
+    for i in range(0, len(listWithFieldNames)):
+        for j in range(0, len(listWithFieldNames)):
+            if offset_X + lenSquare * j < pos[0] < offset_X + lenSquare * (j + 1) and pos[1] > offset_Y + lenSquare * i and pos[1] < offset_Y + lenSquare * (i + 1):
+                clickedField = listWithFieldNames[i][j]
+                print(listWithFieldNames[i][j])
+
     return clickedField
 
 
@@ -207,5 +196,11 @@ def generateText(inp):
 if __name__=="__main__":
     fieldNames = generateFieldNames(8, False)
     print(fieldNames)
+    print()
+    print(chessboardSquareNotation(8, 60, 150, 150, fieldNames,False))
+    print()
+    print()
     fieldNames = generateFieldNames(8, True)
     print(fieldNames)
+    print()
+    print(chessboardSquareNotation(8, 60, 150, 150, fieldNames,True))
