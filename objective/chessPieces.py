@@ -48,33 +48,50 @@ def pawnMoves(IsfirstMove, oldPos, color, allFigurePos):
     return possiblePos
 
 
-def bishopMoves(oldPos, color, chessboard_fields):
-    for i in range(len(chessboard_fields)):
-        for j in range(len(chessboard_fields[i])):
-            if chessboard_fields[i][j] == oldPos:
-                # trzeba wczesniej okreslic diagonale calej szachownicy zeby szybciej odniesc sie do tego
-                pass
-
-    pass
-
-
-def kingMoves():
-    pass
-
-
-def queenMoves():
-    pass
-
-
-def rookMoves(oldPos, allFigurePos, chessboard_fields):
-    # todo: ograniczanie pozycji wiezy, bicie, poprawki wyznaczania pozycji dla koloru czarnego
-    # todo: bo dla bialego dziala
+def bishopMoves(oldPos, allFigurePos, chessboard_fields):
+    # todo:
     iterator = len(chessboard_fields[0])
     print(chessboard_fields)
     possiblePos = []
     oldPosNumber = int(oldPos[-1])  # pointed i in lower loop
     oldPosCharacter = oldPos[0]
     print(oldPosCharacter)
+    oldPosCharNumber = FieldNumerical(oldPosCharacter, None)  # pointed j in lower loop
+
+    for i in range(iterator-1):
+        for j in range(iterator-1):
+            if i ==oldPosNumber-1 and j==oldPosCharNumber:
+                print(oldPosNumber)
+                print(oldPosCharNumber)
+                possiblePos.append(chessboard_fields[iterator-(i+2)][j+1])
+                if j != 0:
+                    possiblePos.append(chessboard_fields[iterator-(i+2)][j-1])
+                if i > 2:
+                    possiblePos.append(chessboard_fields[iterator - i][j - 1])
+                    possiblePos.append(chessboard_fields[iterator - i][j + 1])
+    print(possiblePos)
+    return possiblePos
+
+
+def kingMoves():
+    pass
+# if i ==oldPosNumber-1 and j==oldPosCharNumber:  # diagonalia pionowa prawa o 1 pole
+#   possiblePos.append(chessboard_fields[iterator-(i+2)][j+1])
+#   if j != 0:  # diagonalia pionowa lewa o 1 pole
+#       possiblePos.append(chessboard_fields[iterator-(i+2)][j-1])
+
+def queenMoves():
+    pass
+
+
+def rookMoves(oldPos, allFigurePos, chessboard_fields):
+    # todo: ograniczanie pozycji wiezy, bicie
+    iterator = len(chessboard_fields[0])
+    # print(chessboard_fields)
+    possiblePos = []
+    oldPosNumber = int(oldPos[-1])  # pointed i in lower loop
+    oldPosCharacter = oldPos[0]
+    # print(oldPosCharacter)
     oldPosCharNumber = FieldNumerical(oldPosCharacter, None)  # pointed j in lower loop
 
     for i in range(iterator):
@@ -84,8 +101,7 @@ def rookMoves(oldPos, allFigurePos, chessboard_fields):
         if i == oldPosCharNumber:
             for j in range(iterator):
                 possiblePos.append(chessboard_fields[j][i])  # horizontal possible positions
-
-    print(possiblePos)
+    # print(possiblePos)
     return possiblePos
 
 
