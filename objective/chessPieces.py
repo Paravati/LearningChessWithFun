@@ -58,27 +58,73 @@ def bishopMoves(oldPos, allFigurePos, chessboard_fields):
     print(oldPosCharacter)
     oldPosCharNumber = FieldNumerical(oldPosCharacter, None)  # pointed j in lower loop
 
-    for i in range(iterator-1):
-        for j in range(iterator-1):
+    # for i in range(iterator - 1):
+    #     for j in range(iterator - 1):
+    #         if i == oldPosNumber - 1 and j == oldPosCharNumber:
+    #             print(oldPosNumber)
+    #             print(oldPosCharNumber)
+    #             possiblePos.append(chessboard_fields[iterator - (i + 2)][j + 1])
+    #             if j != 0:
+    #                 possiblePos.append(chessboard_fields[iterator - (i + 2)][j - 1])
+    #             if i > 2:
+    #                 possiblePos.append(chessboard_fields[iterator - i][j - 1])
+    #                 possiblePos.append(chessboard_fields[iterator - i][j + 1])
+    # print(possiblePos)
+    # return possiblePos
+    for i in range(iterator):
+        for j in range(iterator):
             if i ==oldPosNumber-1 and j==oldPosCharNumber:
                 print(oldPosNumber)
                 print(oldPosCharNumber)
-                possiblePos.append(chessboard_fields[iterator-(i+2)][j+1])
-                if j != 0:
-                    possiblePos.append(chessboard_fields[iterator-(i+2)][j-1])
-                if i > 2:
-                    possiblePos.append(chessboard_fields[iterator - i][j - 1])
-                    possiblePos.append(chessboard_fields[iterator - i][j + 1])
+                if i == iterator-1:
+                    print("first")
+                    if j-1 >= 0:
+                        possiblePos.append(chessboard_fields[iterator - i][j-1])
+                    if j+1 < iterator:
+                        possiblePos.append(chessboard_fields[iterator - i][j + 1])
+                if iterator-(i+2) >= 0:
+                    print("second")
+                    if j+1<iterator:
+                        possiblePos.append(chessboard_fields[iterator-(i+2)][j+1])
+                    if j - 1 >= 0:
+                        possiblePos.append(chessboard_fields[iterator - (i + 2)][j - 1])
+                if i!= iterator-1 and iterator-i >= 0 and i!=0:
+                    print("third")
+                    if j-1>=0:
+                        possiblePos.append(chessboard_fields[iterator - i][j - 1])
+                    if j+1<iterator:
+                        possiblePos.append(chessboard_fields[iterator - i][j + 1])
+
     print(possiblePos)
     return possiblePos
 
 
 def kingMoves():
     pass
-# if i ==oldPosNumber-1 and j==oldPosCharNumber:  # diagonalia pionowa prawa o 1 pole
-#   possiblePos.append(chessboard_fields[iterator-(i+2)][j+1])
-#   if j != 0:  # diagonalia pionowa lewa o 1 pole
-#       possiblePos.append(chessboard_fields[iterator-(i+2)][j-1])
+# ****** FULL DIAGONAL FOR KING -> MOVES only for one field
+# for i in range(iterator):
+#     for j in range(iterator):
+#         if i == oldPosNumber - 1 and j == oldPosCharNumber:
+#             print(oldPosNumber)
+#             print(oldPosCharNumber)
+#             if i == iterator - 1:
+#                 print("first")
+#                 if j - 1 >= 0:
+#                     possiblePos.append(chessboard_fields[iterator - i][j - 1])
+#                 if j + 1 < iterator:
+#                     possiblePos.append(chessboard_fields[iterator - i][j + 1])
+#             if iterator - (i + 2) >= 0:
+#                 print("second")
+#                 if j + 1 < iterator:
+#                     possiblePos.append(chessboard_fields[iterator - (i + 2)][j + 1])
+#                 if j - 1 >= 0:
+#                     possiblePos.append(chessboard_fields[iterator - (i + 2)][j - 1])
+#             if i != iterator - 1 and iterator - i >= 0 and i != 0:
+#                 print("third")
+#                 if j - 1 >= 0:
+#                     possiblePos.append(chessboard_fields[iterator - i][j - 1])
+#                 if j + 1 < iterator:
+#                     possiblePos.append(chessboard_fields[iterator - i][j + 1])
 
 def queenMoves():
     pass
