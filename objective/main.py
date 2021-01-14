@@ -47,8 +47,8 @@ def draw_board(board_size, swapSide=False):
             if x_offset_of_Board < pos_of_click[0] < surface.get_height():
                 if y_offset_of_Board < pos_of_click[1] < surface.get_width():
                     checkedField1st = chessboard.getNameOfField((pos_of_click[0], pos_of_click[1]))
-                    print(checkedField1st)
-                    print(chessboard.figurePos[checkedField1st])
+                    # print(checkedField1st)
+                    # print(chessboard.figurePos[checkedField1st])
         if ev.type == pygame.MOUSEBUTTONDOWN and checkedField1st is not None:
             pos_of_click = ev.dict['pos']
             if x_offset_of_Board < pos_of_click[0] < surface.get_height():

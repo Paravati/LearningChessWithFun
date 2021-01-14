@@ -51,49 +51,64 @@ def pawnMoves(IsfirstMove, oldPos, color, allFigurePos):
 def bishopMoves(oldPos, allFigurePos, chessboard_fields):
     # todo:
     iterator = len(chessboard_fields[0])
-    print(chessboard_fields)
+    # print(chessboard_fields)
     possiblePos = []
     oldPosNumber = int(oldPos[-1])  # pointed i in lower loop
     oldPosCharacter = oldPos[0]
     print(oldPosCharacter)
     oldPosCharNumber = FieldNumerical(oldPosCharacter, None)  # pointed j in lower loop
 
-    # for i in range(iterator - 1):
-    #     for j in range(iterator - 1):
-    #         if i == oldPosNumber - 1 and j == oldPosCharNumber:
-    #             print(oldPosNumber)
-    #             print(oldPosCharNumber)
-    #             possiblePos.append(chessboard_fields[iterator - (i + 2)][j + 1])
-    #             if j != 0:
-    #                 possiblePos.append(chessboard_fields[iterator - (i + 2)][j - 1])
-    #             if i > 2:
-    #                 possiblePos.append(chessboard_fields[iterator - i][j - 1])
-    #                 possiblePos.append(chessboard_fields[iterator - i][j + 1])
-    # print(possiblePos)
-    # return possiblePos
     for i in range(iterator):
         for j in range(iterator):
             if i ==oldPosNumber-1 and j==oldPosCharNumber:
-                print(oldPosNumber)
-                print(oldPosCharNumber)
-                if i == iterator-1:
-                    print("first")
-                    if j-1 >= 0:
-                        possiblePos.append(chessboard_fields[iterator - i][j-1])
-                    if j+1 < iterator:
-                        possiblePos.append(chessboard_fields[iterator - i][j + 1])
+                # print(oldPosNumber)
+                # print(oldPosCharNumber)
+                if i == iterator-1:  # only for upper position bishop i = 7
+                    jTmp = j
+                    iTmp = i
+                    while jTmp-1 >= 0 and iTmp >= 1:
+                        possiblePos.append(chessboard_fields[iterator - iTmp][jTmp-1])
+                        print("FIRST -> 1." + str(possiblePos))
+                        jTmp -=1
+                        iTmp -=1
+                    jTmp = j
+                    iTmp = i
+                    while jTmp+1 < iterator and iTmp >= 1:
+                        possiblePos.append(chessboard_fields[iterator - iTmp][jTmp + 1])
+                        print("FIRST -> 2.  " + str(possiblePos))
+                        jTmp += 1
+                        iTmp -= 1
                 if iterator-(i+2) >= 0:
-                    print("second")
-                    if j+1<iterator:
-                        possiblePos.append(chessboard_fields[iterator-(i+2)][j+1])
-                    if j - 1 >= 0:
-                        possiblePos.append(chessboard_fields[iterator - (i + 2)][j - 1])
+                    jTmp = j
+                    iTmp = i
+                    while jTmp+1<iterator and iterator-(iTmp+2)>=0:  # right upper diagonal
+                        possiblePos.append(chessboard_fields[iterator-(iTmp+2)][jTmp+1])
+                        print("SECOND -> 1. " + str(possiblePos))
+                        jTmp += 1
+                        iTmp += 1
+                    jTmp = j
+                    iTmp = i
+                    while jTmp-1 >= 0 and iterator-(iTmp+2)>=0:  # left upper diagonal
+                        possiblePos.append(chessboard_fields[iterator - (iTmp + 2)][jTmp - 1])
+                        print("SECOND -> 2.  " + str(possiblePos))
+                        jTmp -= 1
+                        iTmp += 1
                 if i!= iterator-1 and iterator-i >= 0 and i!=0:
-                    print("third")
-                    if j-1>=0:
-                        possiblePos.append(chessboard_fields[iterator - i][j - 1])
-                    if j+1<iterator:
-                        possiblePos.append(chessboard_fields[iterator - i][j + 1])
+                    jTmp = j
+                    iTmp = i
+                    while jTmp-1 >= 0 and iterator - iTmp < iterator:  # left lower dagonal
+                        possiblePos.append(chessboard_fields[iterator - iTmp][jTmp - 1])
+                        print("THIRD -> 1.  " + str(possiblePos))
+                        jTmp -= 1
+                        iTmp -= 1
+                    jTmp = j
+                    iTmp = i
+                    while jTmp+1<iterator and iterator - iTmp >= 0:  # right lower diagonal
+                        possiblePos.append(chessboard_fields[iterator - iTmp][jTmp + 1])
+                        print("THIRD -> 2. " + str(possiblePos))
+                        jTmp += 1
+                        iTmp += 1
+
 
     print(possiblePos)
     return possiblePos
