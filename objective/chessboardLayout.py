@@ -112,7 +112,7 @@ class Chessboard:
             possiblePos = queenMoves()
             print("Need to find horizontal and verical lines and diagonals")
         elif figureName == 'king':
-            possiblePos = kingMoves()
+            possiblePos = kingMoves(oldPos, self.figurePos, self.fields)
             print("Need to find horizontal and verical lines and diagonals - king can only move for one field!!")
         else:  # figureName is knight
             possiblePos = knightMoves()
