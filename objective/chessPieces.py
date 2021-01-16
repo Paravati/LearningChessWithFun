@@ -10,10 +10,12 @@ def FieldNumerical(letter, value):
     else:
         return listWithLetters[value] if (value >=0 and value<=7) else None
 
+
 def defineDirectionsOfTheChessBoard(listWithFieldNames):
     diagonal = []
     horizontal = []
     vertical = []
+
 
 def PawnbeatingMoves(oldPos, allFigurePosition, coef):
     letterNum = FieldNumerical(oldPos[0], None)
@@ -23,7 +25,6 @@ def PawnbeatingMoves(oldPos, allFigurePosition, coef):
         if beatingMovesLetters[i] >=0 and beatingMovesLetters[i] < 8:
             move = int(oldPos[-1]) + coef*1
             fieldName = FieldNumerical(None, beatingMovesLetters[i]) + str(move)
-            # print("Heello: " + fieldName)
             if allFigurePosition[fieldName] is not None:  # if figure on the pointed position exists
                 beatingMoves.append(fieldName)
 
@@ -51,29 +52,14 @@ def pawnMoves(IsfirstMove, oldPos, color, allFigurePos):
 def bishopMoves(oldPos, allFigurePos, chessboard_fields):
     # todo: ogranicznik przemieszczania sie dla goncow
     iterator = len(chessboard_fields[0])
-    # print(chessboard_fields)
     possiblePos = []
     oldPosNumber = int(oldPos[-1])  # pointed i in lower loop
     oldPosCharacter = oldPos[0]
-    print(oldPosCharacter)
     oldPosCharNumber = FieldNumerical(oldPosCharacter, None)  # pointed j in lower loop
 
     for i in range(iterator):
         for j in range(iterator):
-            if i ==oldPosNumber-1 and j==oldPosCharNumber:
-                if i == iterator-1:  # only for upper position bishop i = 7
-                    jTmp = j
-                    iTmp = i
-                    while jTmp-1 >= 0 and iTmp >= 1:
-                        possiblePos.append(chessboard_fields[iterator - iTmp][jTmp-1])
-                        jTmp -=1
-                        iTmp -=1
-                    jTmp = j
-                    iTmp = i
-                    while jTmp+1 < iterator and iTmp >= 1:
-                        possiblePos.append(chessboard_fields[iterator - iTmp][jTmp + 1])
-                        jTmp += 1
-                        iTmp -= 1
+            if i == oldPosNumber-1 and j == oldPosCharNumber:
                 if iterator-(i+2) >= 0:
                     jTmp = j
                     iTmp = i
@@ -83,26 +69,25 @@ def bishopMoves(oldPos, allFigurePos, chessboard_fields):
                         iTmp += 1
                     jTmp = j
                     iTmp = i
-                    while jTmp-1 >= 0 and iterator-(iTmp+2)>=0:  # left upper diagonal
+                    while jTmp-1 >= 0 and iterator-(iTmp+2) >= 0:  # left upper diagonal
                         possiblePos.append(chessboard_fields[iterator - (iTmp + 2)][jTmp - 1])
                         jTmp -= 1
                         iTmp += 1
-                if i!= iterator-1 and iterator-i >= 0 and i!=0:
+                if iterator-i >= 0 and iterator - i < iterator:
                     jTmp = j
                     iTmp = i
-                    while jTmp-1 >= 0 and iterator - iTmp < iterator:  # left lower dagonal
+                    while jTmp-1 >= 0 and iterator - iTmp >= 0 and iterator - iTmp < iterator:  # left lower dagonal
                         possiblePos.append(chessboard_fields[iterator - iTmp][jTmp - 1])
                         jTmp -= 1
                         iTmp -= 1
                     jTmp = j
                     iTmp = i
-                    while jTmp+1<iterator and iterator - iTmp >= 0:  # right lower diagonal
+                    while jTmp+1<iterator and iterator - iTmp >= 0 and iterator - iTmp < iterator:  # right lower diagonal
                         possiblePos.append(chessboard_fields[iterator - iTmp][jTmp + 1])
                         jTmp += 1
-                        iTmp += 1
+                        iTmp -= 1
 
-
-    print(possiblePos)
+    # print(possiblePos)  # to debug positions
     return possiblePos
 
 
@@ -133,7 +118,7 @@ def kingMoves(oldPos, allFigurePos, chessboard_fields):
                     if j + 1 < iterator:
                         possiblePos.append(chessboard_fields[iterator - i][j + 1])  # right down diagonal moves
 
-   # print(possiblePos)
+    # print(possiblePos)  # to debug positions
     return possiblePos
 
 def queenMoves():
@@ -143,11 +128,9 @@ def queenMoves():
 def rookMoves(oldPos, allFigurePos, chessboard_fields):
     # todo: ograniczanie pozycji wiezy, bicie
     iterator = len(chessboard_fields[0])
-    # print(chessboard_fields)
     possiblePos = []
     oldPosNumber = int(oldPos[-1])  # pointed i in lower loop
     oldPosCharacter = oldPos[0]
-    # print(oldPosCharacter)
     oldPosCharNumber = FieldNumerical(oldPosCharacter, None)  # pointed j in lower loop
 
     for i in range(iterator):
@@ -157,7 +140,6 @@ def rookMoves(oldPos, allFigurePos, chessboard_fields):
         if i == oldPosCharNumber:
             for j in range(iterator):
                 possiblePos.append(chessboard_fields[j][i])  # horizontal possible positions
-    # print(possiblePos)
     return possiblePos
 
 
