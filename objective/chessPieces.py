@@ -132,14 +132,31 @@ def rookMoves(oldPos, allFigurePos, chessboard_fields):
     oldPosNumber = int(oldPos[-1])  # pointed i in lower loop
     oldPosCharacter = oldPos[0]
     oldPosCharNumber = FieldNumerical(oldPosCharacter, None)  # pointed j in lower loop
-
-    for i in range(iterator):
-        if i == oldPosNumber-1:  # minus 1 because array starts from index 0
-            for j in range(iterator):
-                possiblePos.append(chessboard_fields[iterator - i-1][j])  # vertical possible positions
-        if i == oldPosCharNumber:
-            for j in range(iterator):
-                possiblePos.append(chessboard_fields[j][i])  # horizontal possible positions
+    for i in range(iterator):  # rows
+        for j in range(iterator):  # cols
+            if i == oldPosNumber - 1 and j == oldPosCharNumber:
+                if iterator - (i + 1) >= 0:  # right/left moves
+                    jTmp = j
+                    iTmp = i
+                    while jTmp + 1 < iterator and iterator - (iTmp + 1) < iterator:
+                        possiblePos.append(chessboard_fields[iterator - (iTmp + 1)][jTmp + 1])  # right moves
+                        jTmp += 1
+                    jTmp = j
+                    iTmp = i
+                    while jTmp - 1 >= 0 and iterator - (iTmp + 1) < iterator:
+                        possiblePos.append(chessboard_fields[iterator - (iTmp + 1)][jTmp - 1])  # left moves
+                        jTmp -= 1
+                jTmp = j
+                iTmp = i
+                while iterator - (iTmp + 2) >= 0 and jTmp < iterator:  # all upper moves
+                    possiblePos.append(chessboard_fields[iterator - (iTmp + 2)][jTmp])  # upper moves
+                    iTmp += 1
+                jTmp = j
+                iTmp = i
+                while iterator - iTmp >= 0 and iterator-iTmp < iterator and jTmp < iterator:  # all down moves
+                    possiblePos.append(chessboard_fields[iterator - iTmp][jTmp])  # down moves
+                    iTmp -= 1
+    # print(possiblePos)  # for debug
     return possiblePos
 
 
