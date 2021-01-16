@@ -114,27 +114,41 @@ def kingMoves(oldPos, allFigurePos, chessboard_fields):
     oldPosCharacter = oldPos[0]
     print(oldPosCharacter)
     oldPosCharNumber = FieldNumerical(oldPosCharacter, None)  # pointed j in lower loop
-# ****** FULL DIAGONAL FOR KING -> MOVES only for one field
     for i in range(iterator):
         for j in range(iterator):
             if i == oldPosNumber - 1 and j == oldPosCharNumber:
                 print(oldPosNumber)
                 print(oldPosCharNumber)
+                # if i+1<iterator:
+                #     possiblePos.append(chessboard_fields[i+1][j])
+                # if j+1<iterator:
+                #     possiblePos.append(chessboard_fields[i][j+1])
+                # if i-1 >=0:
+                #     possiblePos.append(chessboard_fields[i-1][j])
+                # if j-1>=0:
+                #     possiblePos.append(chessboard_fields[i][j-1])
                 if i == iterator - 1:
                     if j - 1 >= 0:
                         possiblePos.append(chessboard_fields[iterator - i][j - 1])
                     if j + 1 < iterator:
                         possiblePos.append(chessboard_fields[iterator - i][j + 1])
                 if iterator - (i + 2) >= 0:
+                    possiblePos.append(chessboard_fields[iterator - (i + 2)][j])  # upper moves
                     if j + 1 < iterator:
-                        possiblePos.append(chessboard_fields[iterator - (i + 2)][j + 1])
+                        possiblePos.append(chessboard_fields[iterator - (i + 2)][j + 1])  # right upper diagonal moves
+                        possiblePos.append(chessboard_fields[iterator - (i + 1)][j+1])  # right moves
                     if j - 1 >= 0:
-                        possiblePos.append(chessboard_fields[iterator - (i + 2)][j - 1])
+                        possiblePos.append(chessboard_fields[iterator - (i + 2)][j - 1])  # left upper diagonal moves
+                        possiblePos.append(chessboard_fields[iterator- (i + 1)][j-1])  # left moves
+
                 if i != iterator - 1 and iterator - i >= 0 and i != 0:
+                    possiblePos.append(chessboard_fields[iterator - i][j])  # down moves
                     if j - 1 >= 0:
-                        possiblePos.append(chessboard_fields[iterator - i][j - 1])
+                        possiblePos.append(chessboard_fields[iterator - i][j - 1])  # left down diagonal moves
                     if j + 1 < iterator:
-                        possiblePos.append(chessboard_fields[iterator - i][j + 1])
+                        possiblePos.append(chessboard_fields[iterator - i][j + 1])  # right down diagonal moves
+
+
     print(possiblePos)
     return possiblePos
 
