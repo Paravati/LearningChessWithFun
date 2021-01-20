@@ -104,16 +104,12 @@ class Chessboard:
             possiblePos = pawnMoves(ifFirstMove, oldPos, figureColor, self.figurePos)
         elif figureName == 'bishop':
             possiblePos = bishopMoves(oldPos, figureColor, self.fields)
-            print("Need to find diagonal for this bishop and then possible moves can be pointed")
         elif figureName == 'rook':
             possiblePos = rookMoves(oldPos, self.figurePos, self.fields)
-            print("Need to find horizontal and vertical lines for this rook and then possible moves can be pointed")
         elif figureName == 'queen':
-            possiblePos = queenMoves()
-            print("Need to find horizontal and verical lines and diagonals")
+            possiblePos = queenMoves(oldPos, self.figurePos, self.fields)
         elif figureName == 'king':
             possiblePos = kingMoves(oldPos, self.figurePos, self.fields)
-            print("Need to find horizontal and verical lines and diagonals - king can only move for one field!!")
         else:  # figureName is knight
             possiblePos = knightMoves()
             print("The hardest part here to point possible moves")

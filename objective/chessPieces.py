@@ -11,12 +11,6 @@ def FieldNumerical(letter, value):
         return listWithLetters[value] if (value >=0 and value<=7) else None
 
 
-def defineDirectionsOfTheChessBoard(listWithFieldNames):
-    diagonal = []
-    horizontal = []
-    vertical = []
-
-
 def PawnbeatingMoves(oldPos, allFigurePosition, coef):
     letterNum = FieldNumerical(oldPos[0], None)
     beatingMovesLetters = [letterNum + 1, letterNum - 1]  # only letters
@@ -46,48 +40,6 @@ def pawnMoves(IsfirstMove, oldPos, color, allFigurePos):
             possiblePos.append(oldPos[0] + str(move1))
     possiblePos.extend(PawnbeatingMoves(oldPos, allFigurePos, coef))
 
-    return possiblePos
-
-
-def bishopMoves(oldPos, allFigurePos, chessboard_fields):
-    # todo: ogranicznik przemieszczania sie dla goncow
-    iterator = len(chessboard_fields[0])
-    possiblePos = []
-    oldPosNumber = int(oldPos[-1])  # pointed i in lower loop
-    oldPosCharacter = oldPos[0]
-    oldPosCharNumber = FieldNumerical(oldPosCharacter, None)  # pointed j in lower loop
-
-    for i in range(iterator):
-        for j in range(iterator):
-            if i == oldPosNumber-1 and j == oldPosCharNumber:
-                if iterator-(i+2) >= 0:
-                    jTmp = j
-                    iTmp = i
-                    while jTmp+1<iterator and iterator-(iTmp+2)>=0:  # right upper diagonal
-                        possiblePos.append(chessboard_fields[iterator-(iTmp+2)][jTmp+1])
-                        jTmp += 1
-                        iTmp += 1
-                    jTmp = j
-                    iTmp = i
-                    while jTmp-1 >= 0 and iterator-(iTmp+2) >= 0:  # left upper diagonal
-                        possiblePos.append(chessboard_fields[iterator - (iTmp + 2)][jTmp - 1])
-                        jTmp -= 1
-                        iTmp += 1
-                if iterator-i >= 0 and iterator - i < iterator:
-                    jTmp = j
-                    iTmp = i
-                    while jTmp-1 >= 0 and iterator - iTmp >= 0 and iterator - iTmp < iterator:  # left lower dagonal
-                        possiblePos.append(chessboard_fields[iterator - iTmp][jTmp - 1])
-                        jTmp -= 1
-                        iTmp -= 1
-                    jTmp = j
-                    iTmp = i
-                    while jTmp+1<iterator and iterator - iTmp >= 0 and iterator - iTmp < iterator:  # right lower diagonal
-                        possiblePos.append(chessboard_fields[iterator - iTmp][jTmp + 1])
-                        jTmp += 1
-                        iTmp -= 1
-
-    # print(possiblePos)  # to debug positions
     return possiblePos
 
 
@@ -121,17 +73,10 @@ def kingMoves(oldPos, allFigurePos, chessboard_fields):
     # print(possiblePos)  # to debug positions
     return possiblePos
 
-def queenMoves():
-    pass
 
-
-def rookMoves(oldPos, allFigurePos, chessboard_fields):
-    # todo: ograniczanie pozycji wiezy, bicie
+def horizontalVerticalMoves(oldPosNumber, oldPosCharNumber, chessboard_fields):
+    possiblePositions = []
     iterator = len(chessboard_fields[0])
-    possiblePos = []
-    oldPosNumber = int(oldPos[-1])  # pointed i in lower loop
-    oldPosCharacter = oldPos[0]
-    oldPosCharNumber = FieldNumerical(oldPosCharacter, None)  # pointed j in lower loop
     for i in range(iterator):  # rows
         for j in range(iterator):  # cols
             if i == oldPosNumber - 1 and j == oldPosCharNumber:
@@ -139,23 +84,91 @@ def rookMoves(oldPos, allFigurePos, chessboard_fields):
                     jTmp = j
                     iTmp = i
                     while jTmp + 1 < iterator and iterator - (iTmp + 1) < iterator:
-                        possiblePos.append(chessboard_fields[iterator - (iTmp + 1)][jTmp + 1])  # right moves
+                        possiblePositions.append(chessboard_fields[iterator - (iTmp + 1)][jTmp + 1])  # right moves
                         jTmp += 1
                     jTmp = j
                     iTmp = i
                     while jTmp - 1 >= 0 and iterator - (iTmp + 1) < iterator:
-                        possiblePos.append(chessboard_fields[iterator - (iTmp + 1)][jTmp - 1])  # left moves
+                        possiblePositions.append(chessboard_fields[iterator - (iTmp + 1)][jTmp - 1])  # left moves
                         jTmp -= 1
                 jTmp = j
                 iTmp = i
                 while iterator - (iTmp + 2) >= 0 and jTmp < iterator:  # all upper moves
-                    possiblePos.append(chessboard_fields[iterator - (iTmp + 2)][jTmp])  # upper moves
+                    possiblePositions.append(chessboard_fields[iterator - (iTmp + 2)][jTmp])  # upper moves
                     iTmp += 1
                 jTmp = j
                 iTmp = i
                 while iterator - iTmp >= 0 and iterator-iTmp < iterator and jTmp < iterator:  # all down moves
-                    possiblePos.append(chessboard_fields[iterator - iTmp][jTmp])  # down moves
+                    possiblePositions.append(chessboard_fields[iterator - iTmp][jTmp])  # down moves
                     iTmp -= 1
+    return possiblePositions
+
+
+def diagonalMoves(oldPosNumber, oldPosCharNumber, chessboard_fields):
+    possiblePositions = []
+    iterator = len(chessboard_fields[0])
+    for i in range(iterator):
+        for j in range(iterator):
+            if i == oldPosNumber - 1 and j == oldPosCharNumber:
+                if iterator - (i + 2) >= 0:
+                    jTmp = j
+                    iTmp = i
+                    while jTmp + 1 < iterator and iterator - (iTmp + 2) >= 0:  # right upper diagonal
+                        possiblePositions.append(chessboard_fields[iterator - (iTmp + 2)][jTmp + 1])
+                        jTmp += 1
+                        iTmp += 1
+                    jTmp = j
+                    iTmp = i
+                    while jTmp - 1 >= 0 and iterator - (iTmp + 2) >= 0:  # left upper diagonal
+                        possiblePositions.append(chessboard_fields[iterator - (iTmp + 2)][jTmp - 1])
+                        jTmp -= 1
+                        iTmp += 1
+                if iterator - i >= 0 and iterator - i < iterator:
+                    jTmp = j
+                    iTmp = i
+                    while jTmp - 1 >= 0 and iterator - iTmp >= 0 and iterator - iTmp < iterator:  # left lower diagonal
+                        possiblePositions.append(chessboard_fields[iterator - iTmp][jTmp - 1])
+                        jTmp -= 1
+                        iTmp -= 1
+                    jTmp = j
+                    iTmp = i
+                    while jTmp + 1 < iterator and iterator - iTmp >= 0 and iterator - iTmp < iterator:  # right lower diagonal
+                        possiblePositions.append(chessboard_fields[iterator - iTmp][jTmp + 1])
+                        jTmp += 1
+                        iTmp -= 1
+    return possiblePositions
+
+
+def bishopMoves(oldPos, allFigurePos, chessboard_fields):
+    # todo: ogranicznik przemieszczania sie dla goncow
+    oldPosNumber = int(oldPos[-1])  # pointed i in lower loop
+    oldPosCharacter = oldPos[0]
+    oldPosCharNumber = FieldNumerical(oldPosCharacter, None)  # pointed j in lower loop
+    possiblePos = diagonalMoves(oldPosNumber, oldPosCharNumber, chessboard_fields)
+    # print(possiblePos)
+
+    return possiblePos
+
+
+def queenMoves(oldPos, allFigurePos, chessboard_fields):
+    # todo: ogranicznik przemieszczania sie dla krolowej
+    oldPosNumber = int(oldPos[-1])  # pointed i in lower loop
+    oldPosCharacter = oldPos[0]
+    oldPosCharNumber = FieldNumerical(oldPosCharacter, None)  # pointed j in lower loop
+    possiblePos0 = horizontalVerticalMoves(oldPosNumber, oldPosCharNumber, chessboard_fields)
+    possiblePos1 = diagonalMoves(oldPosNumber, oldPosCharNumber, chessboard_fields)
+    possiblePos0.extend(possiblePos1)
+    # print(possiblePos0)
+
+    return possiblePos0
+
+
+def rookMoves(oldPos, allFigurePos, chessboard_fields):
+    # todo: ograniczanie pozycji wiezy, bicie
+    oldPosNumber = int(oldPos[-1])  # pointed i in lower loop
+    oldPosCharacter = oldPos[0]
+    oldPosCharNumber = FieldNumerical(oldPosCharacter, None)  # pointed j in lower loop
+    possiblePos = horizontalVerticalMoves(oldPosNumber, oldPosCharNumber, chessboard_fields)
     # print(possiblePos)  # for debug
     return possiblePos
 
