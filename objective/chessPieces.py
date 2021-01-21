@@ -173,8 +173,37 @@ def rookMoves(oldPos, allFigurePos, chessboard_fields):
     return possiblePos
 
 
-def knightMoves():
-    pass
+def knightMoves(oldPos, allFigurePos, chessboard_fields):
+    iterator = len(chessboard_fields[0])
+    possiblePos = []
+    oldPosNumber = int(oldPos[-1])  # pointed i in lower loop
+    oldPosCharacter = oldPos[0]
+    oldPosCharNumber = FieldNumerical(oldPosCharacter, None)  # pointed j in lower loop
+    for i in range(iterator):  # rows
+        for j in range(iterator):  # cols
+            if i == oldPosNumber - 1 and j == oldPosCharNumber:
+                if iterator - (i + 2) >= 0:  # right/left moves
+                    if j + 2 < iterator:
+                        possiblePos.append(chessboard_fields[iterator - (i + 2)][j + 2])  # upper right move
+                    if j - 2 >= 0:
+                        possiblePos.append(chessboard_fields[iterator - (i + 2)][j - 2])  # upper left move
+                if iterator - i < iterator:  # right/left moves
+                    if j + 2 < iterator:
+                        possiblePos.append(chessboard_fields[iterator - i][j + 2])  # right moves
+                        if iterator-i+1 < iterator:
+                            possiblePos.append(chessboard_fields[iterator - i+1][j + 1])
+                    if j - 2 >= 0:
+                        possiblePos.append(chessboard_fields[iterator - i][j - 2])  # left
+                        if iterator-i+1 < iterator:
+                            possiblePos.append(chessboard_fields[iterator - i+1][j - 1])
+                if iterator - (i + 3) >= 0:  # right/left moves
+                    if j + 1 < iterator:
+                        possiblePos.append(chessboard_fields[iterator - (i + 3)][j + 1])  # upper right move
+                    if j - 1 >= 0:
+                        possiblePos.append(chessboard_fields[iterator - (i + 3)][j - 1])
+
+    print(possiblePos)  # to debug positions
+    return possiblePos
 
 
 class Pawn():

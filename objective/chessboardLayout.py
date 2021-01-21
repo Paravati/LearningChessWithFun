@@ -111,7 +111,7 @@ class Chessboard:
         elif figureName == 'king':
             possiblePos = kingMoves(oldPos, self.figurePos, self.fields)
         else:  # figureName is knight
-            possiblePos = knightMoves()
+            possiblePos = knightMoves(oldPos, self.figurePos, self.fields)
             print("The hardest part here to point possible moves")
 
         if newPos in possiblePos:
