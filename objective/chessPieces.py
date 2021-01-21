@@ -190,12 +190,12 @@ def knightMoves(oldPos, allFigurePos, chessboard_fields):
                 if iterator - i < iterator:  # right/left moves
                     if j + 2 < iterator:
                         possiblePos.append(chessboard_fields[iterator - i][j + 2])  # right moves
-                        if iterator-i+1 < iterator:
-                            possiblePos.append(chessboard_fields[iterator - i+1][j + 1])
+                    if iterator-i+1 < iterator and j+1 < iterator:
+                        possiblePos.append(chessboard_fields[iterator - i+1][j + 1])
                     if j - 2 >= 0:
                         possiblePos.append(chessboard_fields[iterator - i][j - 2])  # left
-                        if iterator-i+1 < iterator:
-                            possiblePos.append(chessboard_fields[iterator - i+1][j - 1])
+                    if iterator-i+1 < iterator and j-1 >=0:
+                        possiblePos.append(chessboard_fields[iterator - i+1][j - 1])
                 if iterator - (i + 3) >= 0:  # right/left moves
                     if j + 1 < iterator:
                         possiblePos.append(chessboard_fields[iterator - (i + 3)][j + 1])  # upper right move
