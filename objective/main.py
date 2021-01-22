@@ -15,7 +15,6 @@ def coloringChessboard(surface, n, sq_len, x_offset, y_offset, pointedPiece, col
             the_square = (col * sq_len + x_offset, row * sq_len + y_offset, sq_len, sq_len)
             if pointedPiece is not None and the_square[0] == pointedPiece[1] and the_square[1]==pointedPiece[0]:
                 surface.fill((100, 100, 100), the_square)
-                # print(pointedPiece)
             else:
                 surface.fill(colors[c_indx], the_square)
             c_indx = (c_indx + 1) % 2
@@ -38,7 +37,7 @@ def draw_board(board_size, swapSide=False):
     checkedField1st = None
     checkedField2nd = None
     move = 0
-    pointedField = None
+    pointedField = None  # field which will be in different color when pointed by user
     coloringChessboard(surface, n, sq_len, x_offset_of_Board, y_offset_of_Board, pointedField, colors)
     chessboard.insertFiguresIntoChessboard(chessboard.chessboardFields, n)
 
@@ -52,7 +51,8 @@ def draw_board(board_size, swapSide=False):
             if x_offset_of_Board < pos_of_click[0] < surface.get_height():
                 if y_offset_of_Board < pos_of_click[1] < surface.get_width():
                     checkedField1st = chessboard.getNameOfField((pos_of_click[0], pos_of_click[1]))
-                    pointedField = chessboard.chessboardFields[checkedField1st]
+                    if chessboard.figurePos[checkedField1st] is not None:
+                        pointedField = chessboard.chessboardFields[checkedField1st]
         if ev.type == pygame.MOUSEBUTTONDOWN and checkedField1st is not None:
             pos_of_click = ev.dict['pos']
             if x_offset_of_Board < pos_of_click[0] < surface.get_height():
