@@ -8,12 +8,16 @@ def updatePosOfTheFigure(self, surface):   # for drag and drop event in the futu
     surface.blit(self.image, self.rect)
 
 
-def coloringChessboard(surface, n, sq_len, x_offset, y_offset, colors):
+def coloringChessboard(surface, n, sq_len, x_offset, y_offset, pointedPiece, colors):
     for row in range(n):  # Draw each row of the board.
         c_indx = row % 2  # Change starting color on each row
         for col in range(n):  # Run through cols drawing squares
             the_square = (col * sq_len + x_offset, row * sq_len + y_offset, sq_len, sq_len)
-            surface.fill(colors[c_indx], the_square)
+            if pointedPiece is not None and the_square[0] == pointedPiece[1] and the_square[1]==pointedPiece[0]:
+                surface.fill((100, 100, 100), the_square)
+                # print(pointedPiece)
+            else:
+                surface.fill(colors[c_indx], the_square)
             c_indx = (c_indx + 1) % 2
 
 
@@ -34,7 +38,8 @@ def draw_board(board_size, swapSide=False):
     checkedField1st = None
     checkedField2nd = None
     move = 0
-    coloringChessboard(surface, n, sq_len, x_offset_of_Board, y_offset_of_Board, colors)
+    pointedField = None
+    coloringChessboard(surface, n, sq_len, x_offset_of_Board, y_offset_of_Board, pointedField, colors)
     chessboard.insertFiguresIntoChessboard(chessboard.chessboardFields, n)
 
     while True:
@@ -47,31 +52,26 @@ def draw_board(board_size, swapSide=False):
             if x_offset_of_Board < pos_of_click[0] < surface.get_height():
                 if y_offset_of_Board < pos_of_click[1] < surface.get_width():
                     checkedField1st = chessboard.getNameOfField((pos_of_click[0], pos_of_click[1]))
-                    # print(checkedField1st)
-                    # print(chessboard.figurePos[checkedField1st])
+                    pointedField = chessboard.chessboardFields[checkedField1st]
         if ev.type == pygame.MOUSEBUTTONDOWN and checkedField1st is not None:
             pos_of_click = ev.dict['pos']
             if x_offset_of_Board < pos_of_click[0] < surface.get_height():
                 if y_offset_of_Board < pos_of_click[1] < surface.get_width():
                     checkedField2nd = chessboard.getNameOfField((pos_of_click[0], pos_of_click[1]))
                     if checkedField2nd != checkedField1st:  # move figure
-                        print(checkedField2nd)
-                        print(chessboard.figurePos[checkedField2nd])
-                        print(chessboard.figurePos)
                         chessboard.moveFigure(checkedField1st, checkedField2nd, chessboard.figurePos[checkedField1st])
-                        print(chessboard.figurePos)
                         chessboard.insertFiguresIntoChessboardAfter1stMove(n)
                         checkedField1st = None
                         checkedField2nd = None
+                        pointedField = None
                         move += 1
 
         # chessboard.insertFiguresIntoChessboard(chessboard.chessboardFields, n)
         if move == 0:
-            coloringChessboard(surface, n, sq_len, x_offset_of_Board, y_offset_of_Board, colors)
+            coloringChessboard(surface, n, sq_len, x_offset_of_Board, y_offset_of_Board, pointedField, colors)
             chessboard.insertFiguresIntoChessboard(chessboard.chessboardFields, n)
-
         else:
-            coloringChessboard(surface, n, sq_len, x_offset_of_Board, y_offset_of_Board, colors)
+            coloringChessboard(surface, n, sq_len, x_offset_of_Board, y_offset_of_Board, pointedField, colors)
             chessboard.insertFiguresIntoChessboardAfter1stMove(n)
         pygame.display.flip()  # displaying pygame window
 
