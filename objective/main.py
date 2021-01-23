@@ -1,7 +1,6 @@
 import pygame
 from objective.chessboardLayout import Chessboard
 
-
 def updatePosOfTheFigure(self, surface):   # for drag and drop event in the future :D
     if self.click:
         self.rect.center = pygame.mouse.get_pos()
@@ -40,6 +39,7 @@ def draw_board(board_size, swapSide=False):
     pointedField = None  # field which will be in different color when pointed by user
     coloringChessboard(surface, n, sq_len, x_offset_of_Board, y_offset_of_Board, pointedField, colors)
     chessboard.insertFiguresIntoChessboard(chessboard.chessboardFields, n)
+    isWhiteMove = True
 
     while True:
         pygame.display.set_caption("game")
@@ -52,8 +52,18 @@ def draw_board(board_size, swapSide=False):
                 if y_offset_of_Board < pos_of_click[1] < surface.get_width():
                     checkedField1st = chessboard.getNameOfField((pos_of_click[0], pos_of_click[1]))
                     if chessboard.figurePos[checkedField1st] is not None:
-                        pointedField = chessboard.chessboardFields[checkedField1st]
-        if ev.type == pygame.MOUSEBUTTONDOWN and chessboard.figurePos[checkedField1st] is not None:  # only if user clicked on field with figure then we can check field to move
+                        if move % 2 == 0:
+                            if chessboard.figurePos[checkedField1st][0] == 'w':
+                                print(chessboard.figurePos[checkedField1st][0])
+                                pointedField = chessboard.chessboardFields[checkedField1st]
+                            else:
+                                checkedField1st = None
+                        else:
+                            if chessboard.figurePos[checkedField1st][0] == 'b':
+                                pointedField = chessboard.chessboardFields[checkedField1st]
+                            else:
+                                checkedField1st = None
+        if ev.type == pygame.MOUSEBUTTONDOWN and checkedField1st is not None and chessboard.figurePos[checkedField1st] is not None:  # only if user clicked on field with figure then we can check field to move
             pos_of_click = ev.dict['pos']
             if x_offset_of_Board < pos_of_click[0] < surface.get_height():
                 if y_offset_of_Board < pos_of_click[1] < surface.get_width():
@@ -73,6 +83,11 @@ def draw_board(board_size, swapSide=False):
         else:
             coloringChessboard(surface, n, sq_len, x_offset_of_Board, y_offset_of_Board, pointedField, colors)
             chessboard.insertFiguresIntoChessboardAfter1stMove(n)
+
+        # if move % 2 == 0:
+        #     isWhiteMove = True
+        # else:
+        #     isWhiteMove = False
         pygame.display.flip()  # displaying pygame window
 
     pygame.quit()
