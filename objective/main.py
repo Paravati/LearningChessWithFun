@@ -53,7 +53,7 @@ def draw_board(board_size, swapSide=False):
                     checkedField1st = chessboard.getNameOfField((pos_of_click[0], pos_of_click[1]))
                     if chessboard.figurePos[checkedField1st] is not None:
                         pointedField = chessboard.chessboardFields[checkedField1st]
-        if ev.type == pygame.MOUSEBUTTONDOWN and checkedField1st is not None:
+        if ev.type == pygame.MOUSEBUTTONDOWN and chessboard.figurePos[checkedField1st] is not None:  # only if user clicked on field with figure then we can check field to move
             pos_of_click = ev.dict['pos']
             if x_offset_of_Board < pos_of_click[0] < surface.get_height():
                 if y_offset_of_Board < pos_of_click[1] < surface.get_width():
