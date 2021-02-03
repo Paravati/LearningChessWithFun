@@ -92,6 +92,9 @@ class Chessboard:
                     print("beating figure")
                     self.figurePos[newPos] = figureName
                     self.figurePos[oldPos] = None
+                return True
+            else:  # if figure couldnt move
+                return False
 
     def checkPositionToMove(self, oldPos, newPos, figure):
         """checking if pointed figure can move to pointed position

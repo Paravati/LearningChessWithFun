@@ -69,12 +69,14 @@ def draw_board(board_size, swapSide=False):
                 if y_offset_of_Board < pos_of_click[1] < surface.get_width():
                     checkedField2nd = chessboard.getNameOfField((pos_of_click[0], pos_of_click[1]))
                     if checkedField2nd != checkedField1st:  # move figure
-                        chessboard.moveFigure(checkedField1st, checkedField2nd, chessboard.figurePos[checkedField1st])
+                        isMoveHappen = chessboard.moveFigure(checkedField1st, checkedField2nd, chessboard.figurePos[checkedField1st])
+                        if isMoveHappen:
+                            move += 1
                         chessboard.insertFiguresIntoChessboardAfter1stMove(n)
                         checkedField1st = None
                         checkedField2nd = None
                         pointedField = None
-                        move += 1
+
 
         # chessboard.insertFiguresIntoChessboard(chessboard.chessboardFields, n)
         if move == 0:
