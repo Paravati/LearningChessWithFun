@@ -43,7 +43,7 @@ def pawnMoves(IsfirstMove, oldPos, color, allFigurePos):
     return possiblePos
 
 
-def kingMoves(oldPos, allFigurePos, chessboard_fields):
+def kingMoves(oldPos, figColor, allFigurePos, chessboard_fields):
     iterator = len(chessboard_fields[0])
     possiblePos = []
     oldPosNumber = int(oldPos[-1])  # pointed i in lower loop
@@ -54,21 +54,35 @@ def kingMoves(oldPos, allFigurePos, chessboard_fields):
             if i == oldPosNumber - 1 and j == oldPosCharNumber:
                 if iterator - (i + 1) >= 0:  # right/left moves
                     if j + 1 < iterator:
-                        possiblePos.append(chessboard_fields[iterator - (i + 1)][j + 1])  # right moves
+                        pos = chessboard_fields[iterator - (i + 1)][j + 1]
+                        if allFigurePos[pos] is None or allFigurePos[pos][0] != figColor:
+                            possiblePos.append(pos)  # right moves
                     if j - 1 >= 0:
-                        possiblePos.append(chessboard_fields[iterator - (i + 1)][j - 1])  # left moves
+                        pos = chessboard_fields[iterator - (i + 1)][j - 1]
+                        if allFigurePos[pos] is None or allFigurePos[pos][0] != figColor:
+                            possiblePos.append(pos)  # left moves
                 if iterator - (i + 2) >= 0:  # all upper moves
                     possiblePos.append(chessboard_fields[iterator - (i + 2)][j])  # upper moves
                     if j + 1 < iterator:
-                        possiblePos.append(chessboard_fields[iterator - (i + 2)][j + 1])  # right upper diagonal moves
+                        pos = chessboard_fields[iterator - (i + 2)][j + 1]
+                        if allFigurePos[pos] is None or allFigurePos[pos][0] != figColor:
+                            possiblePos.append(pos)  # right upper diagonal moves
                     if j - 1 >= 0:
-                        possiblePos.append(chessboard_fields[iterator - (i + 2)][j - 1])  # left upper diagonal moves
+                        pos = chessboard_fields[iterator - (i + 2)][j - 1]
+                        if allFigurePos[pos] is None or allFigurePos[pos][0] != figColor:
+                            possiblePos.append(pos)  # left upper diagonal moves
                 if iterator - i >= 0 and iterator-i < iterator:  # all down moves
-                    possiblePos.append(chessboard_fields[iterator - i][j])  # down moves
+                    pos = chessboard_fields[iterator - i][j]
+                    if allFigurePos[pos] is None or allFigurePos[pos][0] != figColor:
+                        possiblePos.append(pos)  # down moves
                     if j - 1 >= 0:
-                        possiblePos.append(chessboard_fields[iterator - i][j - 1])  # left down diagonal moves
+                        pos = chessboard_fields[iterator - i][j - 1]
+                        if allFigurePos[pos] is None or allFigurePos[pos][0] != figColor:
+                            possiblePos.append(pos)  # left down diagonal moves
                     if j + 1 < iterator:
-                        possiblePos.append(chessboard_fields[iterator - i][j + 1])  # right down diagonal moves
+                        pos = chessboard_fields[iterator - i][j + 1]
+                        if allFigurePos[pos] is None or allFigurePos[pos][0] != figColor:
+                            possiblePos.append(pos)  # right down diagonal moves
 
     # print(possiblePos)  # to debug positions
     return possiblePos
@@ -199,7 +213,6 @@ def bishopMoves(oldPos, figColor, allFigurePos, chessboard_fields):
 
 
 def queenMoves(oldPos, allFigurePos, chessboard_fields):
-    # todo: ogranicznik przemieszczania sie dla krolowej
     figColor = allFigurePos[oldPos][0]
     oldPosNumber = int(oldPos[-1])  # pointed i in lower loop
     oldPosCharacter = oldPos[0]
@@ -213,7 +226,6 @@ def queenMoves(oldPos, allFigurePos, chessboard_fields):
 
 
 def rookMoves(oldPos, allFigurePos, chessboard_fields):
-    # todo: ograniczanie pozycji wiezy, bicie
     figColor = allFigurePos[oldPos][0]
     oldPosNumber = int(oldPos[-1])  # pointed i in lower loop
     oldPosCharacter = oldPos[0]
@@ -223,7 +235,7 @@ def rookMoves(oldPos, allFigurePos, chessboard_fields):
     return possiblePos
 
 
-def knightMoves(oldPos, allFigurePos, chessboard_fields):
+def knightMoves(oldPos, figColor, allFigurePos, chessboard_fields):
     iterator = len(chessboard_fields[0])
     possiblePos = []
     oldPosNumber = int(oldPos[-1])  # pointed i in lower loop
@@ -234,25 +246,41 @@ def knightMoves(oldPos, allFigurePos, chessboard_fields):
             if i == oldPosNumber - 1 and j == oldPosCharNumber:
                 if iterator - (i + 2) >= 0:  # right/left moves
                     if j + 2 < iterator:
-                        possiblePos.append(chessboard_fields[iterator - (i + 2)][j + 2])  # upper right move
+                        pos = chessboard_fields[iterator - (i + 2)][j + 2]
+                        if allFigurePos[pos] is None or allFigurePos[pos][0] != figColor:
+                            possiblePos.append(pos)  # upper right move
                     if j - 2 >= 0:
-                        possiblePos.append(chessboard_fields[iterator - (i + 2)][j - 2])  # upper left move
+                        pos = chessboard_fields[iterator - (i + 2)][j - 2]
+                        if allFigurePos[pos] is None or allFigurePos[pos][0] != figColor:
+                            possiblePos.append(pos)  # upper left move
                 if iterator - i < iterator:  # right/left moves
                     if j + 2 < iterator:
-                        possiblePos.append(chessboard_fields[iterator - i][j + 2])  # right moves
+                        pos = chessboard_fields[iterator - i][j + 2]
+                        if allFigurePos[pos] is None or allFigurePos[pos][0] != figColor:
+                            possiblePos.append(pos)  # right moves
                     if iterator-i+1 < iterator and j+1 < iterator:
-                        possiblePos.append(chessboard_fields[iterator - i+1][j + 1])
+                        pos = chessboard_fields[iterator - i+1][j + 1]
+                        if allFigurePos[pos] is None or allFigurePos[pos][0] != figColor:
+                            possiblePos.append(pos)
                     if j - 2 >= 0:
-                        possiblePos.append(chessboard_fields[iterator - i][j - 2])  # left
+                        pos = chessboard_fields[iterator - i][j - 2]
+                        if allFigurePos[pos] is None or allFigurePos[pos][0] != figColor:
+                            possiblePos.append(pos)  # left
                     if iterator-i+1 < iterator and j-1 >=0:
-                        possiblePos.append(chessboard_fields[iterator - i+1][j - 1])
+                        pos = chessboard_fields[iterator - i+1][j - 1]
+                        if allFigurePos[pos] is None or allFigurePos[pos][0] != figColor:
+                            possiblePos.append(pos)
                 if iterator - (i + 3) >= 0:  # right/left moves
                     if j + 1 < iterator:
-                        possiblePos.append(chessboard_fields[iterator - (i + 3)][j + 1])  # upper right move
+                        pos = chessboard_fields[iterator - (i + 3)][j + 1]
+                        if allFigurePos[pos] is None or allFigurePos[pos][0] != figColor:
+                            possiblePos.append(pos)  # upper right move
                     if j - 1 >= 0:
-                        possiblePos.append(chessboard_fields[iterator - (i + 3)][j - 1])
+                        pos = chessboard_fields[iterator - (i + 3)][j - 1]
+                        if allFigurePos[pos] is None or allFigurePos[pos][0] != figColor:
+                            possiblePos.append(pos)
 
-    print(possiblePos)  # to debug positions
+    # print(possiblePos)  # to debug positions
     return possiblePos
 
 
