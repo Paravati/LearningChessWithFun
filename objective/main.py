@@ -39,7 +39,6 @@ def draw_board(board_size, swapSide=False):
     pointedField = None  # field which will be in different color when pointed by user
     coloringChessboard(surface, n, sq_len, x_offset_of_Board, y_offset_of_Board, pointedField, colors)
     chessboard.insertFiguresIntoChessboard(chessboard.chessboardFields, n)
-    isWhiteMove = True
 
     while True:
         pygame.display.set_caption("game")
@@ -54,7 +53,6 @@ def draw_board(board_size, swapSide=False):
                     if chessboard.figurePos[checkedField1st] is not None:
                         if move % 2 == 0:
                             if chessboard.figurePos[checkedField1st][0] == 'w':
-                                print(chessboard.figurePos[checkedField1st][0])
                                 pointedField = chessboard.chessboardFields[checkedField1st]
                             else:
                                 checkedField1st = None
@@ -77,7 +75,6 @@ def draw_board(board_size, swapSide=False):
                         checkedField2nd = None
                         pointedField = None
 
-
         # chessboard.insertFiguresIntoChessboard(chessboard.chessboardFields, n)
         if move == 0:
             coloringChessboard(surface, n, sq_len, x_offset_of_Board, y_offset_of_Board, pointedField, colors)
@@ -86,10 +83,6 @@ def draw_board(board_size, swapSide=False):
             coloringChessboard(surface, n, sq_len, x_offset_of_Board, y_offset_of_Board, pointedField, colors)
             chessboard.insertFiguresIntoChessboardAfter1stMove(n)
 
-        # if move % 2 == 0:
-        #     isWhiteMove = True
-        # else:
-        #     isWhiteMove = False
         pygame.display.flip()  # displaying pygame window
 
     pygame.quit()

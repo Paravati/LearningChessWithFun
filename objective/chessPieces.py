@@ -202,7 +202,6 @@ def diagonalMoves(oldPosNumber, oldPosCharNumber, chessboard_fields, chessboardF
 
 
 def bishopMoves(oldPos, figColor, allFigurePos, chessboard_fields):
-    # todo: ogranicznik przemieszczania sie dla goncow
     oldPosNumber = int(oldPos[-1])  # pointed i in lower loop
     oldPosCharacter = oldPos[0]
     oldPosCharNumber = FieldNumerical(oldPosCharacter, None)  # pointed j in lower loop
