@@ -103,7 +103,7 @@ class Chessboard:
             ifFirstMove = self.checkIfIsItFirstMove(oldPos)  # checking if it is first move of the pointed pawn
             possiblePos = pawnMoves(ifFirstMove, oldPos, figureColor, self.figurePos)
         elif figureName == 'bishop':
-            possiblePos = bishopMoves(oldPos, figureColor, self.fields)
+            possiblePos = bishopMoves(oldPos, figureColor, self.figurePos, self.fields)
         elif figureName == 'rook':
             possiblePos = rookMoves(oldPos, self.figurePos, self.fields)
         elif figureName == 'queen':
