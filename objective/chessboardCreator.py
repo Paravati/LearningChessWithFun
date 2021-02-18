@@ -102,22 +102,28 @@ class Chessboard:
             list with possible moves done by pointed figure"""
         figureColor = figure.split("_")[0]
         figureName = figure.split("_")[1]
+        figureNameToNotation = ""
         if figureName == "pawn":  # todo: dodać bicie na ukos wrogiej figury
             ifFirstMove = self.checkIfIsItFirstMove(oldPos)  # checking if it is first move of the pointed pawn
             possiblePos = pawnMoves(ifFirstMove, oldPos, figureColor, self.figurePos)
         elif figureName == 'bishop':
             possiblePos = bishopMoves(oldPos, figureColor, self.figurePos, self.fields)
+            figureNameToNotation = "B"
         elif figureName == 'rook':
             possiblePos = rookMoves(oldPos, self.figurePos, self.fields)
+            figureNameToNotation = "R"
         elif figureName == 'queen':
             possiblePos = queenMoves(oldPos, self.figurePos, self.fields)
+            figureNameToNotation = "Q"
         elif figureName == 'king':
             possiblePos = kingMoves(oldPos, figureColor, self.figurePos, self.fields)
+            figureNameToNotation = "K"
         else:  # figureName is knight
             possiblePos = knightMoves(oldPos, figureColor, self.figurePos, self.fields)
-            print("The hardest part here to point possible moves")
+            figureNameToNotation = "N"
 
         if newPos in possiblePos:
+            print(figureNameToNotation+newPos)
             return True
         else:
             return False

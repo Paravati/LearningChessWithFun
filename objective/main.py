@@ -1,5 +1,5 @@
 import pygame
-from objective.chessboardLayout import Chessboard
+from objective.chessboardCreator import Chessboard
 
 def updatePosOfTheFigure(self, surface):   # for drag and drop event in the future :D
     if self.click:
